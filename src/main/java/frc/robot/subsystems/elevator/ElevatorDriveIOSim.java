@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 
 public class ElevatorDriveIOSim implements ElevatorDriveIO {
   // TunerConstants doesn't support separate sim constants, so they are declared locally
-  private static final double DRIVE_KP = 0.05;
+  private static final double DRIVE_KP = 0.3;
   private static final double DRIVE_KD = 0.0;
 
   private final ElevatorSim elevatorSim;
@@ -15,10 +15,10 @@ public class ElevatorDriveIOSim implements ElevatorDriveIO {
   private boolean driveClosedLoop = false;
   private double driveFFVolts = 0.0;
   private double driveAppliedVolts = 0.0;
-  private PIDController driveController = new PIDController(DRIVE_KP, 0, DRIVE_KD);
+  private PIDController driveController = new PIDController(DRIVE_KP, 0.1, DRIVE_KD);
 
   public ElevatorDriveIOSim() {
-    elevatorSim = new ElevatorSim(DRIVE_GEARBOX, 6.0 / 1.0, 9.0, .1, 0.0, 1.01, true, 0.1);
+    elevatorSim = new ElevatorSim(DRIVE_GEARBOX, 12.0 / 1.0, 9.0, .1, 0.0, 1.01, true, 0.1);
   }
 
   @Override
@@ -26,7 +26,7 @@ public class ElevatorDriveIOSim implements ElevatorDriveIO {
     // Run closed-loop control
     if (driveClosedLoop) {
       driveAppliedVolts =
-          driveFFVolts + driveController.calculate(elevatorSim.getVelocityMetersPerSecond()) * 12.0;
+          driveFFVolts + driveController.calculate(elevatorSim.getPositionMeters()) * 12.0;
     } else {
       driveController.reset();
     }
@@ -43,9 +43,17 @@ public class ElevatorDriveIOSim implements ElevatorDriveIO {
   }
 
   @Override
-  public void runVelocity(double velocity) {
+  public void setTarget(double position) {
     driveClosedLoop = true;
-    // driveFFVolts = velocity * 5.0; // DRIVE_KS * Math.signum(velocity) + DRIVE_KV * velocity;
-    driveController.setSetpoint(velocity * 100.0);
+    driveFFVolts = 6.5; // DRIVE_KS * Math.signum(velocity) + DRIVE_KV * velocity;
+    driveController.setSetpoint(position);
+  }
+
+  @Override
+  public void runVelocity(double velocity) {
+    assert (1 == 3);
+    // driveClosedLoop = true;
+    // // driveFFVolts = velocity * 5.0; // DRIVE_KS * Math.signum(velocity) + DRIVE_KV * velocity;
+    // driveController.setSetpoint(velocity);
   }
 }

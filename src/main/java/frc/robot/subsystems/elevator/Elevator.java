@@ -17,6 +17,19 @@ public class Elevator extends SubsystemBase {
   }
 
   /**
+   * Runs the elevator to the desired target.
+   *
+   * @param speed Speed in meters/sec
+   */
+  public void setTarget(double target) {
+
+    driveIO.setTarget(target);
+
+    // Log optimized setpoints (runSetpoint mutates each state)
+    Logger.recordOutput("ElevatorState/target", target);
+  }
+
+  /**
    * Runs the elevator at the desired velocity.
    *
    * @param speed Speed in meters/sec

@@ -10,6 +10,8 @@ public interface ElevatorDriveIO {
     public double elevatorAppliedVolts = 0.0;
     public double elevatorCurrentAmps = 0.0;
   }
+  /** Run the motor at the specified velocity. */
+  public default void setTarget(double target) {}
 
   /** Run the motor at the specified velocity. */
   public default void runVelocity(double velocity) {}

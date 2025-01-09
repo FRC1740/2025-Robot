@@ -22,19 +22,19 @@ public class ElevatorRun extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevator.runVelocity(speed);
+    elevator.setTarget(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevator.runVelocity(speed);
+    elevator.setTarget(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevator.runVelocity(0.0);
+    elevator.setTarget(0.0);
   }
 
   // Returns true when the command should end.
