@@ -6,7 +6,7 @@ public interface ElevatorDriveIO {
   @AutoLog
   public static class ElevatorDriveIOInputs {
     public boolean driveClosedLoop = false;
-    public double elevatorPositionRad = 0.0;
+    public double elevatorPositionMeters = 0.0;
     public double elevatorAppliedVolts = 0.0;
     public double elevatorCurrentAmps = 0.0;
   }
