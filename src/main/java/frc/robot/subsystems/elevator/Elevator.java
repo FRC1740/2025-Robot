@@ -5,9 +5,15 @@ import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
   ElevatorDriveIO driveIO;
+  private final ElevatorDriveIOInputsAutoLogged inputs = new ElevatorDriveIOInputsAutoLogged();
 
   public Elevator(ElevatorDriveIO driveIO) {
     this.driveIO = driveIO;
+  }
+
+  public void periodic() {
+    driveIO.updateInputs(inputs);
+    Logger.processInputs("Elevator/Drive", inputs);
   }
 
   /**

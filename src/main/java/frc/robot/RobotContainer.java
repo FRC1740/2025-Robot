@@ -167,7 +167,7 @@ public class RobotContainer {
     //             () -> -controller.getLeftX(),
     //             () -> new Rotation2d(90.0)));
 
-    controller.x().whileTrue(new ElevatorRun(elevator, 0.5));
+    controller.x().whileTrue(new ElevatorRun(elevator, 1.0));
   }
 
   /**

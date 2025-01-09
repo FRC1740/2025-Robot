@@ -46,6 +46,7 @@ public class ElevatorDriveIOSim implements ElevatorDriveIO {
 
     // Update drive inputs
     inputs.elevatorAppliedVolts = driveAppliedVolts;
+    inputs.elevatorPositionRad = elevatorSim.getAngularPositionRad();
     // inputs.driveConnected = true;
     // inputs.drivePositionRad = driveSim.getAngularPositionRad();
     // inputs.driveVelocityRadPerSec = driveSim.getAngularVelocityRadPerSec();
