@@ -22,9 +22,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.ArmSeekPos;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.ElevatorRun;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmIO;
+import frc.robot.subsystems.arm.ArmIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -32,6 +35,7 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorDriveIO;
 import frc.robot.subsystems.elevator.ElevatorDriveIOSim;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -46,6 +50,8 @@ public class RobotContainer {
   private final Drive drive;
 
   private final Elevator elevator;
+
+  private final Arm arm;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -67,6 +73,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
         elevator = new Elevator(new ElevatorDriveIOSim());
+        arm = new Arm(new ArmIOSim());
         break;
 
       case SIM:
@@ -80,6 +87,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
 
         elevator = new Elevator(new ElevatorDriveIOSim());
+        arm = new Arm(new ArmIOSim());
         break;
 
       default:
@@ -92,7 +100,9 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
 
-        elevator = new Elevator(new ElevatorDriveIOSim());
+        elevator = new Elevator(new ElevatorDriveIO() {});
+
+        arm = new Arm(new ArmIO() {});
         break;
     }
 
@@ -167,7 +177,8 @@ public class RobotContainer {
     //             () -> -controller.getLeftX(),
     //             () -> new Rotation2d(90.0)));
 
-    controller.x().whileTrue(new ElevatorRun(elevator, 0.5));
+    // controller.x().whileTrue(new ElevatorRun(elevator, 0.5));
+    controller.x().whileTrue(new ArmSeekPos(arm, Math.PI / 2.0));
   }
 
   /**
