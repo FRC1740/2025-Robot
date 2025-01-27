@@ -19,6 +19,9 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.VisionConstants;
 
@@ -32,6 +35,13 @@ public class PhotonVision extends SubsystemBase {
   PhotonPipelineResult lastResult;
   String lastCamName;
   CommandSwerveDrivetrain m_drive;
+
+  NetworkTable VisionTable = NetworkTableInstance.getDefault().getTable("Vision");
+  StructArrayPublisher<Pose2d> Cam1Publisher = VisionTable
+    .getStructArrayTopic("Cam1", Pose2d.struct).publish();
+  StructArrayPublisher<Pose2d> Cam2Publisher = VisionTable
+    .getStructArrayTopic("Cam2", Pose2d.struct).publish();
+    
 
   public PhotonVision(CommandSwerveDrivetrain drive) {
     m_drive = drive;
@@ -55,15 +65,26 @@ public class PhotonVision extends SubsystemBase {
     if (result != null) {
       if (result.hasTargets()) {
         lastResult = result;
-        EstimatedRobotPose pose = ifExistsGetEstimatedRobotPose();
+        EstimatedRobotPose estimatedPose = ifExistsGetEstimatedRobotPose();
         // really shouldn't be null but just in case
-        if (pose != null) { 
+        if (estimatedPose != null) { 
+          Pose2d pose = new Pose2d(
+            estimatedPose.estimatedPose.getX(), 
+            estimatedPose.estimatedPose.getY(), 
+            m_drive.getRotation3d().toRotation2d());
+
           m_drive.addVisionMeasurement(
             new Pose2d(
-              pose.estimatedPose.getX(), 
-              pose.estimatedPose.getY(), 
-              m_drive.getRotation3d().toRotation2d()), // ignore vision rot
+              pose.getX(), 
+              pose.getY(), 
+              pose.getRotation()), // ignore vision rot
             result.getTimestampSeconds());
+          
+          if (lastCamName == VisionConstants.camName) {
+            Cam1Publisher.set(new Pose2d[]{ pose });
+          }else {
+            Cam2Publisher.set(new Pose2d[]{ pose });
+          }
         }
       }
     }
