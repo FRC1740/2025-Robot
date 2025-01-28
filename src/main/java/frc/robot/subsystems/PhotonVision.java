@@ -77,7 +77,7 @@ public class PhotonVision extends SubsystemBase {
             new Pose2d(
               pose.getX(), 
               pose.getY(), 
-              pose.getRotation()), // ignore vision rot
+              m_drive.getRotation3d().toRotation2d()), // ignore vision rot
             result.getTimestampSeconds());
           
           if (lastCamName == VisionConstants.camName) {
