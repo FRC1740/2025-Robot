@@ -95,14 +95,13 @@ public class AlignToTagPose extends Command {
       rotatedGoal = new Pose2d(
         (targetPose.getX() + rotatedGoal.getX()), // apply target offsets
         (targetPose.getY() + rotatedGoal.getY()), 
-        targetPose.getRotation().plus(new Rotation2d(1 * Math.PI))); // normal of the tag is flipped from robot target
+        targetPose.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot target
       PosePublisher.set(new Pose2d[] { rotatedGoal });
       
-      angleToTag = normalizeAngle(rotatedGoal.getRotation().getRadians() - m_drive.getState().Pose.getRotation().getRadians());
+      angleToTag = -normalizeAngle(rotatedGoal.getRotation().getRadians() - m_drive.getState().Pose.getRotation().getRadians());
 
       x_error = -(m_drive.getState().Pose.getX() - rotatedGoal.getX()); // f - b error
       y_error = -(m_drive.getState().Pose.getY() - rotatedGoal.getY()); // l - r error
-      // y_error = 0;
       // flip because mechs on "back"
       theta_error = normalizeAngle(angleToTag);
       System.out.println("angle: " + angleToTag);
@@ -116,15 +115,9 @@ public class AlignToTagPose extends Command {
               .withRotationalRate(-DriveCommandConstants.kThetaP * theta_error * MaxAngularRate) // Drive counterclockwise with negative X (left)
         );
 
-      if(Math.abs(x_error) < DriveCommandConstants.kXToleranceMeters){
-        XFinished = true;
-      }
-      if(Math.abs(y_error) < DriveCommandConstants.kYToleranceMeters){
-        YFinished = true;
-      }
-      if(Math.abs(theta_error) < DriveCommandConstants.kThetaToleranceRadians){
-        ThetaFinished = true;
-      }
+      XFinished = Math.abs(x_error) < DriveCommandConstants.kXToleranceMeters;
+      YFinished = Math.abs(y_error) < DriveCommandConstants.kYToleranceMeters;
+      ThetaFinished = Math.abs(theta_error) < DriveCommandConstants.kThetaToleranceRadians;
     }
   }
 
