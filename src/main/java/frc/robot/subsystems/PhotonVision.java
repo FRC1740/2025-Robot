@@ -23,6 +23,9 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.VisionConstants;
 
+/**
+ * Photonvision abstraction providing the best result and the camera offset for the result
+ */
 public class PhotonVision extends SubsystemBase {
     /** Creates a new PhotonVision. */
     PhotonCamera cam;
@@ -59,8 +62,9 @@ public class PhotonVision extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        // System.out.println("cam.getLatestResult(): " + cam.getLatestResult());
+        // Get latest result
         PhotonPipelineResult result = getLatestResult();
+        // If it exists, get the best result and apply the measurement to the pose
         if (result != null) {
             if (result.hasTargets()) {
                 lastResult = result;
@@ -79,6 +83,7 @@ public class PhotonVision extends SubsystemBase {
                             pose.getRotation()), // ignore vision rot
                         result.getTimestampSeconds());
 
+                    // publish results
                     if (lastCamName == VisionConstants.camName) {
                         Cam1Publisher.set(new Pose2d[] { pose });
                     } else {

@@ -15,12 +15,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
@@ -29,7 +31,7 @@ public class RobotContainer {
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            // .withDeadband(MaxSpeed * 0.03).withRotationalDeadband(MaxAngularRate * 0.03) // Add a 10% deadband
+            // .withDeadband(MaxSpeed * 0.03).withRotationalDeadband(MaxAngularRate * 0.03) // Add a 3% deadband to motor out
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -39,6 +41,7 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Elevator elevator = new Elevator();
 
     public final PhotonVision photonvision = new PhotonVision(drivetrain);
 
@@ -73,6 +76,12 @@ public class RobotContainer {
         ));
         joystick.y().whileTrue(
             new AlignToTagPose(drivetrain, drive, photonvision, MaxAngularRate, MaxAngularRate)
+        );
+
+        joystick.x().toggleOnTrue(
+            new InstantCommand(() -> elevator.setElevatorToPosition(5.0))
+        ).toggleOnFalse(
+            new InstantCommand(() -> elevator.setElevatorToPosition(0.0))
         );
 
         // Run SysId routines when holding back/start and X/Y.
