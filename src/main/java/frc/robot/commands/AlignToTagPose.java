@@ -18,116 +18,126 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.DriveCommandConstants;
 import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
 
 public class AlignToTagPose extends Command {
-  CommandSwerveDrivetrain m_drive;
-  private PhotonVision m_photonvision;
+    CommandSwerveDrivetrain m_drive;
+    private PhotonVision m_photonvision;
 
-  double x_error;
-  double y_error;
-  double theta_error;
-  double angleToTag;
-  Transform3d distanceToTag;
-  boolean XFinished;
-  boolean YFinished;
-  boolean ThetaFinished;
-  Pose2d targetPose = null;
-  Double MaxSpeed = null;
-  Double MaxAngularRate = null;
-  SwerveRequest.FieldCentric m_driveRequest;
+    double x_error;
+    double y_error;
+    double theta_error;
+    double angleToTag;
+    Transform3d distanceToTag;
+    boolean XFinished;
+    boolean YFinished;
+    boolean ThetaFinished;
+    Pose2d targetPose = null;
+    Double MaxSpeed = null;
+    Double MaxAngularRate = null;
+    SwerveRequest.FieldCentric m_driveRequest;
 
-  NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
-    private final CommandXboxController joystick = new CommandXboxController(0);
-  
-  //Pose data Publisher
-  StructArrayPublisher<Pose2d> PosePublisher = DriveTrainTable
-  .getStructArrayTopic("Target Pose", Pose2d.struct).publish();
+    NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
 
-  public static double normalizeAngle(double angle) {
-    return Math.atan2(Math.sin(angle), Math.cos(angle));
-  }   
+    // Pose data Publisher
+    StructArrayPublisher<Pose2d> PosePublisher = DriveTrainTable
+            .getStructArrayTopic("Target Pose", Pose2d.struct).publish();
 
-  /** Creates a new Command that aligns the robot angle to an apriltag using the Limelight. 
-   * <br></br> This command <b>DOES DRIVE</b>
-  */
-  public AlignToTagPose(CommandSwerveDrivetrain drive, SwerveRequest.FieldCentric driveRequest, PhotonVision photonvision, Double DriveMaxSpeed, Double DriveMaxAngularRate) {
-    m_drive = drive;
-    m_photonvision = photonvision;
-    MaxSpeed = DriveMaxSpeed;
-    MaxAngularRate = DriveMaxAngularRate;
-    m_driveRequest = driveRequest;
-    
-    addRequirements(m_drive);
-    addRequirements(m_photonvision);
-    System.err.println("itin");
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    System.err.println("iti2n");
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    System.err.println("ex");
-    PhotonTrackedTarget target = m_photonvision.getBestTarget();
-    if (target != null) {
-      Optional<Pose3d> tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(target.fiducialId);
-      // TODO! check if reef tag
-      if (tagPose.isPresent()) { 
-        targetPose = tagPose.get().toPose2d();
-      }
+    public static double normalizeAngle(double angle) {
+        return Math.atan2(Math.sin(angle), Math.cos(angle));
     }
-      
-    if (targetPose != null) {
-      distanceToTag = target.bestCameraToTarget; // getTranslationToAprilTag may be incorrect
 
-      Pose2d rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal, new Rotation2d());
-      rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
+    /**
+     * Creates a new Command that aligns the robot angle to an apriltag using the
+     * Limelight.
+     * <br>
+     * </br>
+     * This command <b>DOES DRIVE</b>
+     */
+    public AlignToTagPose(CommandSwerveDrivetrain drive, SwerveRequest.FieldCentric driveRequest,
+            PhotonVision photonvision, Double DriveMaxSpeed, Double DriveMaxAngularRate) {
+        m_drive = drive;
+        m_photonvision = photonvision;
+        MaxSpeed = DriveMaxSpeed;
+        MaxAngularRate = DriveMaxAngularRate;
+        m_driveRequest = driveRequest;
 
-      rotatedGoal = new Pose2d(
-        (targetPose.getX() + rotatedGoal.getX()), // apply target offsets
-        (targetPose.getY() + rotatedGoal.getY()), 
-        targetPose.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot target
-      PosePublisher.set(new Pose2d[] { rotatedGoal });
-      
-      angleToTag = -normalizeAngle(rotatedGoal.getRotation().getRadians() - m_drive.getState().Pose.getRotation().getRadians());
-
-      x_error = -(m_drive.getState().Pose.getX() - rotatedGoal.getX()); // f - b error
-      y_error = -(m_drive.getState().Pose.getY() - rotatedGoal.getY()); // l - r error
-      // flip because mechs on "back"
-      theta_error = normalizeAngle(angleToTag);
-      System.out.println("angle: " + angleToTag);
-      System.out.println("x: " + x_error);
-      System.out.println("y: " + y_error);
-      // x_error = 0;
-      
-      m_drive.setControl(
-          m_driveRequest.withVelocityX(DriveCommandConstants.kXP * x_error * MaxSpeed) // Drive forward with negative Y (forward)
-              .withVelocityY(DriveCommandConstants.kYP * y_error * MaxSpeed) // Drive left with negative X (left)
-              .withRotationalRate(-DriveCommandConstants.kThetaP * theta_error * MaxAngularRate) // Drive counterclockwise with negative X (left)
-        );
-
-      XFinished = Math.abs(x_error) < DriveCommandConstants.kXToleranceMeters;
-      YFinished = Math.abs(y_error) < DriveCommandConstants.kYToleranceMeters;
-      ThetaFinished = Math.abs(theta_error) < DriveCommandConstants.kThetaToleranceRadians;
+        addRequirements(m_drive);
+        addRequirements(m_photonvision);
     }
-  }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return XFinished && YFinished && ThetaFinished;
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        System.err.println("ex");
+        PhotonTrackedTarget target = m_photonvision.getBestTarget();
+        if (target != null) {
+            Optional<Pose3d> tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(target.fiducialId);
+            // TODO! check if reef tag
+            if (tagPose.isPresent()) {
+                targetPose = tagPose.get().toPose2d();
+            }
+        }
+
+        if (targetPose != null) {
+            distanceToTag = target.bestCameraToTarget; // getTranslationToAprilTag may be incorrect
+
+            Pose2d rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal, new Rotation2d());
+            rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
+
+            rotatedGoal = new Pose2d(
+                    (targetPose.getX() + rotatedGoal.getX()), // apply target offsets
+                    (targetPose.getY() + rotatedGoal.getY()),
+                    targetPose.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot
+                                                                             // target
+            PosePublisher.set(new Pose2d[] { rotatedGoal });
+
+            angleToTag = -normalizeAngle(
+                    rotatedGoal.getRotation().getRadians() - m_drive.getState().Pose.getRotation().getRadians());
+
+            x_error = -(m_drive.getState().Pose.getX() - rotatedGoal.getX()); // f - b error
+            y_error = -(m_drive.getState().Pose.getY() - rotatedGoal.getY()); // l - r error
+            // flip because mechs on "back"
+            theta_error = normalizeAngle(angleToTag);
+            System.out.println("angle: " + angleToTag);
+            System.out.println("x: " + x_error);
+            System.out.println("y: " + y_error);
+            // x_error = 0;
+
+            m_drive.setControl(
+                    m_driveRequest.withVelocityX(DriveCommandConstants.kXP * x_error * MaxSpeed) // Drive forward with
+                                                                                                 // negative Y (forward)
+                            .withVelocityY(DriveCommandConstants.kYP * y_error * MaxSpeed) // Drive left with negative X
+                                                                                           // (left)
+                            .withRotationalRate(-DriveCommandConstants.kThetaP * theta_error * MaxAngularRate) // Drive
+                                                                                                               // counterclockwise
+                                                                                                               // with
+                                                                                                               // negative
+                                                                                                               // X
+                                                                                                               // (left)
+            );
+
+            XFinished = Math.abs(x_error) < DriveCommandConstants.kXToleranceMeters;
+            YFinished = Math.abs(y_error) < DriveCommandConstants.kYToleranceMeters;
+            ThetaFinished = Math.abs(theta_error) < DriveCommandConstants.kThetaToleranceRadians;
+        }
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return XFinished && YFinished && ThetaFinished;
+    }
 }
