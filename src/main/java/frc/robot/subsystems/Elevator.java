@@ -31,7 +31,10 @@ public class Elevator extends SubsystemBase {
     }
 
     @Override
-    public void periodic() {
+    public void periodic() {}
+
+    // Command that sets motors to move to the specified location
+    public void seekPosition() {
         elevator.set(
             elevatorController.calculate(elevator.getEncoder().getPosition()));
     }
@@ -43,6 +46,6 @@ public class Elevator extends SubsystemBase {
 
     // Sets the current position as the "bottom"
     public void resetElevator() {
-        
+        elevatorEncoder.setPosition(0.0);
     }
 }
