@@ -16,6 +16,7 @@ public class Elevator extends SubsystemBase {
     SparkBase elevator = null;
     RelativeEncoder elevatorEncoder = null;
     PIDController elevatorController = null;
+    
     public Elevator() {
         elevator = new SparkMax(ElevatorConstants.driveCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
@@ -33,18 +34,25 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {}
 
-    // Command that sets motors to move to the specified location
+    /**
+     * Runs one step to optimize the PID and get new outputs for the inputs
+     */
     public void seekPosition() {
         elevator.set(
             elevatorController.calculate(elevator.getEncoder().getPosition()));
     }
 
-    // Moves elevator up to the specified position in inches
+    /**
+     * Moves elevator up to the specified position in inches 
+     * @param inches
+     */
     public void setElevatorToPosition(double inches) {
         elevatorController.setSetpoint(inches); // TODO! conversion factor
     }
 
-    // Sets the current position as the "bottom"
+    /**
+     * Sets the current position as the "bottom"
+     */
     public void resetElevator() {
         elevatorEncoder.setPosition(0.0);
     }
