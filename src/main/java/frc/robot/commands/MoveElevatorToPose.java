@@ -12,13 +12,15 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Bezier;
+import frc.robot.constants.ElevatorCommandConstants;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
+import frc.robot.constants.ElevatorCommandConstants.ElevatorPoseConstraint;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.PhotonVision;
 
-public class MoveElevatorToPose extends Command{
+public class MoveElevatorToPose extends Command {
     /**
     So the elevator and hand have pose combinations that are illegal and must be avoided
      To avoid this we can set up a x y grid where 
@@ -81,11 +83,18 @@ public class MoveElevatorToPose extends Command{
         controlCurve.control = new Point(.25, Math.PI * 1.5);
 
         // for eve
-        Shuffleboard.getTab("elevator").addString("getName()", () -> getSerialized());
+        Shuffleboard.getTab("elevator").addString("bezier data", () -> getSerialized());
     }
 
-    private String getSerialized() {
-        return controlCurve.serialize(100) + "|constraint boxes";
+    public String getSerialized() {
+        String constraintString = "";
+        for (ElevatorPoseConstraint constriant : ElevatorCommandConstants.elevatorConstraints) {
+            constraintString += "," + constriant.lowerPoint.elevatorPosition + "," + constriant.lowerPoint.handPosition + "," +
+                constriant.upperPoint.elevatorPosition + "," + constriant.upperPoint.handPosition;
+        }
+        constraintString = constraintString.substring(1); // string leading comma 
+
+        return "\"" + controlCurve.serialize(100) + "\" \"" + constraintString + "\"";
     }
 
     // Called every time the scheduler runs while the command is scheduled.

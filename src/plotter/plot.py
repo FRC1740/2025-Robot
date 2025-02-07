@@ -17,6 +17,11 @@ constraintPoints = sys.argv[2]
 print(bezierPoints)
 print(constraintPoints)
 
+constraintPoints = constraintPoints.split(",")
+
+# Convert to integers
+constraintPoints = list(map(float, constraintPoints))
+
 bezierPoints = bezierPoints.split(",")
 
 # Convert to integers
@@ -35,11 +40,15 @@ plt.title('Plot')
 # Plot the points
 plt.scatter(x, y)  # 'o' indicates a circle marker
 
-# Define the rectangle parameters: (x, y), width, height
-rect = patches.Rectangle((.2, 0), .3, 0.5 * 3.1415, linewidth=2, edgecolor='r', facecolor='none')
 
-# Add the rectangle to the plot
-plt.gca().add_patch(rect)
+for i in range(0, len(constraintPoints), 4):
+    group = constraintPoints[i:i + 4] # group all 4 points
+
+    # Define the rectangle parameters: (x, y), width, height
+    rect = patches.Rectangle((group[0], group[1]), group[2] - group[0], group[3] - group[1], linewidth=2, edgecolor='r', facecolor='none')
+
+    # Add the rectangle to the plot
+    plt.gca().add_patch(rect)
 
 # Show the plot
 plt.show()
