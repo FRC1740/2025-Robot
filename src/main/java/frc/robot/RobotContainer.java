@@ -21,9 +21,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.commands.AlignToTagPose;
+import frc.robot.commands.MoveElevatorToPose;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
@@ -43,6 +45,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = new Elevator();
+    public final Hand hand = new Hand();
 
     public final PhotonVision photonvision = new PhotonVision(drivetrain);
 
@@ -77,7 +80,9 @@ public class RobotContainer {
             }, elevator)
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.a().onTrue(
+            new MoveElevatorToPose(null, elevator, hand)
+        );
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));

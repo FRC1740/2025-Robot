@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import org.opencv.core.Point;
+
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -9,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Bezier;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
@@ -40,6 +43,7 @@ public class MoveElevatorToPose extends Command{
     Hand m_hand = null;
     ElevatorPose targetPose;
     GenericEntry nte;
+    Bezier controlCurve;
 
     public MoveElevatorToPose(ElevatorPose targetPose, Elevator elevator, Hand hand) {
         m_elevator = elevator;
@@ -65,6 +69,23 @@ public class MoveElevatorToPose extends Command{
         // bezier points becomes
         // \left(2,3\right),\ \left(3,4\right) or
         // (p1x,p1y), (p2x,p2y)
+
+        // remember
+        //   x represents the height of the elevator in 0 - 1 range
+        //   y represents the angle of the hand in radians
+
+        controlCurve = new Bezier();
+
+        controlCurve.start = new Point(0, 0);
+        controlCurve.end = new Point(.5, Math.PI);
+        controlCurve.control = new Point(.25, Math.PI * 1.5);
+
+        // for eve
+        Shuffleboard.getTab("elevator").addString("getName()", () -> getSerialized());
+    }
+
+    private String getSerialized() {
+        return controlCurve.serialize(100) + "|constraint boxes";
     }
 
     // Called every time the scheduler runs while the command is scheduled.
