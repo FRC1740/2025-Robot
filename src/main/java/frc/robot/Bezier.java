@@ -2,6 +2,8 @@ package frc.robot;
 // I can't believe I have to write this
 
 import org.opencv.core.Point;
+
+import frc.robot.constants.ElevatorCommandConstants.ElevatorPoseConstraint;
 /**
  * Quadratic Bézier class
  */
@@ -18,6 +20,26 @@ public class Bezier {
     }
 
     public Bezier() {}
+
+    public Boolean isColliding(int resolution, ElevatorPoseConstraint constraint) {
+        double sampleDelta = 1.0 / resolution;
+        double xMin = Math.min(constraint.lowerPoint.elevatorPosition, constraint.upperPoint.elevatorPosition);
+        double xMax = Math.max(constraint.lowerPoint.elevatorPosition, constraint.upperPoint.elevatorPosition);
+        double yMin = constraint.lowerPoint.handPosition;
+        double yMax = constraint.upperPoint.handPosition;
+
+        for(double t = 0.0; t < 1.0; t += sampleDelta) {
+            Point sample = sample(t);
+            if (sample.y > yMin &&
+                sample.y < yMax &&
+                sample.x > xMin &&
+                sample.x < xMax) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public Point sample(double t) {
         double mt = 1 - t;

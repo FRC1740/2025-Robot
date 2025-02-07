@@ -79,8 +79,27 @@ public class MoveElevatorToPose extends Command {
         controlCurve = new Bezier();
 
         controlCurve.start = new Point(0, 0);
-        controlCurve.end = new Point(.5, Math.PI);
-        controlCurve.control = new Point(.25, Math.PI * 1.5);
+        controlCurve.end = new Point(targetPose.elevatorPosition, targetPose.handPosition);
+        controlCurve.control = new Point(0.0, 0.0);
+
+        // find highest constraint, add a foo to that and center
+        for (ElevatorPoseConstraint constriant : ElevatorCommandConstants.elevatorConstraints) {
+            if (constriant.upperPoint.handPosition > controlCurve.control.y) {
+                controlCurve.control = new Point(constriant.lowerPoint.elevatorPosition, constriant.upperPoint.handPosition);
+                double iterations = 0.0;
+                Boolean colliding = true;
+                while (colliding) {
+                    colliding = false;
+                    for (ElevatorPoseConstraint cons : ElevatorCommandConstants.elevatorConstraints) {
+                        if (controlCurve.isColliding(20, cons)) {
+                            colliding = true;
+                        }
+                    }
+                    controlCurve.control = new Point(constriant.lowerPoint.elevatorPosition, constriant.upperPoint.handPosition + iterations * Math.PI);
+                    iterations += .1;
+                }
+            }
+        }
 
         // for eve
         Shuffleboard.getTab("elevator").addString("bezier data", () -> getSerialized());

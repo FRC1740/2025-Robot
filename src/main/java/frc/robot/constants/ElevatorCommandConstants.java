@@ -37,7 +37,7 @@ public class ElevatorCommandConstants {
          * @param handPosition hand pos in radians (0 is straight down)
          */
         public ElevatorPoseConstraint(ElevatorPose point1, ElevatorPose point2) {
-            if (point1.elevatorPosition > point2.elevatorPosition) {
+            if (point1.handPosition > point2.handPosition) {
                 upperPoint = point1;
                 lowerPoint = point2;
             }else {
@@ -54,10 +54,13 @@ public class ElevatorCommandConstants {
             // foo constraint for now
             new ElevatorPoseConstraint( 
                 new ElevatorPose(.2, 0), 
-                new ElevatorPose(.3, 0.5 * Math.PI)),
+                new ElevatorPose(.3, 1.0 * Math.PI)),
             new ElevatorPoseConstraint( 
-                new ElevatorPose(0, 2.5), 
-                new ElevatorPose(.1, Math.PI))
+                new ElevatorPose(.5, 0), 
+                new ElevatorPose(.6, 2.0 * Math.PI)),
+            // new ElevatorPoseConstraint( 
+            //     new ElevatorPose(0, 2.5), 
+            //     new ElevatorPose(.1, Math.PI))
         };
     }
 }

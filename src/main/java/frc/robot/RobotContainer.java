@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.MoveElevatorToPose;
+import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
@@ -81,7 +82,7 @@ public class RobotContainer {
         );
 
         joystick.a().onTrue(
-            new MoveElevatorToPose(null, elevator, hand)
+            new MoveElevatorToPose(new ElevatorPose(1.0, .75 * Math.PI), elevator, hand)
         );
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
