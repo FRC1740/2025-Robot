@@ -39,15 +39,22 @@ public class Elevator extends SubsystemBase {
      */
     public void seekPosition() {
         elevator.set(
-            elevatorController.calculate(elevator.getEncoder().getPosition()));
+            elevatorController.calculate(elevatorEncoder.getPosition()));
     }
 
     /**
-     * Moves elevator up to the specified position in inches 
-     * @param inches
+     * Set the elevator setpoint up to the specified position in inches 
+     * @param inches distance from bottom
      */
     public void setElevatorToPosition(double inches) {
         elevatorController.setSetpoint(inches); // TODO! conversion factor
+    }
+    /**
+     * Gets the current elevator position
+     * @return the elevator position
+     */
+    public double getElevatorPosition() {
+        return elevatorEncoder.getPosition(); // TODO! conversion factor
     }
 
     /**
