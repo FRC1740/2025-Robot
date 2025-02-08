@@ -6,6 +6,8 @@ package frc.robot.constants;
 public class ElevatorCommandConstants {
     public static double topDistance = -50.0; // foo encoder things
 
+    public static ElevatorPose L2Score = new ElevatorPose(-30.0, 0.0 * Math.PI);
+
     /**
      * A class for defining an elevator position
      * allowing for smooth interpolation between poses

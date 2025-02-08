@@ -21,7 +21,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.commands.AlignToTagPose;
-import frc.robot.commands.MoveElevatorToPose;
+import frc.robot.commands.MoveElevatorToPoseAndScore;
+import frc.robot.commands.MoveElevatorToPoseBezier;
 import frc.robot.constants.ElevatorCommandConstants;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
 import frc.robot.generated.TunerConstants;
@@ -81,6 +82,11 @@ public class RobotContainer {
                 elevator.seekPosition();
             }, elevator)
         );
+        hand.setDefaultCommand(
+            new RunCommand(() -> {
+                hand.seekPosition();
+            }, hand)
+        );
 
         // joystick.a().onTrue(
         //     new MoveElevatorToPose(new ElevatorPose(1.0, .75 * Math.PI), elevator, hand)
@@ -93,7 +99,7 @@ public class RobotContainer {
         );
 
         joystick.x().toggleOnTrue(
-            new InstantCommand(() -> elevator.setElevatorToPosition(ElevatorCommandConstants.topDistance))
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score, elevator, hand)
         ).toggleOnFalse(
             new InstantCommand(() -> elevator.setElevatorToPosition(0.0))
         );

@@ -20,7 +20,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.PhotonVision;
 
-public class MoveElevatorToPose extends Command {
+public class MoveElevatorToPoseBezier extends Command {
     /**
     So the elevator and hand have pose combinations that are illegal and must be avoided
      To avoid this we can set up a x y grid where 
@@ -47,7 +47,7 @@ public class MoveElevatorToPose extends Command {
     GenericEntry nte;
     Bezier controlCurve;
 
-    public MoveElevatorToPose(ElevatorPose targetPose, Elevator elevator, Hand hand) {
+    public MoveElevatorToPoseBezier(ElevatorPose targetPose, Elevator elevator, Hand hand) {
         m_elevator = elevator;
         m_hand = hand;
         this.targetPose = targetPose;
