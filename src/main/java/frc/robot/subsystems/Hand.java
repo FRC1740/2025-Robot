@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.CanIds;
 import frc.robot.constants.HandConstants;
 
 public class Hand extends SubsystemBase {
@@ -33,7 +34,7 @@ public class Hand extends SubsystemBase {
         wristEncoder = wrist.getAbsoluteEncoder();
 
 
-        linearActuator = new SparkMax(HandConstants.linearActuatorCanId, MotorType.kBrushed);
+        linearActuator = new SparkMax(CanIds.linearActuatorCanId, MotorType.kBrushed);
 
         SparkMaxConfig linearActuatorConfig = new SparkMaxConfig();
 

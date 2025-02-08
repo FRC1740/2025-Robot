@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.CanIds;
 import frc.robot.constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
@@ -21,7 +22,7 @@ public class Elevator extends SubsystemBase {
     ShuffleboardTab elevatorTab = null;
 
     public Elevator() {
-        elevator = new SparkMax(ElevatorConstants.driveCanId, MotorType.kBrushless);
+        elevator = new SparkMax(CanIds.elevatorCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
         elevatorConfig.smartCurrentLimit(ElevatorConstants.elevatorCurrentLimit);
 

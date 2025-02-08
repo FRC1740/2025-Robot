@@ -8,7 +8,5 @@ public class HandConstants {
     public static final double kWristI = 0.0;
     public static final double kWristD = 0.0;
 
-    public static final int linearActuatorCanId = 11;
-
     public static final int linearActuatorCurrentLimit = 5;  // amps
 }
