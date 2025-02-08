@@ -81,9 +81,9 @@ public class RobotContainer {
             }, elevator)
         );
 
-        joystick.a().onTrue(
-            new MoveElevatorToPose(new ElevatorPose(1.0, .75 * Math.PI), elevator, hand)
-        );
+        // joystick.a().onTrue(
+        //     new MoveElevatorToPose(new ElevatorPose(1.0, .75 * Math.PI), elevator, hand)
+        // );
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
@@ -92,7 +92,7 @@ public class RobotContainer {
         );
 
         joystick.x().toggleOnTrue(
-            new InstantCommand(() -> elevator.setElevatorToPosition(5.0))
+            new InstantCommand(() -> elevator.setElevatorToPosition(-50))
         ).toggleOnFalse(
             new InstantCommand(() -> elevator.setElevatorToPosition(0.0))
         );

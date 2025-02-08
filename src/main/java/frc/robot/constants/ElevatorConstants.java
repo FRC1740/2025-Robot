@@ -1,8 +1,9 @@
 package frc.robot.constants;
 
 public class ElevatorConstants {
-    public static final int driveCanId = 0;
-    public static final int elevatorCurrentLimit = 30; // amps
+    public static final int driveCanId = 9;
+    public static final int elevatorCurrentLimit = 20; // amps
+    public static final double outputFactor = .2;
 
     public static final double kP = 0.05;
     public static final double kI = 0.0;

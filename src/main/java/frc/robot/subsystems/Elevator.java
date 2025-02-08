@@ -9,6 +9,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ElevatorConstants;
 
@@ -16,7 +18,8 @@ public class Elevator extends SubsystemBase {
     SparkBase elevator = null;
     RelativeEncoder elevatorEncoder = null;
     PIDController elevatorController = null;
-    
+    ShuffleboardTab elevatorTab = null;
+
     public Elevator() {
         elevator = new SparkMax(ElevatorConstants.driveCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
@@ -29,6 +32,10 @@ public class Elevator extends SubsystemBase {
         elevator.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         elevatorEncoder = elevator.getEncoder();
+
+        elevatorTab = Shuffleboard.getTab("elevator");
+        elevatorTab.addFloat("elevator position", () -> (float)getElevatorPosition());
+        elevatorTab.addFloat("elevator setpoint", () -> (float)getElevatorSetpoint());
     }
 
     @Override
@@ -39,7 +46,8 @@ public class Elevator extends SubsystemBase {
      */
     public void seekPosition() {
         elevator.set(
-            elevatorController.calculate(elevatorEncoder.getPosition()));
+            elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
+        System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
     }
 
     /**
@@ -55,6 +63,13 @@ public class Elevator extends SubsystemBase {
      */
     public double getElevatorPosition() {
         return elevatorEncoder.getPosition(); // TODO! conversion factor
+    }
+    /**
+     * Gets the current elevator position
+     * @return the elevator position
+     */
+    public double getElevatorSetpoint() {
+        return elevatorController.getSetpoint(); // TODO! conversion factor
     }
 
     /**
