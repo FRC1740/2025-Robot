@@ -4,6 +4,8 @@ package frc.robot.constants;
 */
 
 public class ElevatorCommandConstants {
+    public static double topDistance = -50.0; // foo encoder things
+
     /**
      * A class for defining an elevator position
      * allowing for smooth interpolation between poses

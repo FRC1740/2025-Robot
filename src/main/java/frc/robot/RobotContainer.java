@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.MoveElevatorToPose;
+import frc.robot.constants.ElevatorCommandConstants;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -92,7 +93,7 @@ public class RobotContainer {
         );
 
         joystick.x().toggleOnTrue(
-            new InstantCommand(() -> elevator.setElevatorToPosition(-50))
+            new InstantCommand(() -> elevator.setElevatorToPosition(ElevatorCommandConstants.topDistance))
         ).toggleOnFalse(
             new InstantCommand(() -> elevator.setElevatorToPosition(0.0))
         );
