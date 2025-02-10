@@ -48,7 +48,7 @@ public class Elevator extends SubsystemBase {
     public void seekPosition() {
         elevator.set(
             elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
-        System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
+        // System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
     }
 
     /**

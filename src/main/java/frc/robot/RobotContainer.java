@@ -104,6 +104,12 @@ public class RobotContainer {
             new InstantCommand(() -> elevator.setElevatorToPosition(0.0))
         );
 
+        joystick.a().toggleOnTrue(
+            new InstantCommand(() -> hand.rotateWristToPosition(.9))
+        ).toggleOnFalse(
+            new InstantCommand(() -> hand.rotateWristToPosition(0.0))
+        );
+
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));

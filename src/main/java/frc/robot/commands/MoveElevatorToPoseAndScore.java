@@ -46,6 +46,7 @@ public class MoveElevatorToPoseAndScore extends Command {
     @Override
     public void execute() {
         // TODO: check if within bound and activate actuator
+        m_elevator.seekPosition();
     }
     
     @Override
