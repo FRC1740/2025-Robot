@@ -25,7 +25,7 @@ public class Elevator extends SubsystemBase {
     public Elevator() {
         elevator = new SparkMax(CanIds.elevatorCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-        // elevatorConfig.alternateEncoder.positionConversionFactor(ElevatorConstants.elevatorConversionFactor);
+        elevatorConfig.alternateEncoder.positionConversionFactor(ElevatorConstants.elevatorConversionFactor);
         elevatorConfig.softLimit.forwardSoftLimitEnabled(true);
         elevatorConfig.softLimit.forwardSoftLimit(0.0);
         elevatorConfig.softLimit.reverseSoftLimitEnabled(true);
