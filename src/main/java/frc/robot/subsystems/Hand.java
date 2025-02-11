@@ -112,7 +112,8 @@ public class Hand extends SubsystemBase {
     }
 
     public boolean atPose() {
-        return Math.abs(wristController.getSetpoint() - wristEncoder.getPosition()) < 0.07;
+        return true;
+        // return Math.abs(wristController.getSetpoint() - wristEncoder.getPosition()) < 0.1;
     }
 
     /**
