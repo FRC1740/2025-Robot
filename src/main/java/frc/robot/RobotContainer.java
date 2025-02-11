@@ -46,6 +46,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController coDriverController1 = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = new Elevator();
@@ -119,6 +120,28 @@ public class RobotContainer {
             new InstantCommand(() -> hand.setWristSetpoint(.4))
         ).toggleOnFalse(
             new InstantCommand(() -> hand.setWristSetpoint(0.0))
+        );
+
+        coDriverController1.povDown().toggleOnTrue(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L1Score, elevator, hand)
+        ).toggleOnFalse(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        );
+
+        coDriverController1.button(1).toggleOnTrue(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score, elevator, hand)
+        ).toggleOnFalse(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        );
+        coDriverController1.button(2).toggleOnTrue(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, elevator, hand)
+        ).toggleOnFalse(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        );
+        coDriverController1.button(3).toggleOnTrue(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, elevator, hand)
+        ).toggleOnFalse(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
         );
 
         // Run SysId routines when holding back/start and X/Y.

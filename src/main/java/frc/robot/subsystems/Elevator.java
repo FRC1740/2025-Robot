@@ -25,6 +25,7 @@ public class Elevator extends SubsystemBase {
     public Elevator() {
         elevator = new SparkMax(CanIds.elevatorCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+        // elevatorConfig.alternateEncoder.positionConversionFactor(ElevatorConstants.elevatorConversionFactor);
         elevatorConfig.softLimit.forwardSoftLimitEnabled(true);
         elevatorConfig.softLimit.forwardSoftLimit(0.0);
         elevatorConfig.softLimit.reverseSoftLimitEnabled(true);
@@ -54,8 +55,14 @@ public class Elevator extends SubsystemBase {
      * Runs one step to optimize the PID and get new outputs for the inputs
      */
     public void seekPosition() {
+        double output = elevatorController.calculate(elevatorEncoder.getPosition());
+        if (output > 0.0) {
+            output /= 6.0;
+            output -= 0.1;
+            output = Math.max(output, 0.0);
+        }
         elevator.set(
-            elevatorController.calculate(elevatorEncoder.getPosition()));
+            output);
         // System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
     }
 
