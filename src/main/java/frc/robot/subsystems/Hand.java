@@ -65,20 +65,28 @@ public class Hand extends SubsystemBase {
 
         handTab = Shuffleboard.getTab("hand");
         handTab.addFloat("hand position", () -> (float)getWristAngle());
+        handTab.addFloat("hand setpoint", () -> (float)getWristSetpoint());
+        handTab.addFloat("hand current", () -> (float)wrist.getOutputCurrent());
+
+
+        handTab.addFloat("linear actuator current", () -> (float)linearActuator.getOutputCurrent());
     }
 
     /**
      * Runs one step to optimize the PID and get new outputs for the inputs
      */
     public void seekPosition() {
-        double output = wristController.calculate(wristEncoder.getPosition());
-        if ((wristEncoder.getPosition() < HandConstants.minimumWristAngle && output < 0.0) ||
-            (wristEncoder.getPosition() > HandConstants.maximumWristAngle && output > 0.0)) {
+        double output = wristController.calculate(getWristAngle());
+        if (output < 0.0) { // gravity ff
+            output -= 0.2;
+        }
+        if ((getWristAngle() < HandConstants.minimumWristAngle && output < 0.0) ||
+            (getWristAngle() > HandConstants.maximumWristAngle && output > 0.0)) {
             wrist.set(0.0);
             System.out.println("out");
         }else {
-            wrist.set(
-                wristController.calculate(wristEncoder.getPosition()));
+            wrist.set(output);
+                
             System.out.println(output);
         }
     }
@@ -87,12 +95,24 @@ public class Hand extends SubsystemBase {
      * Sets setpoint for wrist to go to specified radian angle
      * @param angle
      */
-    public void rotateWristToPosition(double angle) {
+    public void setWristSetpoint(double angle) {
         wristController.setSetpoint(angle);
     }
 
     public double getWristAngle() {
-        return wristEncoder.getPosition();
+        double angle = wristEncoder.getPosition();
+        if (angle > .9) { // wrap protection
+            angle = angle - 1.0;
+        }
+        return angle;
+    }
+
+    public double getWristSetpoint() {
+        return wristController.getSetpoint();
+    }
+
+    public boolean atPose() {
+        return Math.abs(wristController.getSetpoint() - wristEncoder.getPosition()) < 0.07;
     }
 
     /**
@@ -100,6 +120,18 @@ public class Hand extends SubsystemBase {
      */
     public void intake() {
         linearActuator.set(-1.0);
+    }
+    /**
+     * Runs linear actuator in
+     */
+    public double getLinearActuatorCurrent() {
+        return linearActuator.getOutputCurrent();
+    }
+    /**
+     * Runs linear actuator in
+     */
+    public void stop() {
+        linearActuator.set(0.0);
     }
     /**
      * Runs linear actuator out

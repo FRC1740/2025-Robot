@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.commands.AlignToTagPose;
+import frc.robot.commands.Intake;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
 import frc.robot.commands.MoveElevatorToPoseBezier;
 import frc.robot.constants.ElevatorCommandConstants;
@@ -91,23 +92,33 @@ public class RobotContainer {
         // joystick.a().onTrue(
         //     new MoveElevatorToPose(new ElevatorPose(1.0, .75 * Math.PI), elevator, hand)
         // );
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
-        joystick.y().whileTrue(
-            new AlignToTagPose(drivetrain, drive, photonvision, MaxAngularRate, MaxAngularRate)
+        // joystick.b().whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        // ));
+        joystick.b().toggleOnTrue(
+            new Intake(elevator, hand)
+        ).toggleOnFalse(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        );
+        // joystick.y().whileTrue(
+        //     new AlignToTagPose(drivetrain, drive, photonvision, MaxAngularRate, MaxAngularRate)
+        // );
+        joystick.y().onTrue(
+            new InstantCommand(() -> hand.intake())
+        ).onFalse(
+            new InstantCommand(() -> hand.stop())
         );
 
         joystick.x().toggleOnTrue(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score, elevator, hand)
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, elevator, hand)
         ).toggleOnFalse(
-            new InstantCommand(() -> elevator.setElevatorToPosition(0.0))
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
         );
 
         joystick.a().toggleOnTrue(
-            new InstantCommand(() -> hand.rotateWristToPosition(.9))
+            new InstantCommand(() -> hand.setWristSetpoint(.4))
         ).toggleOnFalse(
-            new InstantCommand(() -> hand.rotateWristToPosition(0.0))
+            new InstantCommand(() -> hand.setWristSetpoint(0.0))
         );
 
         // Run SysId routines when holding back/start and X/Y.
@@ -119,6 +130,21 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        joystick.rightBumper().whileTrue(
+            new InstantCommand(
+                () -> {
+                    elevator.setElevatorToPosition(elevator.targetPosition - 1.0);
+                }
+            )
+        );
+        joystick.rightTrigger().whileTrue(
+            new InstantCommand(
+                () -> {
+                    elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
+                }
+            )
+        );
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

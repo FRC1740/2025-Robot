@@ -20,10 +20,15 @@ public class Elevator extends SubsystemBase {
     RelativeEncoder elevatorEncoder = null;
     PIDController elevatorController = null;
     ShuffleboardTab elevatorTab = null;
+    public double targetPosition = 0.0;
 
     public Elevator() {
         elevator = new SparkMax(CanIds.elevatorCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+        elevatorConfig.softLimit.forwardSoftLimitEnabled(true);
+        elevatorConfig.softLimit.forwardSoftLimit(0.0);
+        elevatorConfig.softLimit.reverseSoftLimitEnabled(true);
+        elevatorConfig.softLimit.reverseSoftLimit(-105);
         elevatorConfig.smartCurrentLimit(ElevatorConstants.elevatorCurrentLimit);
 
         elevatorController = new PIDController(
@@ -37,6 +42,8 @@ public class Elevator extends SubsystemBase {
         elevatorTab = Shuffleboard.getTab("elevator");
         elevatorTab.addFloat("elevator position", () -> (float)getElevatorPosition());
         elevatorTab.addFloat("elevator setpoint", () -> (float)getElevatorSetpoint());
+
+        elevatorTab.addFloat("elevator current draw", () -> (float)elevator.getAppliedOutput());
     }
 
     @Override
@@ -57,6 +64,7 @@ public class Elevator extends SubsystemBase {
      */
     public void setElevatorToPosition(double inches) {
         elevatorController.setSetpoint(inches); // TODO! conversion factor
+        targetPosition = inches;
     }
     /**
      * Gets the current elevator position
@@ -64,6 +72,13 @@ public class Elevator extends SubsystemBase {
      */
     public double getElevatorPosition() {
         return elevatorEncoder.getPosition(); // TODO! conversion factor
+    }
+    /**
+     * Gets the current elevator position
+     * @return the elevator position
+     */
+    public boolean atPose() {
+        return Math.abs(elevatorEncoder.getPosition() - elevatorController.getSetpoint()) < 2.0; // TODO! conversion factor
     }
     /**
      * Gets the current elevator position
