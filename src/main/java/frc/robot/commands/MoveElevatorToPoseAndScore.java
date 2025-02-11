@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Bezier;
 import frc.robot.constants.ElevatorCommandConstants;
+import frc.robot.constants.HandConstants;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPoseConstraint;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -26,6 +27,7 @@ public class MoveElevatorToPoseAndScore extends Command {
     ElevatorPose targetPose;
     GenericEntry nte;
     Bezier controlCurve;
+    boolean passedElevatorCutoff = false; // where it is safe to put it back out to real pose
 
     public MoveElevatorToPoseAndScore(ElevatorPose targetPose, Elevator elevator, Hand hand) {
         m_elevator = elevator;
@@ -40,7 +42,7 @@ public class MoveElevatorToPoseAndScore extends Command {
     @Override
     public void initialize() {
         m_elevator.setElevatorToPosition(targetPose.elevatorPosition);
-        m_hand.setWristSetpoint(targetPose.handPosition);
+        m_hand.setWristSetpoint(HandConstants.safePassingAngle);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -50,13 +52,18 @@ public class MoveElevatorToPoseAndScore extends Command {
         if (m_hand.atPose()) {
             m_elevator.seekPosition();
             System.out.println("at pose");
+            if (m_elevator.atPose()) {
+                System.out.println("at elev pose");
+                passedElevatorCutoff = true;
+                m_hand.setWristSetpoint(targetPose.handPosition);
+            }
         }
         m_hand.seekPosition();
     }
     
     @Override
     public boolean isFinished() {
-        return false;
+        return m_hand.atPose() && passedElevatorCutoff;
     }
 
     // @Override

@@ -40,10 +40,11 @@ public class Elevator extends SubsystemBase {
         elevatorEncoder = elevator.getEncoder();
 
         elevatorTab = Shuffleboard.getTab("elevator");
-        elevatorTab.addFloat("elevator position", () -> (float)getElevatorPosition());
+        elevatorTab.addFloat("elevator position2", () -> (float)getElevatorPosition());
         elevatorTab.addFloat("elevator setpoint", () -> (float)getElevatorSetpoint());
 
-        elevatorTab.addFloat("elevator current draw", () -> (float)elevator.getAppliedOutput());
+        elevatorTab.addFloat("elevator current draw", () -> (float)elevator.getOutputCurrent());
+        elevatorTab.addBoolean("at pose", () -> atPose());
     }
 
     @Override
@@ -54,7 +55,7 @@ public class Elevator extends SubsystemBase {
      */
     public void seekPosition() {
         elevator.set(
-            elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
+            elevatorController.calculate(elevatorEncoder.getPosition()));
         // System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
     }
 
@@ -78,7 +79,7 @@ public class Elevator extends SubsystemBase {
      * @return the elevator position
      */
     public boolean atPose() {
-        return Math.abs(elevatorEncoder.getPosition() - elevatorController.getSetpoint()) < 2.0; // TODO! conversion factor
+        return Math.abs(getElevatorPosition() - getElevatorSetpoint()) < 5.0; // TODO! conversion factor
     }
     /**
      * Gets the current elevator position
