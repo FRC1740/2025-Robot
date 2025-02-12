@@ -98,9 +98,10 @@ public class RobotContainer {
         // ));
         joystick.b().toggleOnTrue(
             new Intake(elevator, hand)
-        ).toggleOnFalse(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
         );
+        // .toggleOnFalse(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        // );
         // joystick.y().whileTrue(
         //     new AlignToTagPose(drivetrain, drive, photonvision, MaxAngularRate, MaxAngularRate)
         // );
@@ -116,11 +117,16 @@ public class RobotContainer {
             new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
         );
 
-        joystick.a().toggleOnTrue(
-            new InstantCommand(() -> hand.setWristSetpoint(.4))
-        ).toggleOnFalse(
-            new InstantCommand(() -> hand.setWristSetpoint(0.0))
+        joystick.a().onTrue(
+            new InstantCommand(() -> hand.score())
+        ).onFalse(
+            new InstantCommand(() -> hand.stop())
         );
+        // .toggleOnTrue(
+        //     new InstantCommand(() -> hand.setWristSetpoint(.4))
+        // ).toggleOnFalse(
+        //     new InstantCommand(() -> hand.setWristSetpoint(0.0))
+        // );
 
         coDriverController1.povDown().toggleOnTrue(
             new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L1Score, elevator, hand)

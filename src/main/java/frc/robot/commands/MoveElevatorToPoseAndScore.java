@@ -63,7 +63,8 @@ public class MoveElevatorToPoseAndScore extends Command {
     
     @Override
     public boolean isFinished() {
-        return m_hand.atPose() && passedElevatorCutoff;
+        // return m_hand.atPose() && passedElevatorCutoff;
+        return false;
     }
 
     // @Override

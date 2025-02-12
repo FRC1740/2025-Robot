@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.AlternateEncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -25,11 +26,11 @@ public class Elevator extends SubsystemBase {
     public Elevator() {
         elevator = new SparkMax(CanIds.elevatorCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-        elevatorConfig.alternateEncoder.positionConversionFactor(ElevatorConstants.elevatorConversionFactor);
+        elevatorConfig.encoder.positionConversionFactor(ElevatorConstants.elevatorConversionFactor);
         elevatorConfig.softLimit.forwardSoftLimitEnabled(true);
         elevatorConfig.softLimit.forwardSoftLimit(0.0);
         elevatorConfig.softLimit.reverseSoftLimitEnabled(true);
-        elevatorConfig.softLimit.reverseSoftLimit(-60);
+        elevatorConfig.softLimit.reverseSoftLimit(-28.0);
         elevatorConfig.smartCurrentLimit(ElevatorConstants.elevatorCurrentLimit);
 
         elevatorController = new PIDController(
@@ -49,18 +50,19 @@ public class Elevator extends SubsystemBase {
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+    }
 
     /**
      * Runs one step to optimize the PID and get new outputs for the inputs
      */
     public void seekPosition() {
         double output = elevatorController.calculate(elevatorEncoder.getPosition());
-        if (output > 0.0) {
-            output /= 6.0;
-            output -= 0.1;
-            output = Math.max(output, 0.0);
-        }
+        // if (output > 0.0) {
+        //     output /= 6.0;
+        //     output -= 0.1;
+        //     output = Math.max(output, 0.0);
+        // }
         elevator.set(
             output);
         // System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);

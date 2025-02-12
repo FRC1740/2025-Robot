@@ -7,11 +7,11 @@ public class ElevatorCommandConstants {
     public static double topDistance = -50.0; // foo encoder things
 
     public static ElevatorPose L1Score = new ElevatorPose(-8.0, 0.5);
-    public static ElevatorPose L2Score = new ElevatorPose(-18.0, 0.3);
-    public static ElevatorPose L3Score = new ElevatorPose(-28.0, 0.3);
-    public static ElevatorPose L4Score = new ElevatorPose(-57, 0.4);
+    public static ElevatorPose L2Score = new ElevatorPose(-8.0, 0.3);
+    public static ElevatorPose L3Score = new ElevatorPose(-19, 0.3);
+    public static ElevatorPose L4Score = new ElevatorPose(-27.0, 0.4);
     public static ElevatorPose Stow = new ElevatorPose(0.0, 0.1);
-    public static ElevatorPose Intake = new ElevatorPose(-6.0, .1);
+    public static ElevatorPose Intake = new ElevatorPose(-3.7, .11);
 
     /**
      * A class for defining an elevator position
