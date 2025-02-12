@@ -8,8 +8,8 @@ public class ElevatorConstants {
     public static final double elevatorGearCircumferenceInches = elevatorGearDiameterInches * Math.PI; // 2PIr = PId
     public static final double elevatorConversionFactor = elevatorGearRatio * elevatorGearCircumferenceInches; // amps
 
-    public static final double kP = 0.1;
-    public static final double kI = 0.0;
+    public static final double kP = 0.05;
+    public static final double kI = 0.001;
     public static final double kD = 0.0;
 
     public static final double bumperWidth = 3.0 + 5.0/8.0; // chassis-bumper edge
