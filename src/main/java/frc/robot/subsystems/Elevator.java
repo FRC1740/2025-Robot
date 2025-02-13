@@ -10,6 +10,8 @@ import com.revrobotics.spark.config.AlternateEncoderConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,9 +19,14 @@ import frc.robot.constants.CanIds;
 import frc.robot.constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
+    private static double kDt = 0.02;
     SparkBase elevator = null;
     RelativeEncoder elevatorEncoder = null;
     PIDController elevatorController = null;
+    private final TrapezoidProfile m_profile =
+        new TrapezoidProfile(new TrapezoidProfile.Constraints(1000.0, 10));
+    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
+    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
     ShuffleboardTab elevatorTab = null;
     public double targetPosition = 0.0;
 
@@ -57,14 +64,19 @@ public class Elevator extends SubsystemBase {
      * Runs one step to optimize the PID and get new outputs for the inputs
      */
     public void seekPosition() {
-        double output = elevatorController.calculate(elevatorEncoder.getPosition());
+        // double output = elevatorController.calculate(elevatorEncoder.getPosition());
         // if (output > 0.0) {
         //     output /= 6.0;
         //     output -= 0.1;
         //     output = Math.max(output, 0.0);
         // }
-        elevator.set(
-            output);
+        // elevator.set(
+        //     output);
+        m_setpoint = m_profile.calculate(kDt, m_setpoint, m_goal);
+        elevatorController.setSetpoint(m_setpoint.position);
+        double output = elevatorController.calculate(elevatorEncoder.getPosition());
+        elevator.set(output);
+
         // System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
     }
 
@@ -73,7 +85,8 @@ public class Elevator extends SubsystemBase {
      * @param inches distance from bottom
      */
     public void setElevatorToPosition(double inches) {
-        elevatorController.setSetpoint(inches); // TODO! conversion factor
+        elevatorController.setSetpoint(inches);
+        m_goal = new TrapezoidProfile.State(inches, 0);
         targetPosition = inches;
     }
     /**
@@ -81,7 +94,7 @@ public class Elevator extends SubsystemBase {
      * @return the elevator position
      */
     public double getElevatorPosition() {
-        return elevatorEncoder.getPosition(); // TODO! conversion factor
+        return elevatorEncoder.getPosition();
     }
     /**
      * Gets the current elevator position
