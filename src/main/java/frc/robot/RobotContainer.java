@@ -102,19 +102,14 @@ public class RobotContainer {
         // .toggleOnFalse(
         //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
         // );
-        // joystick.y().whileTrue(
-        //     new AlignToTagPose(drivetrain, drive, photonvision, MaxAngularRate, MaxAngularRate)
-        // );
         joystick.y().onTrue(
             new InstantCommand(() -> hand.intake())
         ).onFalse(
             new InstantCommand(() -> hand.stop())
         );
 
-        joystick.x().toggleOnTrue(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, elevator, hand)
-        ).toggleOnFalse(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        joystick.x().whileTrue(
+            new AlignToTagPose(drivetrain, drive, photonvision, MaxAngularRate, MaxAngularRate)
         );
 
         joystick.a().onTrue(

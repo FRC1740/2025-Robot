@@ -12,5 +12,5 @@ public class HandConstants {
 
     public static final int linearActuatorCurrentLimit = 20;  // amps
 
-    public static final double safePassingAngle = 0.4;
+    public static final double safePassingAngle = 0.5;
 }

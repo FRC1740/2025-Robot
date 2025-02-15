@@ -37,7 +37,7 @@ public class Elevator extends SubsystemBase {
         elevatorConfig.softLimit.forwardSoftLimitEnabled(true);
         elevatorConfig.softLimit.forwardSoftLimit(0.0);
         elevatorConfig.softLimit.reverseSoftLimitEnabled(true);
-        elevatorConfig.softLimit.reverseSoftLimit(-28.0);
+        elevatorConfig.softLimit.reverseSoftLimit(-29.0);
         elevatorConfig.smartCurrentLimit(ElevatorConstants.elevatorCurrentLimit);
 
         elevatorController = new PIDController(
@@ -101,7 +101,7 @@ public class Elevator extends SubsystemBase {
      * @return the elevator position
      */
     public boolean atPose() {
-        return Math.abs(getElevatorPosition() - getElevatorSetpoint()) < 5.0; // TODO! conversion factor
+        return Math.abs(getElevatorPosition() - getElevatorSetpoint()) < 3.0; // TODO! conversion factor
     }
     /**
      * Gets the current elevator position
