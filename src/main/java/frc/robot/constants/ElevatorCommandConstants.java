@@ -6,28 +6,28 @@ package frc.robot.constants;
 public class ElevatorCommandConstants {
     public static double topDistance = -50.0; // foo encoder things
 
-    public static ElevatorPose L1Score = new ElevatorPose(-9.0, 0.84);
-    public static ElevatorPose L2Score = new ElevatorPose(-8.0, 0.6);
-    public static ElevatorPose L3Score = new ElevatorPose(-16, 0.6);
-    public static ElevatorPose L4Score = new ElevatorPose(-27.5, 0.6);
-    public static ElevatorPose Stow = new ElevatorPose(0.0, 0.2);
-    public static ElevatorPose Intake = new ElevatorPose(-3.7, .22);
+    public static ElevatorPose L1Score = new ElevatorPose(-9.0, 151.2);
+    public static ElevatorPose L2Score = new ElevatorPose(-8.0, 108);
+    public static ElevatorPose L3Score = new ElevatorPose(-16, 108);
+    public static ElevatorPose L4Score = new ElevatorPose(-27.5, 108);
+    public static ElevatorPose Stow = new ElevatorPose(0.0, 36);
+    public static ElevatorPose Intake = new ElevatorPose(-3.7, 39.6);
 
     /**
      * A class for defining an elevator position
      * allowing for smooth interpolation between poses
      */
     public static class ElevatorPose {
-        public double handPosition; // hand pos in radians
+        public double handPosition; // hand pos in 0-1 range
         public double elevatorPosition;
 
         /**
          * @param elevatorPosition elevator pos in 0-1 range
-         * @param handPosition hand pos in x pi radians, where x is the value
+         * @param handPosition hand pos in x degrees, where x is the value
          */
         public ElevatorPose(double elevatorPosition, double handPosition) {
             this.elevatorPosition = elevatorPosition;
-            this.handPosition = handPosition / 2.0; // convert 0-2 to 0-1 (abs encoder)
+            this.handPosition = handPosition / 360.0; // convert degrees to 0-1 (abs encoder)
         }
     }
 
