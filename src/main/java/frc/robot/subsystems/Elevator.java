@@ -101,14 +101,14 @@ public class Elevator extends SubsystemBase {
      * @return the elevator position
      */
     public boolean atPose() {
-        return Math.abs(getElevatorPosition() - getElevatorSetpoint()) < 5.0; // TODO! conversion factor
+        return Math.abs(getElevatorPosition() - getElevatorSetpoint()) < 5.0;
     }
     /**
      * Gets the current elevator position
      * @return the elevator position
      */
     public double getElevatorSetpoint() {
-        return elevatorController.getSetpoint(); // TODO! conversion factor
+        return elevatorController.getSetpoint();
     }
 
     /**
