@@ -15,7 +15,7 @@ public final class VisionConstants {
     public static final String cam2Name = "Cam2"; // white
     public static final Double AprilTagMinimumArea = 0.0;
 
-    public static final Double cam12Dist = 0.1; // 10.5in is .27m
+    public static final Double cam12Dist = 0.15; // 10.5in is .27m
 
     public static AprilTagFieldLayout aprilTagFieldLayout = null;
 
@@ -29,8 +29,8 @@ public final class VisionConstants {
         }
     }
 
-    public static final Transform3d RobotToCam1 = new Transform3d(0.0, -cam12Dist, 0.0, new Rotation3d());
-    public static final Transform3d RobotToCam2 = new Transform3d(0.0, cam12Dist, 0.0, new Rotation3d());
+    public static final Transform3d RobotToCam1 = new Transform3d(0.0, cam12Dist, 0.0, new Rotation3d());
+    public static final Transform3d RobotToCam2 = new Transform3d(0.0, -cam12Dist, 0.0, new Rotation3d());
 
     public enum AprilTagIDs {
         RedSpeakerCenter(4), // Center tag on red speaker
