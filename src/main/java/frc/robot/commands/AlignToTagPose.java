@@ -111,6 +111,12 @@ public class AlignToTagPose extends Command {
             System.out.println("y: " + y_error);
             // x_error = 0;
 
+            // control flip on red ds, so invert PID outputs
+            if (m_drive.m_hasAppliedOperatorPerspective) {
+                x_error *= -1;
+                y_error *= -1;
+            }
+
             m_drive.setControl(
                     m_driveRequest.withVelocityX(DriveCommandConstants.kXP * x_error * MaxSpeed) // Drive forward with
                                                                                                  // negative Y (forward)
