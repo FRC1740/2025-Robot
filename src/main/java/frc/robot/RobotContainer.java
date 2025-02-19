@@ -98,6 +98,10 @@ public class RobotContainer {
         // ));
         joystick.b().toggleOnTrue(
             new Intake(elevator, hand)
+        ).toggleOnFalse(
+            new InstantCommand(() -> {
+                hand.stop();
+            })
         );
         // .toggleOnFalse(
         //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)

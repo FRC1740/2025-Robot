@@ -41,6 +41,7 @@ public class Intake extends Command {
     public void initialize() {
         m_elevator.setElevatorToPosition(ElevatorCommandConstants.Intake.elevatorPosition);
         m_hand.setWristSetpoint(ElevatorCommandConstants.Intake.handPosition);
+        m_hand.intake();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -53,10 +54,10 @@ public class Intake extends Command {
             System.out.println("2at pose");
             if (m_elevator.atPose()) {
                 System.out.println("at pose");
-                m_hand.intake();
-                if (m_hand.getLinearActuatorCurrent() > HandConstants.linearActuatorCurrentLimit - 1) {
-                    m_hand.stop();
-                }
+                
+                // if (m_hand.getLinearActuatorCurrent() > HandConstants.linearActuatorCurrentLimit - 1) {
+                //     m_hand.stop();
+                // }
             }
         }
         m_hand.seekPosition();
