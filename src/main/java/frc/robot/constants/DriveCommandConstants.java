@@ -1,7 +1,7 @@
 package frc.robot.constants;
 
 public class DriveCommandConstants {
-    public static final double kXP = 0.4; // .4
+    public static final double kXP = 0.8; // .4
     public static final double kXI = 0; // don't do anything rn
     public static final double kXD = 0; // don't do anything rn
 
@@ -12,7 +12,7 @@ public class DriveCommandConstants {
     public static final double kMaxVelocity = 0;
     public static final double kMaxAccel = 0;
 
-    public static final double xGoal = .42;
+    public static final double xGoal = .6; // .42 is aligned bumper
     public static final double yGoal = 0;
     public static final double kThetaP = 0.5;
     public static final double kXToleranceMeters = 0.01;

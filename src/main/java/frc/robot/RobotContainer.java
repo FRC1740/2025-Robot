@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
@@ -113,7 +114,11 @@ public class RobotContainer {
         );
 
         joystick.x().whileTrue(
-            new AlignToTagPose(drivetrain, drive, photonvision, MaxAngularRate, MaxAngularRate)
+            new SequentialCommandGroup(
+                new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, elevator, hand), // TODO! we don't want to drive w/ up but it's fine for now
+                new AlignToTagPose(true, drivetrain, drive, photonvision, MaxSpeed, MaxAngularRate),
+                new InstantCommand(() -> hand.score())
+            )
         );
 
         joystick.a().onTrue(

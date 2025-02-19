@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Bezier;
@@ -28,6 +29,7 @@ public class MoveElevatorToPoseAndScore extends Command {
     GenericEntry nte;
     Bezier controlCurve;
     boolean passedElevatorCutoff = false; // where it is safe to put it back out to real pose
+    Timer timeAtPose = new Timer();
 
     public MoveElevatorToPoseAndScore(ElevatorPose targetPose, Elevator elevator, Hand hand) {
         m_elevator = elevator;
@@ -43,6 +45,7 @@ public class MoveElevatorToPoseAndScore extends Command {
     public void initialize() {
         m_elevator.setElevatorToPosition(targetPose.elevatorPosition);
         m_hand.setWristSetpoint(HandConstants.safePassingAngle);
+        timeAtPose.reset();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -63,8 +66,13 @@ public class MoveElevatorToPoseAndScore extends Command {
     
     @Override
     public boolean isFinished() {
-        // return m_hand.atPose() && passedElevatorCutoff;
-        return false;
+        boolean ended = m_hand.atPose() && passedElevatorCutoff && m_elevator.atPose();
+        if (!ended) {
+            timeAtPose.restart();
+        }
+        // System.out.println(ended);
+        return ended && timeAtPose.get() > 0.1;
+        // return false;
     }
 
     // @Override

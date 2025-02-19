@@ -13,6 +13,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -35,6 +36,7 @@ public class AlignToTagPose extends Command {
     boolean XFinished;
     boolean YFinished;
     boolean ThetaFinished;
+    boolean isLeftReef; // A C E etc
     Pose2d targetPose = null;
     Double MaxSpeed = null;
     Double MaxAngularRate = null;
@@ -57,13 +59,15 @@ public class AlignToTagPose extends Command {
      * </br>
      * This command <b>DOES DRIVE</b>
      */
-    public AlignToTagPose(CommandSwerveDrivetrain drive, SwerveRequest.FieldCentric driveRequest,
+    public AlignToTagPose(boolean leftReef, CommandSwerveDrivetrain drive, SwerveRequest.FieldCentric driveRequest,
             PhotonVision photonvision, Double DriveMaxSpeed, Double DriveMaxAngularRate) {
         m_drive = drive;
         m_photonvision = photonvision;
         MaxSpeed = DriveMaxSpeed;
         MaxAngularRate = DriveMaxAngularRate;
         m_driveRequest = driveRequest;
+
+        this.isLeftReef = leftReef;
 
         addRequirements(m_drive);
         addRequirements(m_photonvision);
@@ -89,7 +93,12 @@ public class AlignToTagPose extends Command {
         if (targetPose != null) {
             distanceToTag = target.bestCameraToTarget; // getTranslationToAprilTag may be incorrect
 
-            Pose2d rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal, new Rotation2d());
+            double leftToRightOffset = VisionConstants.reefLeftRightOffset;
+            if (!isLeftReef) {
+                leftToRightOffset *= -1;
+            }
+
+            Pose2d rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
             rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
 
             rotatedGoal = new Pose2d(
