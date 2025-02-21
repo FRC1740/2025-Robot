@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.CoDriverControl.CoDriverInput;
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.Intake;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
@@ -52,6 +52,7 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = new Elevator();
     public final Hand hand = new Hand();
+    public CoDriverControl coDriverControl = new CoDriverControl(elevator, hand);
 
     public final PhotonVision photonvision = new PhotonVision(drivetrain);
 
@@ -132,27 +133,51 @@ public class RobotContainer {
         //     new InstantCommand(() -> hand.setWristSetpoint(0.0))
         // );
 
-        coDriverController1.povDown().toggleOnTrue(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L1Score, elevator, hand)
-        ).toggleOnFalse(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
-        );
+        coDriverController1.povDown().onTrue(
+            new InstantCommand(() -> { 
+                coDriverControl.sendInput(CoDriverInput.L1);
+            }
+        ));
 
-        coDriverController1.button(1).toggleOnTrue(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score, elevator, hand)
-        ).toggleOnFalse(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
-        );
-        coDriverController1.button(2).toggleOnTrue(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, elevator, hand)
-        ).toggleOnFalse(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
-        );
-        coDriverController1.button(3).toggleOnTrue(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, elevator, hand)
-        ).toggleOnFalse(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
-        );
+        coDriverController1.button(1).onTrue(
+            new InstantCommand(() -> { 
+                coDriverControl.sendInput(CoDriverInput.L2);
+            }
+        ));
+        coDriverController1.button(2).onTrue(
+            new InstantCommand(() -> { 
+                coDriverControl.sendInput(CoDriverInput.L3);
+            }
+        ));
+        coDriverController1.button(3).onTrue(
+            new InstantCommand(() -> { 
+                coDriverControl.sendInput(CoDriverInput.L4);
+            }
+        ));
+
+        // coDriverController1.povDown().toggleOnTrue(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L1Score, elevator, hand)
+        // ).toggleOnFalse(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        // );
+
+
+        // coDriverController1.button(1).toggleOnTrue(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score, elevator, hand)
+        // ).toggleOnFalse(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        // );
+        // coDriverController1.button(2).toggleOnTrue(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, elevator, hand)
+        // ).toggleOnFalse(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        // );
+        // coDriverController1.button(3).toggleOnTrue(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, elevator, hand)
+        // ).toggleOnFalse(
+        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
+        // );
+
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.

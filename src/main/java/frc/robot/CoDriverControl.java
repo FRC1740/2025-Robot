@@ -1,0 +1,78 @@
+package frc.robot;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.MoveElevatorToPoseAndScore;
+import frc.robot.constants.ElevatorCommandConstants;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Hand;
+
+public class CoDriverControl {
+    public enum CoDriverInput {
+        L0,
+        L1,
+        L2,
+        L3,
+        L4,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H,
+        I,
+        J,
+        K,
+        L,
+    }
+    
+    public CoDriverInput lastCoDriverInput = null;
+    public Command elevatorControl = new InstantCommand();
+    Elevator m_elevator = null; 
+    Hand m_hand = null;
+      
+    
+    public CoDriverControl(Elevator elevator, Hand hand) {
+        m_elevator = elevator;
+        m_hand = hand;
+    }
+
+    public void sendInput(CoDriverInput input) {
+        if (input == null) {
+            lastCoDriverInput = null;
+            return;
+        }else {
+            if (input == CoDriverInput.L1 || input == CoDriverInput.L2 || 
+                input == CoDriverInput.L3 || input == CoDriverInput.L4) {
+                if (lastCoDriverInput == input) { // double tap to score
+                    elevatorControl.cancel();
+                    elevatorControl = new RunCommand(() -> m_hand.score(), m_hand);
+                }else { // tap to raise to height
+                    elevatorControl.cancel();
+                    switch (input) {
+                        case L1:
+                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L1Score, m_elevator, m_hand);
+                            break;
+                        case L2:
+                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score, m_elevator, m_hand);
+                            break;
+                        case L3:
+                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, m_elevator, m_hand);
+                            break;
+                        case L4:
+                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, m_elevator, m_hand);
+                            break;
+                    
+                        default:
+                            break;
+                    }
+                }
+
+                elevatorControl.schedule();
+            }
+        }
+    }
+}
