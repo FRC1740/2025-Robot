@@ -64,12 +64,12 @@ public class Hand extends SubsystemBase {
         linearActuator.configure(linearActuatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         handTab = Shuffleboard.getTab("hand");
-        handTab.addFloat("hand position", () -> (float)getWristAngle());
-        handTab.addFloat("hand setpoint", () -> (float)getWristSetpoint());
-        handTab.addFloat("hand current", () -> (float)wrist.getOutputCurrent());
+        // handTab.addFloat("hand position", () -> (float)getWristAngle());
+        // handTab.addFloat("hand setpoint", () -> (float)getWristSetpoint());
+        // handTab.addFloat("hand current", () -> (float)wrist.getOutputCurrent());
 
 
-        handTab.addFloat("linear actuator current", () -> (float)linearActuator.getOutputCurrent());
+        // handTab.addFloat("linear actuator current", () -> (float)linearActuator.getOutputCurrent());
     }
 
     /**
@@ -120,7 +120,7 @@ public class Hand extends SubsystemBase {
      * Runs linear actuator in
      */
     public void intake() {
-        linearActuator.set(-1.0);
+        linearActuator.set(-0.5);
     }
     /**
      * Runs linear actuator in

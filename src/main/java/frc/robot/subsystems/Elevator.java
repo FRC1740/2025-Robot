@@ -27,7 +27,7 @@ public class Elevator extends SubsystemBase {
         new TrapezoidProfile(new TrapezoidProfile.Constraints(1000.0, 250.0));
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
-    ShuffleboardTab elevatorTab = null;
+    // ShuffleboardTab elevatorTab = null;
     public double targetPosition = 0.0;
 
     public Elevator() {
@@ -48,12 +48,12 @@ public class Elevator extends SubsystemBase {
 
         elevatorEncoder = elevator.getEncoder();
 
-        elevatorTab = Shuffleboard.getTab("elevator");
-        elevatorTab.addFloat("elevator position2", () -> (float)getElevatorPosition());
-        elevatorTab.addFloat("elevator setpoint", () -> (float)getElevatorSetpoint());
+        // elevatorTab = Shuffleboard.getTab("elevator");
+        // elevatorTab.addFloat("elevator position2", () -> (float)getElevatorPosition());
+        // elevatorTab.addFloat("elevator setpoint", () -> (float)getElevatorSetpoint());
 
-        elevatorTab.addFloat("elevator current draw", () -> (float)elevator.getOutputCurrent());
-        elevatorTab.addBoolean("at pose", () -> atPose());
+        // elevatorTab.addFloat("elevator current draw", () -> (float)elevator.getOutputCurrent());
+        // elevatorTab.addBoolean("at pose", () -> atPose());
     }
 
     @Override

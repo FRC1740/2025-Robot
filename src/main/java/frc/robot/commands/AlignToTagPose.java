@@ -126,10 +126,10 @@ public class AlignToTagPose extends Command {
                 y_error *= -1;
             }
 
-            if (Math.abs(x_error) < 0.005) {
+            if (Math.abs(x_error) < 0.05) {
                 x_error = 0.0;
             }
-            if (Math.abs(y_error) < 0.005) {
+            if (Math.abs(y_error) < 0.05) {
                 y_error = 0.0;
             }
 

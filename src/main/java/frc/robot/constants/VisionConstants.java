@@ -15,7 +15,7 @@ public final class VisionConstants {
     public static final String cam2Name = "Cam2"; // white
     public static final Double AprilTagMinimumArea = 0.0;
 
-    public static final Double reefLeftRightOffset = 0.15; 
+    public static final Double reefLeftRightOffset = 0.10;  // for scoring
 
     public static final Double cam12FrontBackOffset = 0.2; // 8in is .2m
     public static final Double cam12Dist = 0.15; // 10.5in is .27m

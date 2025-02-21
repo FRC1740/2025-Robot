@@ -44,7 +44,7 @@ public class MoveElevatorToPoseAndScore extends Command {
     @Override
     public void initialize() {
         m_elevator.setElevatorToPosition(targetPose.elevatorPosition);
-        m_hand.setWristSetpoint(HandConstants.safePassingAngle);
+        m_hand.setWristSetpoint(targetPose.handPosition);
         timeAtPose.reset();
     }
 
@@ -71,7 +71,7 @@ public class MoveElevatorToPoseAndScore extends Command {
             timeAtPose.restart();
         }
         // System.out.println(ended);
-        return ended && timeAtPose.get() > 0.1;
+        return ended && timeAtPose.get() > 0.3;
         // return false;
     }
 
