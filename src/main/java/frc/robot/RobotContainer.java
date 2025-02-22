@@ -34,7 +34,7 @@ import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.0; // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -68,6 +68,23 @@ public class RobotContainer {
         configureBindings();
     }
 
+    double driveCurve(double input) {
+        double minInput = .03;
+        return (((input * input) + minInput) - (input * minInput));
+    }
+
+    double turnCurve(double input) {
+        double minInput = .1;
+        return (((input * input) + minInput) - (input * minInput));
+    }
+
+    int inputLessThanDeadband(double input, double deadband) {
+        if (Math.abs(input) < deadband) {
+            return 0;
+        }
+        return (int)Math.signum(input);
+    }
+
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -75,9 +92,9 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive
-                    .withVelocityX(-MathUtil.applyDeadband(joystick.getLeftY(), 0.03) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-MathUtil.applyDeadband(joystick.getLeftX(), 0.03) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-MathUtil.applyDeadband(joystick.getRightX(), 0.03) * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withVelocityX(-driveCurve(Math.abs(joystick.getLeftY())) * inputLessThanDeadband(joystick.getLeftY(), 0.03) * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-driveCurve(Math.abs(joystick.getLeftX())) * inputLessThanDeadband(joystick.getLeftX(), 0.03) * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-turnCurve(Math.abs(joystick.getRightX())) * inputLessThanDeadband(joystick.getRightX(), 0.03) * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 

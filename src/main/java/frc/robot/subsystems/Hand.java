@@ -65,14 +65,14 @@ public class Hand extends SubsystemBase {
 
         linearActuator.configure(linearActuatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        handTab = Shuffleboard.getTab("hand");
+        // handTab = Shuffleboard.getTab("hand");
         // handTab.addFloat("hand position", () -> (float)getWristAngle());
         // handTab.addFloat("hand setpoint", () -> (float)getWristSetpoint());
         // handTab.addFloat("hand current", () -> (float)wrist.getOutputCurrent());
 
 
         // handTab.addFloat("linear actuator current", () -> (float)linearActuator.getOutputCurrent());
-        handTab.addBoolean("hasCoral", () -> hasCoral());
+        // handTab.addBoolean("hasCoral", () -> hasCoral());
     }
 
     /**
