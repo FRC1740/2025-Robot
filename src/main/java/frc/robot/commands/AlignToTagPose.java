@@ -80,7 +80,7 @@ public class AlignToTagPose extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        System.err.println("ex");
+        // System.err.println("ex");
         PhotonTrackedTarget target = m_photonvision.getBestTarget();
         if (target != null) {
             Optional<Pose3d> tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(target.fiducialId);
@@ -115,9 +115,9 @@ public class AlignToTagPose extends Command {
             y_error = -(m_drive.getState().Pose.getY() - rotatedGoal.getY()); // l - r error
             // flip because mechs on "back"
             theta_error = normalizeAngle(angleToTag);
-            System.out.println("angle: " + angleToTag);
-            System.out.println("x: " + x_error);
-            System.out.println("y: " + y_error);
+            // System.out.println("angle: " + angleToTag);
+            // System.out.println("x: " + x_error);
+            // System.out.println("y: " + y_error);
             // x_error = 0;
 
             // control flip on red ds, so invert PID outputs

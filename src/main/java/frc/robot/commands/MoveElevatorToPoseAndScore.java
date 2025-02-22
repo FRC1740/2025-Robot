@@ -54,9 +54,9 @@ public class MoveElevatorToPoseAndScore extends Command {
         // TODO: check if within bound and activate actuator
         if (m_hand.atPose()) {
             m_elevator.seekPosition();
-            System.out.println("at pose");
+            // System.out.println("at pose");
             if (m_elevator.atPose()) {
-                System.out.println("at elev pose");
+                // System.out.println("at elev pose");
                 passedElevatorCutoff = true;
                 m_hand.setWristSetpoint(targetPose.handPosition);
             }
@@ -70,7 +70,7 @@ public class MoveElevatorToPoseAndScore extends Command {
         if (!ended) {
             timeAtPose.restart();
         }
-        System.out.println(ended);
+        // System.out.println(ended);
         return ended && timeAtPose.get() > 0.3;
         // return false;
     }

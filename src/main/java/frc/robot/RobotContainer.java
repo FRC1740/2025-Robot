@@ -133,32 +133,34 @@ public class RobotContainer {
         //     new InstantCommand(() -> hand.setWristSetpoint(0.0))
         // );
 
-        coDriverController1.povDown().onTrue(
+        coDriverController1.button(4).onTrue( // '0'
+            new InstantCommand(() -> { 
+                coDriverControl.sendInput(CoDriverInput.L0);
+            }
+        ));
+
+        coDriverController1.povDown().onTrue( // '1'
             new InstantCommand(() -> { 
                 coDriverControl.sendInput(CoDriverInput.L1);
             }
         ));
 
-        coDriverController1.button(1).onTrue(
+        coDriverController1.button(1).onTrue( // '2'
             new InstantCommand(() -> { 
                 coDriverControl.sendInput(CoDriverInput.L2);
             }
         ));
-        coDriverController1.button(2).onTrue(
+        coDriverController1.button(2).onTrue( // '3'
             new InstantCommand(() -> { 
                 coDriverControl.sendInput(CoDriverInput.L3);
             }
         ));
-        coDriverController1.button(3).onTrue(
+        coDriverController1.button(3).onTrue( // '4'
             new InstantCommand(() -> { 
                 coDriverControl.sendInput(CoDriverInput.L4);
             }
         ));
 
-        coDriverController1.axisGreaterThan(2, .9).onTrue( // ')' (on third axis)
-            new InstantCommand(() -> {
-                hand.setWristSetpoint(hand.getWristSetpoint() + .1);
-        }));
         coDriverController1.axisLessThan(2, -.9).onTrue( // '(' (on third axis)
         new InstantCommand(() -> {
             hand.setWristSetpoint(hand.getWristSetpoint() - .1);

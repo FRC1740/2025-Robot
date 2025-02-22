@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Bezier;
@@ -23,50 +24,32 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.PhotonVision;
 
-public class Intake extends Command {
+public class Score extends Command {
     Elevator m_elevator = null;
     Hand m_hand = null;
     GenericEntry nte;
-    Bezier controlCurve;
+    Timer runTime = new Timer();
 
-    public Intake( Elevator elevator, Hand hand) {
-        m_elevator = elevator;
+    public Score(Elevator elevator, Hand hand) {
         m_hand = hand;
-
-        addRequirements(m_elevator);
         addRequirements(m_hand);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_elevator.setElevatorToPosition(ElevatorCommandConstants.Intake.elevatorPosition);
-        m_hand.setWristSetpoint(ElevatorCommandConstants.Intake.handPosition);
-        m_hand.intake();
+        m_hand.score();
+        runTime.restart();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // TODO: check if within bound and activate actuator
-            // System.out.println("notat pose");
-        if (m_hand.atPose()) {
-            m_elevator.seekPosition();
-            // System.out.println("2at pose");
-            if (m_elevator.atPose()) {
-                // System.out.println("at pose");
-                
-                // if (m_hand.getLinearActuatorCurrent() > HandConstants.linearActuatorCurrentLimit - 1) {
-                //     m_hand.stop();
-                // }
-            }
-        }
-        m_hand.seekPosition();
     }
     
     @Override
     public boolean isFinished() {
-        return m_hand.hasCoral();
+        return !m_hand.hasCoral() && runTime.get() > .3;
     }
 
     @Override

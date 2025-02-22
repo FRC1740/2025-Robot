@@ -37,7 +37,7 @@ public class Elevator extends SubsystemBase {
         elevatorConfig.softLimit.forwardSoftLimitEnabled(true);
         elevatorConfig.softLimit.forwardSoftLimit(0.0);
         elevatorConfig.softLimit.reverseSoftLimitEnabled(true);
-        elevatorConfig.softLimit.reverseSoftLimit(-29.0);
+        elevatorConfig.softLimit.reverseSoftLimit(-30.0);
         elevatorConfig.smartCurrentLimit(ElevatorConstants.elevatorCurrentLimit);
 
         elevatorController = new PIDController(

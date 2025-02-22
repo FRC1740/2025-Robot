@@ -5,8 +5,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Intake;
 import frc.robot.commands.L4CoralTap;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
+import frc.robot.commands.Score;
 import frc.robot.constants.ElevatorCommandConstants;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
@@ -52,7 +54,8 @@ public class CoDriverControl {
                 input == CoDriverInput.L3 || input == CoDriverInput.L4) {
                 if (lastCoDriverInput == input) { // double tap to score
                     elevatorControl.cancel();
-                    elevatorControl = new RunCommand(() -> m_hand.score(), m_hand);
+                    elevatorControl =  new Score(m_elevator, m_hand);
+                    System.out.println("yeah");
                 }else { // tap to raise to height
                     elevatorControl.cancel();
                     switch (input) {
@@ -78,7 +81,12 @@ public class CoDriverControl {
                 }
 
                 elevatorControl.schedule();
+            }else if(input == CoDriverInput.L0){
+                elevatorControl.cancel();
+                elevatorControl = new Intake(m_elevator, m_hand);
+                elevatorControl.schedule();
             }
+            lastCoDriverInput = input;
         }
     }
 }

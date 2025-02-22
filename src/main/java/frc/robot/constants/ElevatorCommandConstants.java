@@ -11,7 +11,7 @@ public class ElevatorCommandConstants {
     public static ElevatorPose L3Score = new ElevatorPose(-14, 0.26);
     public static ElevatorPose L4Score = new ElevatorPose(-29.5, 0.4);
     public static ElevatorPose Stow = new ElevatorPose(0.0, 0.1);
-    public static ElevatorPose Intake = new ElevatorPose(-3.7, .11);
+    public static ElevatorPose Intake = new ElevatorPose(-4.2, .11);
 
     /**
      * A class for defining an elevator position
