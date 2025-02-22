@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,6 +27,7 @@ public class Hand extends SubsystemBase {
 
     SparkBase linearActuator = null; // intake / outtakes, no pid just run or no run
     ShuffleboardTab handTab = null;
+    DigitalInput hasCoral = new DigitalInput(0);
     
     public Hand() {
         wrist = new SparkMax(CanIds.wristCanId, MotorType.kBrushed);
@@ -70,6 +72,7 @@ public class Hand extends SubsystemBase {
 
 
         // handTab.addFloat("linear actuator current", () -> (float)linearActuator.getOutputCurrent());
+        handTab.addBoolean("hasCoral", () -> hasCoral());
     }
 
     /**
@@ -83,7 +86,7 @@ public class Hand extends SubsystemBase {
         if ((getWristAngle() < HandConstants.minimumWristAngle && output < 0.0) ||
             (getWristAngle() > HandConstants.maximumWristAngle && output > 0.0)) {
             wrist.set(0.0);
-            System.out.println("out");
+            // System.out.println("out");
         }else {
             wrist.set(output);
                 
@@ -139,5 +142,12 @@ public class Hand extends SubsystemBase {
      */
     public void score() {
         linearActuator.set(1.0);
+    }
+    /**
+     * checks sensor
+     * @return 
+     */
+    public boolean hasCoral() {
+        return !hasCoral.get(); // it's flipped
     }
 }

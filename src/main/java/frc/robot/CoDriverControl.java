@@ -2,7 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.L4CoralTap;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
 import frc.robot.constants.ElevatorCommandConstants;
 import frc.robot.subsystems.Elevator;
@@ -63,7 +66,10 @@ public class CoDriverControl {
                             elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, m_elevator, m_hand);
                             break;
                         case L4:
-                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, m_elevator, m_hand);
+                            elevatorControl = new SequentialCommandGroup(
+                                new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, m_elevator, m_hand),
+                                new L4CoralTap(m_hand)
+                            );
                             break;
                     
                         default:

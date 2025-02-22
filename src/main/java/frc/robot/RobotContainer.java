@@ -155,29 +155,29 @@ public class RobotContainer {
             }
         ));
 
-        // coDriverController1.povDown().toggleOnTrue(
-        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L1Score, elevator, hand)
-        // ).toggleOnFalse(
-        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
-        // );
+        coDriverController1.axisGreaterThan(2, .9).onTrue( // ')' (on third axis)
+            new InstantCommand(() -> {
+                hand.setWristSetpoint(hand.getWristSetpoint() + .1);
+        }));
+        coDriverController1.axisLessThan(2, -.9).onTrue( // '(' (on third axis)
+        new InstantCommand(() -> {
+            hand.setWristSetpoint(hand.getWristSetpoint() - .1);
+        }));
 
+        coDriverController1.button(8).onTrue( // pg dn
+            new InstantCommand(() -> {
+                elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
+        }));
 
-        // coDriverController1.button(1).toggleOnTrue(
-        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score, elevator, hand)
-        // ).toggleOnFalse(
-        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
-        // );
-        // coDriverController1.button(2).toggleOnTrue(
-        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, elevator, hand)
-        // ).toggleOnFalse(
-        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
-        // );
-        // coDriverController1.button(3).toggleOnTrue(
-        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, elevator, hand)
-        // ).toggleOnFalse(
-        //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
-        // );
+        coDriverController1.button(7).onTrue( // pg up
+            new InstantCommand(() -> {
+                elevator.setElevatorToPosition(elevator.targetPosition - 1.0);
+        }));
 
+        coDriverController1.button(8).onTrue( // pg dn
+            new InstantCommand(() -> {
+                elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
+        }));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.

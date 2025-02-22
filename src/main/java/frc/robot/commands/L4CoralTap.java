@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Bezier;
@@ -23,55 +24,39 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.PhotonVision;
 
-public class Intake extends Command {
+public class L4CoralTap extends Command {
     Elevator m_elevator = null;
     Hand m_hand = null;
     GenericEntry nte;
     Bezier controlCurve;
+    Timer tapTimer = new Timer();
 
-    public Intake( Elevator elevator, Hand hand) {
-        m_elevator = elevator;
+    public L4CoralTap(Hand hand) {
         m_hand = hand;
 
-        addRequirements(m_elevator);
-        addRequirements(m_hand);
+        // addRequirements(m_hand); NOT INCLUDED INTENTIONALLY
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_elevator.setElevatorToPosition(ElevatorCommandConstants.Intake.elevatorPosition);
-        m_hand.setWristSetpoint(ElevatorCommandConstants.Intake.handPosition);
+        tapTimer.restart();
         m_hand.intake();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // TODO: check if within bound and activate actuator
-            System.out.println("notat pose");
-        if (m_hand.atPose()) {
-            m_elevator.seekPosition();
-            System.out.println("2at pose");
-            if (m_elevator.atPose()) {
-                System.out.println("at pose");
-                
-                // if (m_hand.getLinearActuatorCurrent() > HandConstants.linearActuatorCurrentLimit - 1) {
-                //     m_hand.stop();
-                // }
-            }
-        }
-        m_hand.seekPosition();
+
     }
     
     @Override
     public boolean isFinished() {
-        return m_hand.hasCoral();
+        return tapTimer.get() > .1;
     }
 
     @Override
     public void end(boolean interrupted) {
-        // TODO Auto-generated method stub
         m_hand.stop();
         super.end(interrupted);
     }

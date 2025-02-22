@@ -70,7 +70,7 @@ public class MoveElevatorToPoseAndScore extends Command {
         if (!ended) {
             timeAtPose.restart();
         }
-        // System.out.println(ended);
+        System.out.println(ended);
         return ended && timeAtPose.get() > 0.3;
         // return false;
     }
