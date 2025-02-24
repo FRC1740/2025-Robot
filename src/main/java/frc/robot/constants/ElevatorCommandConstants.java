@@ -6,12 +6,14 @@ package frc.robot.constants;
 public class ElevatorCommandConstants {
     public static double topDistance = -50.0; // foo encoder things
 
-    public static ElevatorPose L1Score = new ElevatorPose(-9.0, 0.42);
-    public static ElevatorPose L2Score = new ElevatorPose(-6, 0.26);
-    public static ElevatorPose L3Score = new ElevatorPose(-14, 0.26);
+    public static ElevatorPose L1Score = new ElevatorPose(-7.0, 0.42);
+    public static ElevatorPose L2Score = new ElevatorPose(-5, 0.26);
+    public static ElevatorPose L3Score = new ElevatorPose(-13, 0.26);
     public static ElevatorPose L4Score = new ElevatorPose(-29.5, 0.4);
+    public static ElevatorPose L2Algae = new ElevatorPose(-3.2, 0.3);
+    public static ElevatorPose L3Algae = new ElevatorPose(-10, 0.3);
     public static ElevatorPose Stow = new ElevatorPose(0.0, 0.1);
-    public static ElevatorPose Intake = new ElevatorPose(-4.2, .11);
+    public static ElevatorPose Intake = new ElevatorPose(-4, .11);
 
     /**
      * A class for defining an elevator position

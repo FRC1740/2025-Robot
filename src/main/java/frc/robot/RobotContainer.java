@@ -48,6 +48,7 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandXboxController coDriverController1 = new CommandXboxController(1);
+    private final CommandXboxController coDriverController2 = new CommandXboxController(2);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = new Elevator();
@@ -197,6 +198,17 @@ public class RobotContainer {
             new InstantCommand(() -> {
                 elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
         }));
+
+        coDriverController2.button(6).onTrue( // Hippo
+            new InstantCommand(() -> { 
+                coDriverControl.sendInput(CoDriverInput.L2Algae);
+            }
+        ));
+        coDriverController2.button(1).onTrue( // Kebab
+            new InstantCommand(() -> { 
+                coDriverControl.sendInput(CoDriverInput.L3Algae);
+            }
+        ));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.

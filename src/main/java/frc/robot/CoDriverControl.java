@@ -20,6 +20,8 @@ public class CoDriverControl {
         L2,
         L3,
         L4,
+        L2Algae,
+        L3Algae,
         A,
         B,
         C,
@@ -84,6 +86,35 @@ public class CoDriverControl {
             }else if(input == CoDriverInput.L0){
                 elevatorControl.cancel();
                 elevatorControl = new Intake(m_elevator, m_hand);
+                elevatorControl.schedule();
+            }else if (input == CoDriverInput.L2Algae) {
+                elevatorControl.cancel();
+                if (lastCoDriverInput == input) { // double tap to score
+                    elevatorControl = new InstantCommand(() -> {
+                        m_elevator.setElevatorToPosition(m_elevator.targetPosition - 1.0);
+                    });
+                }else {
+                    elevatorControl = new ParallelCommandGroup(
+                        new InstantCommand(() -> {
+                            m_hand.score();
+                        }),
+                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Algae, m_elevator, m_hand)
+                    );
+                }
+                elevatorControl.schedule();
+            }else if (input == CoDriverInput.L3Algae) {
+                elevatorControl.cancel();
+                if (lastCoDriverInput == input) { // double tap to score
+                    elevatorControl = new InstantCommand(() -> {
+                        m_elevator.setElevatorToPosition(m_elevator.targetPosition - 1.0);
+                    });
+                }else {
+                    elevatorControl = new ParallelCommandGroup(new InstantCommand(() -> {
+                        m_hand.score();
+                    }),
+                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Algae, m_elevator, m_hand)
+                    );   
+                }
                 elevatorControl.schedule();
             }
             lastCoDriverInput = input;
