@@ -28,6 +28,7 @@ import frc.robot.commands.MoveElevatorToPoseBezier;
 import frc.robot.constants.ElevatorCommandConstants;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
@@ -53,6 +54,7 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = new Elevator();
     public final Hand hand = new Hand();
+    public final Climber climber = new Climber();
     public CoDriverControl coDriverControl = new CoDriverControl(elevator, hand);
 
     public final PhotonVision photonvision = new PhotonVision(drivetrain);
@@ -189,14 +191,30 @@ public class RobotContainer {
                 elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
         }));
 
-        coDriverController1.button(7).onTrue( // pg up
+        // coDriverController1.button(7).onTrue( // pg up
+        //     new InstantCommand(() -> {
+        //         elevator.setElevatorToPosition(elevator.targetPosition - 1.0);
+        // }));
+
+        // coDriverController1.button(8).onTrue( // pg dn
+        //     new InstantCommand(() -> {
+        //         elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
+        // }));
+
+        coDriverController1.button(7).onTrue( // TODO!
             new InstantCommand(() -> {
-                elevator.setElevatorToPosition(elevator.targetPosition - 1.0);
+                climber.climb();
+        })).onFalse(
+            new InstantCommand(() -> {
+                climber.stop();
         }));
 
-        coDriverController1.button(8).onTrue( // pg dn
+        coDriverController1.button(8).onTrue( // TODO!
             new InstantCommand(() -> {
-                elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
+                climber.unclimb();
+        })).onFalse(
+            new InstantCommand(() -> {
+                climber.stop();
         }));
 
         coDriverController2.button(6).onTrue( // Hippo

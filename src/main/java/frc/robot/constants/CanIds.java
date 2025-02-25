@@ -12,6 +12,7 @@ public class CanIds {
     private static final int kBackLeftDriveMotorId = TunerConstants.kBackLeftDriveMotorId;
     private static final int kBackLeftSteerMotorId = TunerConstants.kBackLeftSteerMotorId;
     public static final int elevatorCanId = 9;
+    public static final int climberCanId = 10;
     public static final int wristCanId = 11;
     public static final int linearActuatorCanId = 12;
 
@@ -25,6 +26,7 @@ public class CanIds {
         kBackLeftDriveMotorId,
         kBackLeftSteerMotorId,
         elevatorCanId,
+        climberCanId,
         wristCanId,
         linearActuatorCanId,
     };
