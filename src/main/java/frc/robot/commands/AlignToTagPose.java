@@ -113,6 +113,7 @@ public class AlignToTagPose extends Command {
 
             x_error = -(m_drive.getState().Pose.getX() - rotatedGoal.getX()); // f - b error
             y_error = -(m_drive.getState().Pose.getY() - rotatedGoal.getY()); // l - r error
+            
             // flip because mechs on "back"
             theta_error = normalizeAngle(angleToTag);
             // System.out.println("angle: " + angleToTag);
@@ -122,14 +123,14 @@ public class AlignToTagPose extends Command {
 
             // control flip on red ds, so invert PID outputs
             if (m_drive.m_hasAppliedOperatorPerspective) {
-                x_error *= -1;
-                y_error *= -1;
+                // x_error *= -1;
+                // y_error *= -1;
             }
 
-            if (Math.abs(x_error) < 0.05) {
+            if (Math.abs(x_error) < 0.005) {
                 x_error = 0.0;
             }
-            if (Math.abs(y_error) < 0.05) {
+            if (Math.abs(y_error) < 0.005) {
                 y_error = 0.0;
             }
 

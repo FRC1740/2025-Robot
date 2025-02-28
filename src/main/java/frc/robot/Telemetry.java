@@ -30,7 +30,7 @@ public class Telemetry {
      */
     public Telemetry(double maxSpeed) {
         MaxSpeed = maxSpeed;
-        // SignalLogger.start();
+        SignalLogger.start();
     }
 
     /* What to publish over networktables for telemetry */
@@ -83,42 +83,42 @@ public class Telemetry {
 
     /** Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger. */
     public void telemeterize(SwerveDriveState state) {
-        // /* Telemeterize the swerve drive state */
-        // drivePose.set(state.Pose);
-        // driveSpeeds.set(state.Speeds);
-        // driveModuleStates.set(state.ModuleStates);
-        // driveModuleTargets.set(state.ModuleTargets);
-        // driveModulePositions.set(state.ModulePositions);
-        // driveTimestamp.set(state.Timestamp);
-        // driveOdometryFrequency.set(1.0 / state.OdometryPeriod);
+        /* Telemeterize the swerve drive state */
+        drivePose.set(state.Pose);
+        driveSpeeds.set(state.Speeds);
+        driveModuleStates.set(state.ModuleStates);
+        driveModuleTargets.set(state.ModuleTargets);
+        driveModulePositions.set(state.ModulePositions);
+        driveTimestamp.set(state.Timestamp);
+        driveOdometryFrequency.set(1.0 / state.OdometryPeriod);
 
-        // /* Also write to log file */
-        // m_poseArray[0] = state.Pose.getX();
-        // m_poseArray[1] = state.Pose.getY();
-        // m_poseArray[2] = state.Pose.getRotation().getDegrees();
-        // for (int i = 0; i < 4; ++i) {
-        //     m_moduleStatesArray[i*2 + 0] = state.ModuleStates[i].angle.getRadians();
-        //     m_moduleStatesArray[i*2 + 1] = state.ModuleStates[i].speedMetersPerSecond;
-        //     m_moduleTargetsArray[i*2 + 0] = state.ModuleTargets[i].angle.getRadians();
-        //     m_moduleTargetsArray[i*2 + 1] = state.ModuleTargets[i].speedMetersPerSecond;
-        // }
+        /* Also write to log file */
+        m_poseArray[0] = state.Pose.getX();
+        m_poseArray[1] = state.Pose.getY();
+        m_poseArray[2] = state.Pose.getRotation().getDegrees();
+        for (int i = 0; i < 4; ++i) {
+            m_moduleStatesArray[i*2 + 0] = state.ModuleStates[i].angle.getRadians();
+            m_moduleStatesArray[i*2 + 1] = state.ModuleStates[i].speedMetersPerSecond;
+            m_moduleTargetsArray[i*2 + 0] = state.ModuleTargets[i].angle.getRadians();
+            m_moduleTargetsArray[i*2 + 1] = state.ModuleTargets[i].speedMetersPerSecond;
+        }
 
-        // SignalLogger.writeDoubleArray("DriveState/Pose", m_poseArray);
-        // SignalLogger.writeDoubleArray("DriveState/ModuleStates", m_moduleStatesArray);
-        // SignalLogger.writeDoubleArray("DriveState/ModuleTargets", m_moduleTargetsArray);
-        // SignalLogger.writeDouble("DriveState/OdometryPeriod", state.OdometryPeriod, "seconds");
+        SignalLogger.writeDoubleArray("DriveState/Pose", m_poseArray);
+        SignalLogger.writeDoubleArray("DriveState/ModuleStates", m_moduleStatesArray);
+        SignalLogger.writeDoubleArray("DriveState/ModuleTargets", m_moduleTargetsArray);
+        SignalLogger.writeDouble("DriveState/OdometryPeriod", state.OdometryPeriod, "seconds");
 
-        // /* Telemeterize the pose to a Field2d */
-        // fieldTypePub.set("Field2d");
-        // fieldPub.set(m_poseArray);
+        /* Telemeterize the pose to a Field2d */
+        fieldTypePub.set("Field2d");
+        fieldPub.set(m_poseArray);
 
-        // /* Telemeterize the module states to a Mechanism2d */
-        // for (int i = 0; i < 4; ++i) {
-        //     m_moduleSpeeds[i].setAngle(state.ModuleStates[i].angle);
-        //     m_moduleDirections[i].setAngle(state.ModuleStates[i].angle);
-        //     m_moduleSpeeds[i].setLength(state.ModuleStates[i].speedMetersPerSecond / (2 * MaxSpeed));
+        /* Telemeterize the module states to a Mechanism2d */
+        for (int i = 0; i < 4; ++i) {
+            m_moduleSpeeds[i].setAngle(state.ModuleStates[i].angle);
+            m_moduleDirections[i].setAngle(state.ModuleStates[i].angle);
+            m_moduleSpeeds[i].setLength(state.ModuleStates[i].speedMetersPerSecond / (2 * MaxSpeed));
 
-        //     SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
-        // }
+            SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
+        }
     }
 }
