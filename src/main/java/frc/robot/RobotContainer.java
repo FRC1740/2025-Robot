@@ -95,9 +95,21 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive
-                    .withVelocityX(-driveCurve(Math.abs(joystick.getLeftY())) * inputLessThanDeadband(joystick.getLeftY(), 0.03) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-driveCurve(Math.abs(joystick.getLeftX())) * inputLessThanDeadband(joystick.getLeftX(), 0.03) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-turnCurve(Math.abs(joystick.getRightX())) * inputLessThanDeadband(joystick.getRightX(), 0.03) * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withVelocityX(
+                        -driveCurve(Math.abs(joystick.getLeftY())) * 
+                            inputLessThanDeadband(joystick.getLeftY(), 0.03) * 
+                            MaxSpeed
+                    ) // Drive forward with negative Y (forward)
+                    .withVelocityY(
+                        -driveCurve(Math.abs(joystick.getLeftX())) * 
+                        inputLessThanDeadband(joystick.getLeftX(), 0.03) * 
+                        MaxSpeed
+                    ) // Drive left with negative X (left)
+                    .withRotationalRate(
+                        -turnCurve(Math.abs(joystick.getRightX())) * 
+                        inputLessThanDeadband(joystick.getRightX(), 0.03) * 
+                        MaxAngularRate
+                    ) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -128,11 +140,11 @@ public class RobotContainer {
         // .toggleOnFalse(
         //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
         // );
-        joystick.y().onTrue(
-            new InstantCommand(() -> hand.intake())
-        ).onFalse(
-            new InstantCommand(() -> hand.stop())
-        );
+        // joystick.y().onTrue(
+        //     new InstantCommand(() -> hand.intake())
+        // ).onFalse(
+        //     new InstantCommand(() -> hand.stop())
+        // );
 
         joystick.x().whileTrue(
             new SequentialCommandGroup(
@@ -142,11 +154,11 @@ public class RobotContainer {
             )
         );
 
-        joystick.a().onTrue(
-            new InstantCommand(() -> hand.score())
-        ).onFalse(
-            new InstantCommand(() -> hand.stop())
-        );
+        // joystick.a().onTrue(
+        //     new InstantCommand(() -> hand.score())
+        // ).onFalse(
+        //     new InstantCommand(() -> hand.stop())
+        // );
         // .toggleOnTrue(
         //     new InstantCommand(() -> hand.setWristSetpoint(.4))
         // ).toggleOnFalse(
