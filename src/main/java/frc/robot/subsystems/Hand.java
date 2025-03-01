@@ -81,7 +81,7 @@ public class Hand extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_telemetry.telemeterizeWrist(getWristAngle());
+        m_telemetry.telemeterizeWrist(getWristAngle(), wrist.getOutputCurrent());
     }
 
     /**

@@ -54,6 +54,11 @@ public class Telemetry {
     /* Robot pose for field positioning */
     private final NetworkTable wristTable = inst.getTable("Wrist");
     private final DoublePublisher wristAngle = wristTable.getDoubleTopic("WristAngle").publish();
+    private final DoublePublisher wristCurrentDraw = wristTable.getDoubleTopic("WristCurrentDraw").publish();
+
+    /* Robot pose for field positioning */
+    private final NetworkTable elevatorTable = inst.getTable("Elevator");
+    private final DoublePublisher elevatorHeight = elevatorTable.getDoubleTopic("ElevatorHeight").publish();
 
     /* Mechanisms to represent the swerve module states */
     private final Mechanism2d[] m_moduleMechanisms = new Mechanism2d[] {
@@ -126,7 +131,12 @@ public class Telemetry {
         }
     }
 
-    public void telemeterizeWrist(double wristAngle) {
+    public void telemeterizeWrist(double wristAngle, double wristCurrentDraw) {
         this.wristAngle.set(wristAngle);
+        this.wristCurrentDraw.set(wristCurrentDraw);
+    }
+
+    public void telemeterizeElevator(double elevatorHeight) {
+        this.elevatorHeight.set(elevatorHeight);
     }
 }

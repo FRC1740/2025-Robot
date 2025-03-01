@@ -40,7 +40,7 @@ public class Intake extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_elevator.setElevatorToPosition(ElevatorCommandConstants.Intake.elevatorPosition);
+        m_elevator.setElevatorToPosition(m_elevator.getElevatorPosition());
         m_hand.setWristSetpoint(ElevatorCommandConstants.Intake.handPosition);
         m_hand.intake();
     }
@@ -50,8 +50,10 @@ public class Intake extends Command {
     public void execute() {
         // TODO: check if within bound and activate actuator
             // System.out.println("notat pose");
+        m_elevator.seekPosition();
         if (m_hand.atPose()) {
-            m_elevator.seekPosition();
+            m_elevator.setElevatorToPosition(ElevatorCommandConstants.Intake.elevatorPosition);
+            
             // System.out.println("2at pose");
             if (m_elevator.atPose()) {
                 // System.out.println("at pose");

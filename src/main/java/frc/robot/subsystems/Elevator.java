@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Telemetry;
 import frc.robot.constants.CanIds;
 import frc.robot.constants.ElevatorConstants;
 
@@ -24,13 +25,16 @@ public class Elevator extends SubsystemBase {
     RelativeEncoder elevatorEncoder = null;
     PIDController elevatorController = null;
     private final TrapezoidProfile m_profile =
-        new TrapezoidProfile(new TrapezoidProfile.Constraints(1000.0, 170.0));
+        new TrapezoidProfile(new TrapezoidProfile.Constraints(1000.0, 130.0));
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
     // ShuffleboardTab elevatorTab = null;
     public double targetPosition = 0.0;
+    
+    Telemetry m_telemetry = null;
 
-    public Elevator() {
+    public Elevator(Telemetry telemetry) {
+        m_telemetry = telemetry;
         elevator = new SparkMax(CanIds.elevatorCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
         elevatorConfig.encoder.positionConversionFactor(ElevatorConstants.elevatorConversionFactor);
@@ -58,6 +62,7 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
+        m_telemetry.telemeterizeElevator(getElevatorPosition());
     }
 
     /**

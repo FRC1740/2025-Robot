@@ -52,7 +52,7 @@ public class RobotContainer {
     private final CommandXboxController coDriverController2 = new CommandXboxController(2);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final Elevator elevator = new Elevator();
+    public final Elevator elevator = new Elevator(logger);
     public final Hand hand = new Hand(logger);
     public final Climber climber = new Climber();
     public CoDriverControl coDriverControl = new CoDriverControl(elevator, hand);
