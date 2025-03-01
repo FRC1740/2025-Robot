@@ -55,6 +55,8 @@ public class Hand extends SubsystemBase {
         wristController = new PIDController(
             HandConstants.kWristP, HandConstants.kWristI, HandConstants.kWristD);
         wristController.setSetpoint(0.1);
+        wristController.setIZone(0.2);
+        wristController.setTolerance(0.01);
         
         wrist.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
