@@ -1,27 +1,11 @@
 package frc.robot.commands;
 
-import org.opencv.core.Point;
-
-import com.ctre.phoenix6.swerve.SwerveRequest;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Bezier;
 import frc.robot.constants.ElevatorCommandConstants;
-import frc.robot.constants.ElevatorConstants;
-import frc.robot.constants.HandConstants;
-import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
-import frc.robot.constants.ElevatorCommandConstants.ElevatorPoseConstraint;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
-import frc.robot.subsystems.PhotonVision;
 
 public class Intake extends Command {
     Elevator m_elevator = null;
