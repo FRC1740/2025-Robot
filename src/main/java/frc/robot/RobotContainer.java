@@ -53,7 +53,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = new Elevator();
-    public final Hand hand = new Hand();
+    public final Hand hand = new Hand(logger);
     public final Climber climber = new Climber();
     public CoDriverControl coDriverControl = new CoDriverControl(elevator, hand);
 
@@ -265,7 +265,7 @@ public class RobotContainer {
             )
         );
 
-        drivetrain.registerTelemetry(logger::telemeterize);
+        drivetrain.registerTelemetry(logger::telemeterizeDrive);
     }
 
     public Command getAutonomousCommand() {

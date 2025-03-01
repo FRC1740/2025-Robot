@@ -43,7 +43,7 @@ public class MoveElevatorToPoseAndScore extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_elevator.setElevatorToPosition(targetPose.elevatorPosition);
+        m_elevator.setElevatorToPosition(m_elevator.getElevatorPosition()); // hold current
         m_hand.setWristSetpoint(targetPose.handPosition);
         timeAtPose.reset();
     }
@@ -52,8 +52,10 @@ public class MoveElevatorToPoseAndScore extends Command {
     @Override
     public void execute() {
         // TODO: check if within bound and activate actuator
+        m_elevator.seekPosition();
+        
         if (m_hand.atPose()) {
-            m_elevator.seekPosition();
+            m_elevator.setElevatorToPosition(targetPose.elevatorPosition);
             // System.out.println("at pose");
             if (m_elevator.atPose()) {
                 // System.out.println("at elev pose");

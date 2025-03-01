@@ -24,7 +24,7 @@ public class Elevator extends SubsystemBase {
     RelativeEncoder elevatorEncoder = null;
     PIDController elevatorController = null;
     private final TrapezoidProfile m_profile =
-        new TrapezoidProfile(new TrapezoidProfile.Constraints(1000.0, 250.0));
+        new TrapezoidProfile(new TrapezoidProfile.Constraints(1000.0, 170.0));
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
     // ShuffleboardTab elevatorTab = null;
@@ -78,6 +78,10 @@ public class Elevator extends SubsystemBase {
         elevator.set(output);
 
         // System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);
+    }
+
+    public void stop() {
+        elevator.set(0.0);
     }
 
     /**

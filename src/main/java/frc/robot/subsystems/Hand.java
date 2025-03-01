@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Telemetry;
 import frc.robot.constants.CanIds;
 import frc.robot.constants.HandConstants;
 
@@ -28,8 +29,11 @@ public class Hand extends SubsystemBase {
     SparkBase linearActuator = null; // intake / outtakes, no pid just run or no run
     ShuffleboardTab handTab = null;
     DigitalInput hasCoral = new DigitalInput(0);
+
+    Telemetry m_telemetry = null;
     
-    public Hand() {
+    public Hand(Telemetry telemetry) {
+        m_telemetry = telemetry;
         wrist = new SparkMax(CanIds.wristCanId, MotorType.kBrushed);
         SparkMaxConfig wristConfig = new SparkMaxConfig();
         
@@ -65,14 +69,19 @@ public class Hand extends SubsystemBase {
 
         linearActuator.configure(linearActuatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        handTab = Shuffleboard.getTab("hand");
-        handTab.addFloat("hand position", () -> (float)getWristAngle());
-        handTab.addFloat("hand setpoint", () -> (float)getWristSetpoint());
-        handTab.addFloat("hand current", () -> (float)wrist.getOutputCurrent());
+        // handTab = Shuffleboard.getTab("hand");
+        // handTab.addFloat("hand position", () -> (float)getWristAngle());
+        // handTab.addFloat("hand setpoint", () -> (float)getWristSetpoint());
+        // handTab.addFloat("hand current", () -> (float)wrist.getOutputCurrent());
 
 
-        handTab.addFloat("linear actuator current", () -> (float)linearActuator.getOutputCurrent());
-        handTab.addBoolean("hasCoral", () -> hasCoral());
+        // handTab.addFloat("linear actuator current", () -> (float)linearActuator.getOutputCurrent());
+        // handTab.addBoolean("hasCoral", () -> hasCoral());
+    }
+
+    @Override
+    public void periodic() {
+        m_telemetry.telemeterizeWrist(getWristAngle());
     }
 
     /**
@@ -80,9 +89,9 @@ public class Hand extends SubsystemBase {
      */
     public void seekPosition() {
         double output = wristController.calculate(getWristAngle());
-        if (output < 0.0) { // gravity ff
-            output -= 0.2;
-        }
+        // if (output < 0.0) { // gravity ff
+        //     output -= 0.2;
+        // }
         if ((getWristAngle() < HandConstants.minimumWristAngle && output < 0.0) ||
             (getWristAngle() > HandConstants.maximumWristAngle && output > 0.0)) {
             wrist.set(0.0);

@@ -47,9 +47,13 @@ public class Telemetry {
     private final DoublePublisher driveOdometryFrequency = driveStateTable.getDoubleTopic("OdometryFrequency").publish();
 
     /* Robot pose for field positioning */
-    private final NetworkTable table = inst.getTable("Pose");
-    private final DoubleArrayPublisher fieldPub = table.getDoubleArrayTopic("robotPose").publish();
-    private final StringPublisher fieldTypePub = table.getStringTopic(".type").publish();
+    private final NetworkTable driveTable = inst.getTable("Pose");
+    private final DoubleArrayPublisher fieldPub = driveTable.getDoubleArrayTopic("robotPose").publish();
+    private final StringPublisher fieldTypePub = driveTable.getStringTopic(".type").publish();
+
+    /* Robot pose for field positioning */
+    private final NetworkTable wristTable = inst.getTable("Wrist");
+    private final DoublePublisher wristAngle = wristTable.getDoubleTopic("WristAngle").publish();
 
     /* Mechanisms to represent the swerve module states */
     private final Mechanism2d[] m_moduleMechanisms = new Mechanism2d[] {
@@ -82,7 +86,7 @@ public class Telemetry {
     private final double[] m_moduleTargetsArray = new double[8];
 
     /** Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger. */
-    public void telemeterize(SwerveDriveState state) {
+    public void telemeterizeDrive(SwerveDriveState state) {
         /* Telemeterize the swerve drive state */
         drivePose.set(state.Pose);
         driveSpeeds.set(state.Speeds);
@@ -120,5 +124,9 @@ public class Telemetry {
 
             SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
         }
+    }
+
+    public void telemeterizeWrist(double wristAngle) {
+        this.wristAngle.set(wristAngle);
     }
 }
