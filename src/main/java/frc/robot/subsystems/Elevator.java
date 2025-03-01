@@ -47,13 +47,6 @@ public class Elevator extends SubsystemBase {
         elevator.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         elevatorEncoder = elevator.getEncoder();
-
-        // elevatorTab = Shuffleboard.getTab("elevator");
-        // elevatorTab.addFloat("elevator position2", () -> (float)getElevatorPosition());
-        // elevatorTab.addFloat("elevator setpoint", () -> (float)getElevatorSetpoint());
-
-        // elevatorTab.addFloat("elevator current draw", () -> (float)elevator.getOutputCurrent());
-        // elevatorTab.addBoolean("at pose", () -> atPose());
     }
 
     @Override

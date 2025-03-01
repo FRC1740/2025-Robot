@@ -68,15 +68,6 @@ public class Hand extends SubsystemBase {
         linearActuatorConfig.smartCurrentLimit(HandConstants.linearActuatorCurrentLimit);
 
         linearActuator.configure(linearActuatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        // handTab = Shuffleboard.getTab("hand");
-        // handTab.addFloat("hand position", () -> (float)getWristAngle());
-        // handTab.addFloat("hand setpoint", () -> (float)getWristSetpoint());
-        // handTab.addFloat("hand current", () -> (float)wrist.getOutputCurrent());
-
-
-        // handTab.addFloat("linear actuator current", () -> (float)linearActuator.getOutputCurrent());
-        // handTab.addBoolean("hasCoral", () -> hasCoral());
     }
 
     @Override
@@ -91,13 +82,13 @@ public class Hand extends SubsystemBase {
      * Runs one step to optimize the PID and get new outputs for the inputs
      */
     public void seekPosition() {
-        double output = wristController.calculate(getWristAngle());
+        double output = -wristController.calculate(getWristAngle());
         // this makes the pulley skip
         // if (output < 0.0) { // gravity ff
         //     output -= 0.2;
         // }
-        if ((getWristAngle() < HandConstants.minimumWristAngle && output < 0.0) ||
-            (getWristAngle() > HandConstants.maximumWristAngle && output > 0.0)) {
+        if ((getWristAngle() < HandConstants.minimumWristAngle && output > 0.0) ||
+            (getWristAngle() > HandConstants.maximumWristAngle && output < 0.0)) {
             wrist.set(0.0);
             // System.out.println("out");
         }else {

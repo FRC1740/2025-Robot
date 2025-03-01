@@ -3,8 +3,8 @@ package frc.robot.constants;
 public class HandConstants {
     public static final int wristCurrentLimit = 10; // amps
 
-    public static final double kWristP = 2.0;
-    public static final double kWristI = 0.01;
+    public static final double kWristP = 3.0;
+    public static final double kWristI = 0.0;
     public static final double kWristD = 0.0;
 
     public static final double minimumWristAngle = 0.1;
@@ -12,5 +12,5 @@ public class HandConstants {
 
     public static final int linearActuatorCurrentLimit = 20;  // amps
 
-    public static final double safePassingAngle = 0.4; 
+    public static final double safePassingAngle = 0.1; 
 }
