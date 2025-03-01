@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
@@ -51,14 +52,22 @@ public class Telemetry {
     private final DoubleArrayPublisher fieldPub = driveTable.getDoubleArrayTopic("robotPose").publish();
     private final StringPublisher fieldTypePub = driveTable.getStringTopic(".type").publish();
 
-    /* Robot pose for field positioning */
+    /* Robot pose for wrist */
     private final NetworkTable wristTable = inst.getTable("Wrist");
     private final DoublePublisher wristAngle = wristTable.getDoubleTopic("WristAngle").publish();
+    private final DoublePublisher wristSetpoint = wristTable.getDoubleTopic("WristSetpoint").publish();
     private final DoublePublisher wristCurrentDraw = wristTable.getDoubleTopic("WristCurrentDraw").publish();
+    private final BooleanPublisher hasCoral = wristTable.getBooleanTopic("HasCoral").publish();
 
-    /* Robot pose for field positioning */
+    private final DoublePublisher linearActuatorCurrentDraw = wristTable.getDoubleTopic("LinearActuatorCurrentDraw").publish();
+
+    /* Robot pose for elevator */
     private final NetworkTable elevatorTable = inst.getTable("Elevator");
+    
     private final DoublePublisher elevatorHeight = elevatorTable.getDoubleTopic("ElevatorHeight").publish();
+    private final DoublePublisher elevatorSetpoint = elevatorTable.getDoubleTopic("ElevatorSetpoint").publish();
+    private final DoublePublisher elevatorCurrentDraw = elevatorTable.getDoubleTopic("ElevatorCurrentDraw").publish();
+    private final BooleanPublisher elevatorAtPose = elevatorTable.getBooleanTopic("ElevatorAtPose").publish();
 
     /* Mechanisms to represent the swerve module states */
     private final Mechanism2d[] m_moduleMechanisms = new Mechanism2d[] {
@@ -131,12 +140,19 @@ public class Telemetry {
         }
     }
 
-    public void telemeterizeWrist(double wristAngle, double wristCurrentDraw) {
+    public void telemeterizeWrist(double wristAngle, double wristSetpoint, double wristCurrentDraw, boolean hasCoral, double linearActuatorCurrentDraw) {
         this.wristAngle.set(wristAngle);
+        this.wristSetpoint.set(wristSetpoint);
         this.wristCurrentDraw.set(wristCurrentDraw);
+        this.hasCoral.set(hasCoral);
+
+        this.linearActuatorCurrentDraw.set(linearActuatorCurrentDraw);
     }
 
-    public void telemeterizeElevator(double elevatorHeight) {
+    public void telemeterizeElevator(double elevatorHeight, double elevatorSetpoint, double elevatorCurrentDraw, boolean elevatorAtPose) {
         this.elevatorHeight.set(elevatorHeight);
+        this.elevatorSetpoint.set(elevatorSetpoint);
+        this.elevatorCurrentDraw.set(elevatorCurrentDraw);
+        this.elevatorAtPose.set(elevatorAtPose);
     }
 }

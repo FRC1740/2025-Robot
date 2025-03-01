@@ -81,7 +81,10 @@ public class Hand extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_telemetry.telemeterizeWrist(getWristAngle(), wrist.getOutputCurrent());
+        m_telemetry.telemeterizeWrist(
+            getWristAngle(), getWristSetpoint(), wrist.getOutputCurrent(), hasCoral(),
+            linearActuator.getOutputCurrent()
+        );
     }
 
     /**
@@ -89,6 +92,7 @@ public class Hand extends SubsystemBase {
      */
     public void seekPosition() {
         double output = wristController.calculate(getWristAngle());
+        // this makes the pulley skip
         // if (output < 0.0) { // gravity ff
         //     output -= 0.2;
         // }
@@ -124,7 +128,6 @@ public class Hand extends SubsystemBase {
     }
 
     public boolean atPose() {
-        // return true;
         return Math.abs(wristController.getSetpoint() - wristEncoder.getPosition()) < 0.1;
     }
 
@@ -135,13 +138,13 @@ public class Hand extends SubsystemBase {
         linearActuator.set(-0.5);
     }
     /**
-     * Runs linear actuator in
+     * Gets the outputed current for the linear actuator in amps
      */
     public double getLinearActuatorCurrent() {
         return linearActuator.getOutputCurrent();
     }
     /**
-     * Runs linear actuator in
+     * Runs stops the linear actuator
      */
     public void stop() {
         linearActuator.set(0.0);
@@ -154,7 +157,7 @@ public class Hand extends SubsystemBase {
     }
     /**
      * checks sensor
-     * @return 
+     * @return true if we have a coral
      */
     public boolean hasCoral() {
         return !hasCoral.get(); // it's flipped
