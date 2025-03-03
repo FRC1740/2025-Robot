@@ -39,19 +39,19 @@ public class RobotContainer {
             // .withDeadband(MaxSpeed * 0.03).withRotationalDeadband(MaxAngularRate * 0.03) // Add a 3% deadband to motor out
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+    private final Telemetry m_logger = Telemetry.getInstance();
 
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandXboxController coDriverController1 = new CommandXboxController(1);
     private final CommandXboxController coDriverController2 = new CommandXboxController(2);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final Elevator elevator = new Elevator(logger);
-    public final Hand hand = new Hand(logger);
-    public final Climber climber = new Climber();
-    public CoDriverControl coDriverControl = new CoDriverControl(elevator, hand);
+    public final CommandSwerveDrivetrain m_drivetrain = CommandSwerveDrivetrain.getInstance(); 
+    public final Elevator m_elevator = Elevator.getInstance();
+    public final Hand m_hand = Hand.getInstance();
+    public final Climber m_climber = Climber.getInstance();
+    public CoDriverControl m_coDriverControl = CoDriverControl.getInstance();
 
-    public final PhotonVision photonvision = new PhotonVision(drivetrain);
+    public final PhotonVision photonvision = PhotonVision.getInstance();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -85,9 +85,9 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
+        m_drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
+            m_drivetrain.applyRequest(() ->
                 drive
                     .withVelocityX(
                         -driveCurve(Math.abs(joystick.getLeftY())) * 
@@ -107,15 +107,15 @@ public class RobotContainer {
             )
         );
 
-        elevator.setDefaultCommand(
+        m_elevator.setDefaultCommand(
             new RunCommand(() -> {
-                elevator.seekPosition();
-            }, elevator)
+                m_elevator.seekPosition();
+            }, m_elevator)
         );
-        hand.setDefaultCommand(
+        m_hand.setDefaultCommand(
             new RunCommand(() -> {
-                hand.seekPosition();
-            }, hand)
+                m_hand.seekPosition();
+            }, m_hand)
         );
 
         // joystick.a().onTrue(
@@ -125,10 +125,10 @@ public class RobotContainer {
         //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         // ));
         joystick.b().toggleOnTrue(
-            new Intake(elevator, hand)
+            new Intake()
         ).toggleOnFalse(
             new InstantCommand(() -> {
-                hand.stop();
+                m_hand.stop();
             })
         );
         // .toggleOnFalse(
@@ -142,9 +142,9 @@ public class RobotContainer {
 
         joystick.x().whileTrue(
             new SequentialCommandGroup(
-                new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, elevator, hand), // TODO! we don't want to drive w/ up but it's fine for now
-                new AlignToTagPose(true, drivetrain, drive, photonvision, MaxSpeed, MaxAngularRate),
-                new InstantCommand(() -> hand.score())
+                new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score), // TODO! we don't want to drive w/ up but it's fine for now
+                new AlignToTagPose(true, drive, MaxSpeed, MaxAngularRate),
+                new InstantCommand(() -> m_hand.score())
             )
         );
 
@@ -161,40 +161,40 @@ public class RobotContainer {
 
         coDriverController1.button(4).onTrue( // '0'
             new InstantCommand(() -> { 
-                coDriverControl.sendInput(CoDriverInput.L0);
+                m_coDriverControl.sendInput(CoDriverInput.L0);
             }
         ));
 
         coDriverController1.povDown().onTrue( // '1'
             new InstantCommand(() -> { 
-                coDriverControl.sendInput(CoDriverInput.L1);
+                m_coDriverControl.sendInput(CoDriverInput.L1);
             }
         ));
 
         coDriverController1.button(1).onTrue( // '2'
             new InstantCommand(() -> { 
-                coDriverControl.sendInput(CoDriverInput.L2);
+                m_coDriverControl.sendInput(CoDriverInput.L2);
             }
         ));
         coDriverController1.button(2).onTrue( // '3'
             new InstantCommand(() -> { 
-                coDriverControl.sendInput(CoDriverInput.L3);
+                m_coDriverControl.sendInput(CoDriverInput.L3);
             }
         ));
         coDriverController1.button(3).onTrue( // '4'
             new InstantCommand(() -> { 
-                coDriverControl.sendInput(CoDriverInput.L4);
+                m_coDriverControl.sendInput(CoDriverInput.L4);
             }
         ));
 
         coDriverController1.axisLessThan(2, -.9).onTrue( // '(' (on third axis)
         new InstantCommand(() -> {
-            hand.setWristSetpoint(hand.getWristSetpoint() - .1);
+            m_hand.setWristSetpoint(m_hand.getWristSetpoint() - .1);
         }));
 
         coDriverController1.button(8).onTrue( // pg dn
             new InstantCommand(() -> {
-                elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
+                m_elevator.setElevatorToPosition(m_elevator.targetPosition + 1.0);
         }));
 
         // coDriverController1.button(7).onTrue( // pg up
@@ -209,57 +209,57 @@ public class RobotContainer {
 
         coDriverController1.button(7).onTrue( // TODO!
             new InstantCommand(() -> {
-                climber.climb();
+                m_climber.climb();
         })).onFalse(
             new InstantCommand(() -> {
-                climber.stop();
+                m_climber.stop();
         }));
 
         coDriverController1.button(8).onTrue( // TODO!
             new InstantCommand(() -> {
-                climber.unclimb();
+                m_climber.unclimb();
         })).onFalse(
             new InstantCommand(() -> {
-                climber.stop();
+                m_climber.stop();
         }));
 
         coDriverController2.button(6).onTrue( // Hippo
             new InstantCommand(() -> { 
-                coDriverControl.sendInput(CoDriverInput.L2Algae);
+                m_coDriverControl.sendInput(CoDriverInput.L2Algae);
             }
         ));
         coDriverController2.button(1).onTrue( // Kebab
             new InstantCommand(() -> { 
-                coDriverControl.sendInput(CoDriverInput.L3Algae);
+                m_coDriverControl.sendInput(CoDriverInput.L3Algae);
             }
         ));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        joystick.back().and(joystick.y()).whileTrue(m_drivetrain.sysIdDynamic(Direction.kForward));
+        joystick.back().and(joystick.x()).whileTrue(m_drivetrain.sysIdDynamic(Direction.kReverse));
+        joystick.start().and(joystick.y()).whileTrue(m_drivetrain.sysIdQuasistatic(Direction.kForward));
+        joystick.start().and(joystick.x()).whileTrue(m_drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.leftBumper().onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
 
         joystick.rightBumper().whileTrue(
             new InstantCommand(
                 () -> {
-                    elevator.setElevatorToPosition(elevator.targetPosition - 1.0);
+                    m_elevator.setElevatorToPosition(m_elevator.targetPosition - 1.0);
                 }
             )
         );
         joystick.rightTrigger().whileTrue(
             new InstantCommand(
                 () -> {
-                    elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
+                    m_elevator.setElevatorToPosition(m_elevator.targetPosition + 1.0);
                 }
             )
         );
 
-        drivetrain.registerTelemetry(logger::telemeterizeDrive);
+        m_drivetrain.registerTelemetry(m_logger::telemeterizeDrive);
     }
 
     public Command getAutonomousCommand() {

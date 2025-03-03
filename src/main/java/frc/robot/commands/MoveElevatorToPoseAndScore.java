@@ -15,9 +15,9 @@ public class MoveElevatorToPoseAndScore extends Command {
     boolean passedElevatorCutoff = false; // where it is safe to put it back out to real pose
     Timer timeAtPose = new Timer();
 
-    public MoveElevatorToPoseAndScore(ElevatorPose targetPose, Elevator elevator, Hand hand) {
-        m_elevator = elevator;
-        m_hand = hand;
+    public MoveElevatorToPoseAndScore(ElevatorPose targetPose) {
+        m_elevator = Elevator.getInstance();
+        m_hand = Hand.getInstance();
         this.targetPose = targetPose;
 
         addRequirements(m_elevator);

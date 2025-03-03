@@ -14,6 +14,15 @@ import frc.robot.constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
     SparkBase climber = null; // rotates to pos
+
+    private static Climber instance;
+
+    public static Climber getInstance() {
+      if(instance == null) {
+        instance = new Climber();
+      }
+      return instance;
+    }
     
     public Climber() {
         climber = new SparkMax(CanIds.climberCanId, MotorType.kBrushless);

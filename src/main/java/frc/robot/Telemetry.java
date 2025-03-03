@@ -20,17 +20,29 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Elevator;
+import static edu.wpi.first.units.Units.*;
 
 public class Telemetry {
     private final double MaxSpeed;
+
+    private static Telemetry instance;
+
+    public static Telemetry getInstance() {
+      if(instance == null) {
+        instance = new Telemetry();
+      }
+      return instance;
+    }
 
     /**
      * Construct a telemetry object, with the specified max speed of the robot
      * 
      * @param maxSpeed Maximum speed in meters per second
      */
-    public Telemetry(double maxSpeed) {
-        MaxSpeed = maxSpeed;
+    public Telemetry() {
+        MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);;
         SignalLogger.start();
     }
 

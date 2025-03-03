@@ -44,8 +44,17 @@ public class PhotonVision extends SubsystemBase {
     StructArrayPublisher<Pose2d> Cam2Publisher = VisionTable
             .getStructArrayTopic("Cam2", Pose2d.struct).publish();
 
-    public PhotonVision(CommandSwerveDrivetrain drive) {
-        m_drive = drive;
+    private static PhotonVision instance;
+
+    public static PhotonVision getInstance() {
+        if(instance == null) {
+        instance = new PhotonVision();
+        }
+        return instance;
+    }
+
+    public PhotonVision() {
+        m_drive = CommandSwerveDrivetrain.getInstance();
         cam = new PhotonCamera(VisionConstants.camName);
         cam2 = new PhotonCamera(VisionConstants.cam2Name);
         cam.setDriverMode(false);

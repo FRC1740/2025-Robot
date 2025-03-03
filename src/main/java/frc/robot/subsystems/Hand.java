@@ -30,8 +30,17 @@ public class Hand extends SubsystemBase {
 
     Telemetry m_telemetry = null;
     
-    public Hand(Telemetry telemetry) {
-        m_telemetry = telemetry;
+    private static Hand instance;
+
+    public static Hand getInstance() {
+      if(instance == null) {
+        instance = new Hand();
+      }
+      return instance;
+    }
+    
+    public Hand() {
+        m_telemetry = Telemetry.getInstance();
         wrist = new SparkMax(CanIds.wristCanId, MotorType.kBrushed);
         SparkMaxConfig wristConfig = new SparkMaxConfig();
         

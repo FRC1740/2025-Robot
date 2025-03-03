@@ -12,8 +12,8 @@ public class L4CoralTap extends Command {
     GenericEntry nte;
     Timer tapTimer = new Timer();
 
-    public L4CoralTap(Hand hand) {
-        m_hand = hand;
+    public L4CoralTap() {
+        m_hand = Hand.getInstance();
 
         // addRequirements(m_hand); NOT INCLUDED INTENTIONALLY
     }

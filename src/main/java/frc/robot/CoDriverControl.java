@@ -40,10 +40,18 @@ public class CoDriverControl {
     Elevator m_elevator = null; 
     Hand m_hand = null;
       
-    
-    public CoDriverControl(Elevator elevator, Hand hand) {
-        m_elevator = elevator;
-        m_hand = hand;
+    private static CoDriverControl instance;
+
+    public static CoDriverControl getInstance() {
+      if(instance == null) {
+        instance = new CoDriverControl();
+      }
+      return instance;
+    }
+
+    public CoDriverControl() {
+        m_elevator = Elevator.getInstance();
+        m_hand = Hand.getInstance();
     }
 
     public void sendInput(CoDriverInput input) {
@@ -55,24 +63,24 @@ public class CoDriverControl {
                 input == CoDriverInput.L3 || input == CoDriverInput.L4) {
                 if (lastCoDriverInput == input) { // double tap to score
                     elevatorControl.cancel();
-                    elevatorControl =  new Score(m_elevator, m_hand);
+                    elevatorControl =  new Score();
                     System.out.println("yeah");
                 }else { // tap to raise to height
                     elevatorControl.cancel();
                     switch (input) {
                         case L1:
-                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L1Score, m_elevator, m_hand);
+                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L1Score);
                             break;
                         case L2:
-                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score, m_elevator, m_hand);
+                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Score);
                             break;
                         case L3:
-                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score, m_elevator, m_hand);
+                            elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score);
                             break;
                         case L4:
                             elevatorControl = new SequentialCommandGroup(
-                                new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score, m_elevator, m_hand),
-                                new L4CoralTap(m_hand)
+                                new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score),
+                                new L4CoralTap()
                             );
                             break;
                     
@@ -84,7 +92,7 @@ public class CoDriverControl {
                 elevatorControl.schedule();
             }else if(input == CoDriverInput.L0){
                 elevatorControl.cancel();
-                elevatorControl = new Intake(m_elevator, m_hand);
+                elevatorControl = new Intake();
                 elevatorControl.schedule();
             }else if (input == CoDriverInput.L2Algae) {
                 elevatorControl.cancel();
@@ -97,7 +105,7 @@ public class CoDriverControl {
                         new InstantCommand(() -> {
                             m_hand.score();
                         }),
-                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Algae, m_elevator, m_hand)
+                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Algae)
                     );
                 }
                 elevatorControl.schedule();
@@ -111,7 +119,7 @@ public class CoDriverControl {
                     elevatorControl = new ParallelCommandGroup(new InstantCommand(() -> {
                         m_hand.score();
                     }),
-                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Algae, m_elevator, m_hand)
+                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Algae)
                     );   
                 }
                 elevatorControl.schedule();

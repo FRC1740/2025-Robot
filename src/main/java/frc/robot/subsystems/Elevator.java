@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 import frc.robot.constants.CanIds;
 import frc.robot.constants.ElevatorConstants;
+import frc.robot.generated.TunerConstants;
 
 public class Elevator extends SubsystemBase {
     private static double kDt = 0.02;
@@ -29,8 +30,17 @@ public class Elevator extends SubsystemBase {
     
     Telemetry m_telemetry = null;
 
-    public Elevator(Telemetry telemetry) {
-        m_telemetry = telemetry;
+    private static Elevator instance;
+
+    public static Elevator getInstance() {
+      if(instance == null) {
+        instance = new Elevator();
+      }
+      return instance;
+    }
+
+    public Elevator() {
+        m_telemetry = Telemetry.getInstance();
         elevator = new SparkMax(CanIds.elevatorCanId, MotorType.kBrushless);
         SparkMaxConfig elevatorConfig = new SparkMaxConfig();
         elevatorConfig.encoder.positionConversionFactor(ElevatorConstants.elevatorConversionFactor);

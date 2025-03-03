@@ -11,9 +11,9 @@ public class Intake extends Command {
     Hand m_hand = null;
     GenericEntry nte;
 
-    public Intake( Elevator elevator, Hand hand) {
-        m_elevator = elevator;
-        m_hand = hand;
+    public Intake() {
+        m_elevator = Elevator.getInstance();
+        m_hand = Hand.getInstance();
 
         addRequirements(m_elevator);
         addRequirements(m_hand);

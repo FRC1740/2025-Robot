@@ -12,8 +12,8 @@ public class Score extends Command {
     GenericEntry nte;
     Timer runTime = new Timer();
 
-    public Score(Elevator elevator, Hand hand) {
-        m_hand = hand;
+    public Score() {
+        m_hand = Hand.getInstance();
         addRequirements(m_hand);
     }
 

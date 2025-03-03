@@ -59,10 +59,11 @@ public class AlignToTagPose extends Command {
      * </br>
      * This command <b>DOES DRIVE</b>
      */
-    public AlignToTagPose(boolean leftReef, CommandSwerveDrivetrain drive, SwerveRequest.FieldCentric driveRequest,
-            PhotonVision photonvision, Double DriveMaxSpeed, Double DriveMaxAngularRate) {
-        m_drive = drive;
-        m_photonvision = photonvision;
+    public AlignToTagPose(boolean leftReef, SwerveRequest.FieldCentric driveRequest, 
+            Double DriveMaxSpeed, Double DriveMaxAngularRate) {
+                
+        m_drive = CommandSwerveDrivetrain.getInstance();
+        m_photonvision = PhotonVision.getInstance();
         MaxSpeed = DriveMaxSpeed;
         MaxAngularRate = DriveMaxAngularRate;
         m_driveRequest = driveRequest;
