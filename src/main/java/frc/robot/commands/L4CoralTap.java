@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Bezier;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
 
@@ -11,7 +10,6 @@ public class L4CoralTap extends Command {
     Elevator m_elevator = null;
     Hand m_hand = null;
     GenericEntry nte;
-    Bezier controlCurve;
     Timer tapTimer = new Timer();
 
     public L4CoralTap(Hand hand) {

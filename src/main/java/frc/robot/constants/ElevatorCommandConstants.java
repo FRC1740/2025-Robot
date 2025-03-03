@@ -66,20 +66,20 @@ public class ElevatorCommandConstants {
         }
     }
 
-    public static ElevatorPoseConstraint[] elevatorConstraints = null;
+    // public static ElevatorPoseConstraint[] elevatorConstraints = null;
 
-    static {
-        elevatorConstraints = new ElevatorPoseConstraint[] {
-            // foo constraint for now
-            new ElevatorPoseConstraint( 
-                new ElevatorPose(.2, 0), 
-                new ElevatorPose(.3, 1.0 * Math.PI)),
-            new ElevatorPoseConstraint( 
-                new ElevatorPose(.5, 0), 
-                new ElevatorPose(.6, 2.0 * Math.PI)),
-            // new ElevatorPoseConstraint( 
-            //     new ElevatorPose(0, 2.5), 
-            //     new ElevatorPose(.1, Math.PI))
-        };
-    }
+    // static {
+    //     elevatorConstraints = new ElevatorPoseConstraint[] {
+    //         // foo constraint for now
+    //         new ElevatorPoseConstraint( 
+    //             new ElevatorPose(.2, 0), 
+    //             new ElevatorPose(.3, 1.0 * Math.PI)),
+    //         new ElevatorPoseConstraint( 
+    //             new ElevatorPose(.5, 0), 
+    //             new ElevatorPose(.6, 2.0 * Math.PI)),
+    //         // new ElevatorPoseConstraint( 
+    //         //     new ElevatorPose(0, 2.5), 
+    //         //     new ElevatorPose(.1, Math.PI))
+    //     };
+    // }
 }

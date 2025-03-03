@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Bezier;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
@@ -13,7 +12,6 @@ public class MoveElevatorToPoseAndScore extends Command {
     Hand m_hand = null;
     ElevatorPose targetPose;
     GenericEntry nte;
-    Bezier controlCurve;
     boolean passedElevatorCutoff = false; // where it is safe to put it back out to real pose
     Timer timeAtPose = new Timer();
 

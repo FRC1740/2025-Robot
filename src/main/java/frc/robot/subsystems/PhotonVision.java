@@ -36,6 +36,7 @@ public class PhotonVision extends SubsystemBase {
     PhotonPipelineResult lastResult;
     String lastCamName;
     CommandSwerveDrivetrain m_drive;
+    Pose2d pose = new Pose2d();
 
     NetworkTable VisionTable = NetworkTableInstance.getDefault().getTable("Vision");
     StructArrayPublisher<Pose2d> Cam1Publisher = VisionTable
@@ -77,18 +78,15 @@ public class PhotonVision extends SubsystemBase {
                         estimatedPose.estimatedPose.getRotation().toRotation2d());
 
                     m_drive.addVisionMeasurement(
-                        new Pose2d(
-                            pose.getX(),
-                            pose.getY(),
-                            pose.getRotation()), // ignore vision rot
+                        pose, // ignore vision rot
                         result.getTimestampSeconds());
 
-                    // publish results
-                    if (lastCamName == VisionConstants.camName) {
-                        Cam1Publisher.set(new Pose2d[] { pose });
-                    } else {
-                        Cam2Publisher.set(new Pose2d[] { pose });
-                    }
+                    // // publish results
+                    // if (lastCamName == VisionConstants.camName) {
+                    //     Cam1Publisher.set(new Pose2d[] { pose });
+                    // } else {
+                    //     Cam2Publisher.set(new Pose2d[] { pose });
+                    // }
                 }
             }
         }

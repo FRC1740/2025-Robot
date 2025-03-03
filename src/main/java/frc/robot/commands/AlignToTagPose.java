@@ -37,6 +37,7 @@ public class AlignToTagPose extends Command {
     boolean ThetaFinished;
     boolean isLeftReef; // A C E etc
     Pose2d targetPose = null;
+    Pose2d rotatedGoal = null;
     Double MaxSpeed = null;
     Double MaxAngularRate = null;
     SwerveRequest.FieldCentric m_driveRequest;
@@ -97,7 +98,7 @@ public class AlignToTagPose extends Command {
                 leftToRightOffset *= -1;
             }
 
-            Pose2d rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+            rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
             rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
 
             rotatedGoal = new Pose2d(
@@ -105,7 +106,7 @@ public class AlignToTagPose extends Command {
                     (targetPose.getY() + rotatedGoal.getY()),
                     targetPose.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot
                                                                              // target
-            PosePublisher.set(new Pose2d[] { rotatedGoal });
+            // PosePublisher.set(new Pose2d[] { rotatedGoal });
 
             angleToTag = -normalizeAngle(
                     rotatedGoal.getRotation().getRadians() - m_drive.getState().Pose.getRotation().getRadians());
