@@ -18,7 +18,7 @@ public class Robot extends TimedRobot {
         Boolean validCanIds = CanIds.validCanIds();
         // if invalid ids, don't create robot container
         if (validCanIds) {
-            m_robotContainer = new RobotContainer();
+            m_robotContainer = RobotContainer.getInstance();
         }else {
             m_robotContainer = null;
         }

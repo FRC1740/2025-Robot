@@ -13,8 +13,11 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Telemetry;
 import frc.robot.constants.CanIds;
 import frc.robot.constants.HandConstants;
@@ -29,6 +32,8 @@ public class Hand extends SubsystemBase {
     DigitalInput hasCoral = new DigitalInput(0);
 
     Telemetry m_telemetry = null;
+
+    Timer coralTimer = new Timer();
     
     private static Hand instance;
 
@@ -85,6 +90,12 @@ public class Hand extends SubsystemBase {
             getWristAngle(), getWristSetpoint(), wrist.getOutputCurrent(), hasCoral(),
             linearActuator.getOutputCurrent()
         );
+
+        if (coralTimer.get() > .1) {
+            coralTimer.stop();
+            coralTimer.reset();
+            RobotContainer.getInstance().joystick.setRumble(RumbleType.kBothRumble, 0.0);
+        }
     }
 
     /**
@@ -93,9 +104,9 @@ public class Hand extends SubsystemBase {
     public void seekPosition() {
         double output = -wristController.calculate(getWristAngle());
         // this makes the pulley skip
-        // if (output < 0.0) { // gravity ff
-        //     output -= 0.2;
-        // }
+        if (output < 0.0) { // gravity ff
+            output -= 0.2;
+        }
         if ((getWristAngle() < HandConstants.minimumWristAngle && output > 0.0) ||
             (getWristAngle() > HandConstants.maximumWristAngle && output < 0.0)) {
             wrist.set(0.0);
@@ -160,6 +171,12 @@ public class Hand extends SubsystemBase {
      * @return true if we have a coral
      */
     public boolean hasCoral() {
-        return !hasCoral.get(); // it's flipped
+        boolean hasCoralInHand = !hasCoral.get();
+        if (hasCoralInHand) {
+            RobotContainer.getInstance().joystick.setRumble(RumbleType.kBothRumble, 1.0);
+            coralTimer.restart();
+            coralTimer.start();
+        }
+        return hasCoralInHand; // it's flipped
     }
 }

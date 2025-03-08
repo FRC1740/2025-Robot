@@ -87,7 +87,10 @@ public class PhotonVision extends SubsystemBase {
                         estimatedPose.estimatedPose.getRotation().toRotation2d());
 
                     m_drive.addVisionMeasurement(
-                        pose, // ignore vision rot
+                        new Pose2d(
+                            pose.getX(),
+                            pose.getY(),
+                            m_drive.getState().Pose.getRotation()), // ignore vision rot
                         result.getTimestampSeconds());
 
                     // // publish results

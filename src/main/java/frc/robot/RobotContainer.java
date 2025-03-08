@@ -41,7 +41,7 @@ public class RobotContainer {
 
     private final Telemetry m_logger = Telemetry.getInstance();
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    public final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandXboxController coDriverController1 = new CommandXboxController(1);
     private final CommandXboxController coDriverController2 = new CommandXboxController(2);
 
@@ -55,6 +55,15 @@ public class RobotContainer {
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
+
+    private static RobotContainer instance;
+
+    public static RobotContainer getInstance() {
+        if(instance == null) {
+            instance = new RobotContainer();
+        }
+        return instance;
+    }
 
     public RobotContainer() {
         
@@ -242,7 +251,7 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(m_drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
+        joystick.button(8).onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
 
         joystick.rightBumper().whileTrue(
             new InstantCommand(
