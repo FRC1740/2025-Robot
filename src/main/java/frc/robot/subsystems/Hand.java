@@ -45,6 +45,8 @@ public class Hand extends SubsystemBase {
     }
     
     public Hand() {
+        coralTimer.start();
+
         m_telemetry = Telemetry.getInstance();
         wrist = new SparkMax(CanIds.wristCanId, MotorType.kBrushed);
         SparkMaxConfig wristConfig = new SparkMaxConfig();
@@ -92,8 +94,7 @@ public class Hand extends SubsystemBase {
         );
 
         if (coralTimer.get() > .1) {
-            coralTimer.stop();
-            coralTimer.reset();
+            coralTimer.restart();
             RobotContainer.getInstance().joystick.setRumble(RumbleType.kBothRumble, 0.0);
         }
     }
@@ -175,7 +176,6 @@ public class Hand extends SubsystemBase {
         if (hasCoralInHand) {
             RobotContainer.getInstance().joystick.setRumble(RumbleType.kBothRumble, 1.0);
             coralTimer.restart();
-            coralTimer.start();
         }
         return hasCoralInHand; // it's flipped
     }

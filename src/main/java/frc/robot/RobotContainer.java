@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -66,6 +67,7 @@ public class RobotContainer {
     }
 
     public RobotContainer() {
+        joystick.setRumble(RumbleType.kBothRumble, 0.0);
         
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         
@@ -196,20 +198,25 @@ public class RobotContainer {
             }
         ));
 
-        coDriverController1.axisLessThan(2, -.9).onTrue( // '(' (on third axis)
-        new InstantCommand(() -> {
-            m_hand.setWristSetpoint(m_hand.getWristSetpoint() - .1);
+        coDriverController1.axisLessThan(2, -.9).whileTrue( // ')' (on third axis)
+        new RunCommand(() -> {
+            m_hand.setWristSetpoint(m_hand.getWristSetpoint() - .01);
         }));
 
-        coDriverController1.button(8).onTrue( // pg dn
-            new InstantCommand(() -> {
-                m_elevator.setElevatorToPosition(m_elevator.targetPosition + 1.0);
+        coDriverController1.axisGreaterThan(2, .9).whileTrue( // '(' (on third axis)
+        new RunCommand(() -> {
+            m_hand.setWristSetpoint(m_hand.getWristSetpoint() + .01);
         }));
 
-        // coDriverController1.button(7).onTrue( // pg up
-        //     new InstantCommand(() -> {
-        //         elevator.setElevatorToPosition(elevator.targetPosition - 1.0);
-        // }));
+        coDriverController1.button(8).whileTrue( // pg dn
+            new RunCommand(() -> {
+                m_elevator.setElevatorToPosition(m_elevator.targetPosition + 0.01);
+        }));
+
+        coDriverController1.button(7).whileTrue( // pg up
+            new RunCommand(() -> {
+                m_elevator.setElevatorToPosition(m_elevator.targetPosition - 0.01);
+        }));
 
         // coDriverController1.button(8).onTrue( // pg dn
         //     new InstantCommand(() -> {
@@ -224,13 +231,13 @@ public class RobotContainer {
                 m_climber.stop();
         }));
 
-        coDriverController1.button(8).onTrue( // TODO!
-            new InstantCommand(() -> {
-                m_climber.unclimb();
-        })).onFalse(
-            new InstantCommand(() -> {
-                m_climber.stop();
-        }));
+        // coDriverController1.button(8).onTrue( // TODO!
+        //     new InstantCommand(() -> {
+        //         m_climber.unclimb();
+        // })).onFalse(
+        //     new InstantCommand(() -> {
+        //         m_climber.stop();
+        // }));
 
         coDriverController2.button(6).onTrue( // Hippo
             new InstantCommand(() -> { 

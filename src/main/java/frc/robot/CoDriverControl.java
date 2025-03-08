@@ -63,8 +63,11 @@ public class CoDriverControl {
                 input == CoDriverInput.L3 || input == CoDriverInput.L4) {
                 if (lastCoDriverInput == input) { // double tap to score
                     elevatorControl.cancel();
-                    elevatorControl =  new Score();
-                    System.out.println("yeah");
+                    elevatorControl = new SequentialCommandGroup(
+                        new Score(),
+                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow)
+                    );
+                    
                 }else { // tap to raise to height
                     elevatorControl.cancel();
                     switch (input) {
