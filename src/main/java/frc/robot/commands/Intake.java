@@ -50,7 +50,7 @@ public class Intake extends Command {
     
     @Override
     public boolean isFinished() {
-        return m_hand.hasCoral();
+        return m_hand.getIfHaveCoral();
     }
 
     @Override

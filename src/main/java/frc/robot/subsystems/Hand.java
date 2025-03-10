@@ -180,13 +180,21 @@ public class Hand extends SubsystemBase {
      * checks sensor
      * @return true if we have a coral
      */
-    public boolean hasCoral() {
-        boolean hasCoralInHand = !hasCoral.get();
+    public boolean getIfHaveCoral() {
+        boolean hasCoralInHand = hasCoral();
         if (hasCoralInHand && !hadCoralInHand) {
             RobotContainer.getInstance().joystick.setRumble(RumbleType.kBothRumble, 1.0);
             coralTimer.restart();
         }
         hadCoralInHand = hasCoralInHand;
+        return hasCoralInHand; // it's flipped
+    }
+    /**
+     * checks sensor
+     * @return true if we have a coral
+     */
+    public boolean hasCoral() {
+        boolean hasCoralInHand = !hasCoral.get();
         return hasCoralInHand; // it's flipped
     }
 }

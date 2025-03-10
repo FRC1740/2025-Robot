@@ -31,7 +31,7 @@ public class Score extends Command {
     
     @Override
     public boolean isFinished() {
-        return !m_hand.hasCoral() && runTime.get() > .3;
+        return !m_hand.getIfHaveCoral() && runTime.get() > .3;
     }
 
     @Override
