@@ -172,30 +172,32 @@ public class RobotContainer {
 
         coDriverController1.button(4).onTrue( // '0'
             new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L0);
+                m_coDriverControl.sendInput(CoDriverInput.L0, true);
             }
         ));
 
         coDriverController1.povDown().onTrue( // '1'
-            new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L1);
-            }
+        new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L1, true);}
+        )).onFalse( // '4'
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L1, false);}
         ));
 
         coDriverController1.button(1).onTrue( // '2'
-            new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L2);
-            }
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L2, true);}
+        )).onFalse( // '4'
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L2, false);}
         ));
+
         coDriverController1.button(2).onTrue( // '3'
-            new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L3);
-            }
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L3, true);}
+        )).onFalse( // '4'
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L3, false);}
         ));
+
         coDriverController1.button(3).onTrue( // '4'
-            new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L4);
-            }
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L4, true);}
+        )).onFalse( // '4'
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L4, false);}
         ));
 
         coDriverController1.axisLessThan(2, -.9).whileTrue( // ')' (on third axis)
@@ -241,12 +243,12 @@ public class RobotContainer {
 
         coDriverController2.button(6).onTrue( // Hippo
             new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L2Algae);
+                m_coDriverControl.sendInput(CoDriverInput.L2Algae, true);
             }
         ));
         coDriverController2.button(1).onTrue( // Kebab
             new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L3Algae);
+                m_coDriverControl.sendInput(CoDriverInput.L3Algae, true);
             }
         ));
 

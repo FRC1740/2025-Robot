@@ -39,6 +39,7 @@ public class CoDriverControl {
     public Command elevatorControl = new InstantCommand();
     Elevator m_elevator = null; 
     Hand m_hand = null;
+    boolean scored = false;
       
     private static CoDriverControl instance;
 
@@ -54,7 +55,7 @@ public class CoDriverControl {
         m_hand = Hand.getInstance();
     }
 
-    public void sendInput(CoDriverInput input) {
+    public void sendInput(CoDriverInput input, boolean isPress) {
         if (input == null) {
             lastCoDriverInput = null;
             return;
@@ -63,12 +64,15 @@ public class CoDriverControl {
                 input == CoDriverInput.L3 || input == CoDriverInput.L4) {
                 if (lastCoDriverInput == input) { // double tap to score
                     elevatorControl.cancel();
-                    elevatorControl = new SequentialCommandGroup(
-                        new Score(),
-                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow)
-                    );
+                    if(isPress) {
+                        elevatorControl = new Score();
+                        scored = true;
+                    }else if(scored) { // release score = stow
+                        elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow);
+                        scored = false;
+                    }
                     
-                }else { // tap to raise to height
+                }else if(isPress) { // tap to raise to height
                     elevatorControl.cancel();
                     switch (input) {
                         case L1:
@@ -127,7 +131,9 @@ public class CoDriverControl {
                 }
                 elevatorControl.schedule();
             }
-            lastCoDriverInput = input;
+            // if (isPress) {
+                lastCoDriverInput = input;
+            // }
         }
     }
 }

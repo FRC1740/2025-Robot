@@ -34,6 +34,7 @@ public class Hand extends SubsystemBase {
     Telemetry m_telemetry = null;
 
     Timer coralTimer = new Timer();
+    boolean hadCoralInHand = false;
     
     private static Hand instance;
 
@@ -94,7 +95,9 @@ public class Hand extends SubsystemBase {
         );
 
         if (coralTimer.get() > .1) {
-            coralTimer.restart();
+            System.out.println("reset timer");
+            coralTimer.reset();
+            coralTimer.stop();
             RobotContainer.getInstance().joystick.setRumble(RumbleType.kBothRumble, 0.0);
         }
     }
@@ -173,10 +176,11 @@ public class Hand extends SubsystemBase {
      */
     public boolean hasCoral() {
         boolean hasCoralInHand = !hasCoral.get();
-        if (hasCoralInHand) {
+        if (hasCoralInHand && !hadCoralInHand) {
             RobotContainer.getInstance().joystick.setRumble(RumbleType.kBothRumble, 1.0);
             coralTimer.restart();
         }
+        hadCoralInHand = hasCoralInHand;
         return hasCoralInHand; // it's flipped
     }
 }
