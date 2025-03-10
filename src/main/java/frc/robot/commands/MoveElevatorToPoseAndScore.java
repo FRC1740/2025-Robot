@@ -15,6 +15,8 @@ public class MoveElevatorToPoseAndScore extends Command {
     boolean passedElevatorCutoff = false; // where it is safe to put it back out to real pose
     Timer timeAtPose = new Timer();
 
+    // TODO! make scoring tap height, score and then release when scroed to go to pos
+
     public MoveElevatorToPoseAndScore(ElevatorPose targetPose) {
         m_elevator = Elevator.getInstance();
         m_hand = Hand.getInstance();
