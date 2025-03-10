@@ -13,6 +13,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 import frc.robot.constants.CanIds;
+import frc.robot.constants.ElevatorCommandConstants;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.generated.TunerConstants;
 
@@ -47,7 +48,7 @@ public class Elevator extends SubsystemBase {
         elevatorConfig.softLimit.forwardSoftLimitEnabled(true);
         elevatorConfig.softLimit.forwardSoftLimit(0.0);
         elevatorConfig.softLimit.reverseSoftLimitEnabled(true);
-        elevatorConfig.softLimit.reverseSoftLimit(-30.0);
+        elevatorConfig.softLimit.reverseSoftLimit(ElevatorCommandConstants.topDistance);
         elevatorConfig.smartCurrentLimit(ElevatorConstants.elevatorCurrentLimit);
 
         elevatorController = new PIDController(

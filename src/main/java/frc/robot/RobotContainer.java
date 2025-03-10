@@ -242,14 +242,14 @@ public class RobotContainer {
         // }));
 
         coDriverController2.button(6).onTrue( // Hippo
-            new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L2Algae, true);
-            }
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L2Algae, true);}
+        )).onFalse(
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L2Algae, false);}
         ));
         coDriverController2.button(1).onTrue( // Kebab
-            new InstantCommand(() -> { 
-                m_coDriverControl.sendInput(CoDriverInput.L3Algae, true);
-            }
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L3Algae, true);}
+        )).onFalse(
+            new InstantCommand(() -> { m_coDriverControl.sendInput(CoDriverInput.L3Algae, false);}
         ));
 
         // Run SysId routines when holding back/start and X/Y.

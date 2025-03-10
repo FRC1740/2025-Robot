@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.AlgaeEject;
 import frc.robot.commands.Intake;
 import frc.robot.commands.L4CoralTap;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
@@ -101,35 +102,30 @@ public class CoDriverControl {
                 elevatorControl.cancel();
                 elevatorControl = new Intake();
                 elevatorControl.schedule();
-            }else if (input == CoDriverInput.L2Algae) {
+            }else if (input == CoDriverInput.L2Algae && isPress) {
                 elevatorControl.cancel();
-                if (lastCoDriverInput == input) { // double tap to score
-                    elevatorControl = new InstantCommand(() -> {
-                        m_elevator.setElevatorToPosition(m_elevator.targetPosition - 1.0);
-                    });
-                }else {
-                    elevatorControl = new ParallelCommandGroup(
-                        new InstantCommand(() -> {
-                            m_hand.score();
-                        }),
-                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Algae)
-                    );
-                }
-                elevatorControl.schedule();
-            }else if (input == CoDriverInput.L3Algae) {
-                elevatorControl.cancel();
-                if (lastCoDriverInput == input) { // double tap to score
-                    elevatorControl = new InstantCommand(() -> {
-                        m_elevator.setElevatorToPosition(m_elevator.targetPosition - 1.0);
-                    });
-                }else {
-                    elevatorControl = new ParallelCommandGroup(new InstantCommand(() -> {
-                        m_hand.score();
+                elevatorControl = new ParallelCommandGroup(
+                    new InstantCommand(() -> {
+                        m_hand.alage();
                     }),
-                        new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Algae)
-                    );   
-                }
+                    new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L2Algae)
+                );
                 elevatorControl.schedule();
+            }else if (input == CoDriverInput.L3Algae && isPress) {
+                elevatorControl.cancel();
+                elevatorControl = new ParallelCommandGroup(new InstantCommand(() -> {
+                    m_hand.alage();
+                }),
+                    new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Algae)
+                );   
+                elevatorControl.schedule();
+            }else if ((input == CoDriverInput.L2Algae || input == CoDriverInput.L3Algae) && !isPress) {
+                elevatorControl.cancel(); // stop algaeing
+                elevatorControl = new SequentialCommandGroup(
+                    new AlgaeEject(),
+                    new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow)
+                );
+                elevatorControl.schedule(); // stop algaeing
             }
             // if (isPress) {
                 lastCoDriverInput = input;

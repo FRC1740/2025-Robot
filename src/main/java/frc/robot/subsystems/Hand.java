@@ -171,6 +171,12 @@ public class Hand extends SubsystemBase {
         linearActuator.set(1.0);
     }
     /**
+     * Runs linear actuator out
+     */
+    public void alage() {
+        linearActuator.set(.6);
+    }
+    /**
      * checks sensor
      * @return true if we have a coral
      */
