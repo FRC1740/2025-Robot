@@ -48,7 +48,7 @@ public class PhotonVision extends SubsystemBase {
 
     public static PhotonVision getInstance() {
         if(instance == null) {
-        instance = new PhotonVision();
+            instance = new PhotonVision();
         }
         return instance;
     }
@@ -90,7 +90,8 @@ public class PhotonVision extends SubsystemBase {
                         new Pose2d(
                             pose.getX(),
                             pose.getY(),
-                            m_drive.getState().Pose.getRotation()), // ignore vision rot
+                            pose.getRotation()),
+                            // m_drive.getState().Pose.getRotation()), // ignore vision rot
                         result.getTimestampSeconds());
 
                     // // publish results

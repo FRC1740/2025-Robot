@@ -17,7 +17,10 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.RobotContainer;
 import frc.robot.constants.DriveCommandConstants;
 import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -41,6 +44,8 @@ public class AlignToTagPoseHelp extends Command {
     Double MaxSpeed = null;
     Double MaxAngularRate = null;
     SwerveRequest.FieldCentric m_driveRequest;
+    CommandXboxController m_joystick = null;
+    double strafe = 0.0;
 
     NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
 
@@ -60,8 +65,9 @@ public class AlignToTagPoseHelp extends Command {
      * This command <b>DOES DRIVE</b>
      */
     public AlignToTagPoseHelp(boolean leftReef, SwerveRequest.FieldCentric driveRequest, 
-            Double DriveMaxSpeed, Double DriveMaxAngularRate) {
+            Double DriveMaxSpeed, Double DriveMaxAngularRate, CommandXboxController joystick) {
                 
+        m_joystick = joystick;
         m_drive = CommandSwerveDrivetrain.getInstance();
         m_photonvision = PhotonVision.getInstance();
         MaxSpeed = DriveMaxSpeed;
@@ -81,6 +87,7 @@ public class AlignToTagPoseHelp extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        strafe += (-m_joystick.getLeftTriggerAxis() + m_joystick.getRightTriggerAxis()) / 10.0;
         // System.err.println("ex");
         PhotonTrackedTarget target = m_photonvision.getBestTarget();
         if (target != null) {
@@ -99,7 +106,7 @@ public class AlignToTagPoseHelp extends Command {
                 leftToRightOffset *= -1;
             }
 
-            rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+            rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset + strafe, new Rotation2d());
             rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
 
             rotatedGoal = new Pose2d(
@@ -107,7 +114,7 @@ public class AlignToTagPoseHelp extends Command {
                     (targetPose.getY() + rotatedGoal.getY()),
                     targetPose.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot
                                                                              // target
-            // PosePublisher.set(new Pose2d[] { rotatedGoal });
+            PosePublisher.set(new Pose2d[] { rotatedGoal });
 
             angleToTag = -normalizeAngle(
                     rotatedGoal.getRotation().getRadians() - m_drive.getState().Pose.getRotation().getRadians());
@@ -124,8 +131,10 @@ public class AlignToTagPoseHelp extends Command {
 
             // control flip on red ds, so invert PID outputs
             if (m_drive.m_hasAppliedOperatorPerspective) {
-                // x_error *= -1;
-                // y_error *= -1;
+                if (m_drive.m_operatorPerspectiveFlipped) {
+                    x_error *= -1;
+                    y_error *= -1;
+                }
             }
 
             if (Math.abs(x_error) < 0.005) {
@@ -162,6 +171,7 @@ public class AlignToTagPoseHelp extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return XFinished && YFinished && ThetaFinished;
+        // return XFinished && YFinished && ThetaFinished;
+        return false; // strafe
     }
 }
