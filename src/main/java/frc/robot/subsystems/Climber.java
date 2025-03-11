@@ -39,7 +39,7 @@ public class Climber extends SubsystemBase {
      * Runs climber out
      */
     public void unclimb() {
-        climber.set(1.0);
+        climber.set(0.5);
     }
     /**
      * Stops climbing
@@ -51,6 +51,6 @@ public class Climber extends SubsystemBase {
      * Runs climber in
      */
     public void climb() {
-        climber.set(-1.0);
+        climber.set(-.5);
     }
 }

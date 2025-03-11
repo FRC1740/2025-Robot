@@ -212,12 +212,12 @@ public class RobotContainer {
 
         coDriverController1.button(8).whileTrue( // pg dn
             new RunCommand(() -> {
-                m_elevator.setElevatorToPosition(m_elevator.targetPosition + 0.01);
+                m_elevator.setElevatorToPosition(m_elevator.targetPosition + 0.05);
         }));
 
         coDriverController1.button(7).whileTrue( // pg up
             new RunCommand(() -> {
-                m_elevator.setElevatorToPosition(m_elevator.targetPosition - 0.01);
+                m_elevator.setElevatorToPosition(m_elevator.targetPosition - 0.05);
         }));
 
         // coDriverController1.button(8).onTrue( // pg dn
@@ -225,9 +225,16 @@ public class RobotContainer {
         //         elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
         // }));
 
-        coDriverController1.button(7).onTrue( // TODO!
+        coDriverController1.button(6).onTrue( // HOME
             new InstantCommand(() -> {
                 m_climber.climb();
+        })).onFalse(
+            new InstantCommand(() -> {
+                m_climber.stop();
+        }));
+        coDriverController1.button(5).onTrue( // S
+            new InstantCommand(() -> {
+                m_climber.unclimb();
         })).onFalse(
             new InstantCommand(() -> {
                 m_climber.stop();
