@@ -18,6 +18,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
@@ -46,6 +47,7 @@ public class AlignToTagPoseHelp extends Command {
     SwerveRequest.FieldCentric m_driveRequest;
     CommandXboxController m_joystick = null;
     double strafe = 0.0;
+    Timer timeRunning = new Timer();
 
     NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
 
@@ -82,7 +84,9 @@ public class AlignToTagPoseHelp extends Command {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        timeRunning.start();
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
@@ -145,9 +149,9 @@ public class AlignToTagPoseHelp extends Command {
             }
 
             m_drive.setControl(
-                    m_driveRequest.withVelocityX(DriveCommandConstants.kXP * x_error * MaxSpeed) // Drive forward with
+                    m_driveRequest.withVelocityX((DriveCommandConstants.kXP + timeRunning.get() * DriveCommandConstants.kXI) * x_error * MaxSpeed) // Drive forward with
                                                                                                  // negative Y (forward)
-                            .withVelocityY(DriveCommandConstants.kYP * y_error * MaxSpeed) // Drive left with negative X
+                            .withVelocityY((DriveCommandConstants.kYP + timeRunning.get() * DriveCommandConstants.kYI) * y_error * MaxSpeed) // Drive left with negative X
                                                                                            // (left)
                             .withRotationalRate(-DriveCommandConstants.kThetaP * theta_error * MaxAngularRate) // Drive
                                                                                                                // counterclockwise

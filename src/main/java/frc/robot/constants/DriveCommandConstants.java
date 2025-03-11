@@ -1,11 +1,11 @@
 package frc.robot.constants;
 
 public class DriveCommandConstants {
-    public static final double kXP = 0.2; // .4
-    public static final double kXI = 0; // don't do anything rn
+    public static final double kXP = 0.05; // .4
+    public static final double kXI = 0.04; // don't do anything rn
     public static final double kXD = 0; // don't do anything rn
 
-    public static final double kYP = kXP * 4.0; // side to side
+    public static final double kYP = kXP * 5.0; // side to side
     public static final double kYI = kXI;
     public static final double kYD = kXD;
 
