@@ -118,6 +118,26 @@ public class RobotContainer {
             )
         );
 
+        joystick.rightBumper().whileTrue(
+            m_drivetrain.applyRequest(() ->
+            drive
+                .withVelocityX(
+                    -driveCurve(Math.abs(joystick.getLeftY())) * 
+                        inputLessThanDeadband(joystick.getLeftY(), 0.03) * 
+                        (MaxSpeed / 2.0)
+                ) // Drive forward with negative Y (forward)
+                .withVelocityY(
+                    -driveCurve(Math.abs(joystick.getLeftX())) * 
+                        inputLessThanDeadband(joystick.getLeftX(), 0.03) * 
+                        (MaxSpeed / 2.0)
+                ) // Drive left with negative X (left)
+                .withRotationalRate(
+                    -turnCurve(Math.abs(joystick.getRightX())) * 
+                    inputLessThanDeadband(joystick.getRightX(), 0.03) * 
+                    MaxAngularRate
+            )) // Drive counterclockwise with negative X (left)
+                );
+
         m_elevator.setDefaultCommand(
             new RunCommand(() -> {
                 m_elevator.seekPosition();
@@ -268,21 +288,6 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         joystick.button(8).onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
-
-        joystick.rightBumper().whileTrue(
-            new InstantCommand(
-                () -> {
-                    m_elevator.setElevatorToPosition(m_elevator.targetPosition - 1.0);
-                }
-            )
-        );
-        joystick.rightTrigger().whileTrue(
-            new InstantCommand(
-                () -> {
-                    m_elevator.setElevatorToPosition(m_elevator.targetPosition + 1.0);
-                }
-            )
-        );
 
         m_drivetrain.registerTelemetry(m_logger::telemeterizeDrive);
     }
