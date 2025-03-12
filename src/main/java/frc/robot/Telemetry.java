@@ -43,7 +43,7 @@ public class Telemetry {
      */
     public Telemetry() {
         MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);;
-        SignalLogger.start();
+        // SignalLogger.start(); // we have wplib logs so no need for hoot logs
     }
 
     /* What to publish over networktables for telemetry */
