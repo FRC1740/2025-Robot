@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -24,6 +25,7 @@ import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.AlignToTagPoseHelp;
 import frc.robot.commands.Intake;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
+import frc.robot.commands.Score;
 import frc.robot.constants.ElevatorCommandConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
@@ -68,6 +70,8 @@ public class RobotContainer {
     }
 
     public RobotContainer() {
+        NamedCommands.registerCommand("L3", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score));
+        NamedCommands.registerCommand("Score", new Score());
         joystick.setRumble(RumbleType.kBothRumble, 0.0);
         
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
