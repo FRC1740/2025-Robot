@@ -71,6 +71,9 @@ public class RobotContainer {
 
     public RobotContainer() {
         NamedCommands.registerCommand("L3", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score));
+        NamedCommands.registerCommand("L4", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score));
+        NamedCommands.registerCommand("Intake Pos", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Intake));
+        NamedCommands.registerCommand("Intake", new Intake());
         NamedCommands.registerCommand("Score", new Score());
         joystick.setRumble(RumbleType.kBothRumble, 0.0);
         

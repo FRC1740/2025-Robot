@@ -7,25 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "L3"
+            "name": "L4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Against to G"
+            "pathName": "Left to J"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Score"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "G to away"
           }
         }
       ]
