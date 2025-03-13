@@ -26,7 +26,7 @@ public final class VisionConstants {
         try {
             // if you set this, you may get incorrect tag positions!!!
             // make sure this is updated to the current game
-            aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+            aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2025ReefscapeAndyMark.m_resourceFile);
         } catch (IOException IOE) {
             IOE.printStackTrace();
         }
