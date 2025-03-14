@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "L3"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Against to G"
+            "pathName": "Right to D4"
           }
         },
         {
@@ -25,13 +19,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "G3 to backup"
+            "pathName": "D To Right Pickup"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Intake Pos"
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Pickup To C4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C To Right Pickup"
           }
         }
       ]

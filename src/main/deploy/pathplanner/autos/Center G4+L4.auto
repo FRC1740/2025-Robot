@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "L3"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Against to G"
+            "pathName": "Center to G4"
           }
         },
         {
@@ -25,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "G to left pickup"
+            "pathName": "G To Left Pickup"
           }
         },
         {
@@ -37,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Pickup to L"
+            "pathName": "Pickup To L4"
           }
         },
         {

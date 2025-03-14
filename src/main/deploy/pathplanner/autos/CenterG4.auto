@@ -7,13 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left to J4"
+            "pathName": "Center to G4"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "G To Backup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Pos"
           }
         }
       ]
