@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.9473903078874537,
-        "y": 2.790452389875461
+        "x": 3.9764711629949794,
+        "y": 2.7949697599500802
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.680910685698627,
-        "y": 2.3804877470881007
+        "x": 3.709991540806153,
+        "y": 2.38500511716272
       },
       "isLocked": false,
       "linkedName": "D Score"
@@ -48,7 +48,7 @@
   "folder": "Offsets",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 56.33456169424547
+    "rotation": 60.36239643955245
   },
   "useDefaultConstraints": true
 }
