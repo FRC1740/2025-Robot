@@ -133,25 +133,29 @@ public class RobotContainer {
         joystick.rightBumper().whileTrue(
                 new AlignToTagPoseHelp(true, drive, MaxSpeed, MaxAngularRate, joystick));
 
-            joystick.leftBumper().whileTrue(
-                m_drivetrain.applyRequest(() ->
-                drive
-                    .withVelocityX(
-                        -driveCurve(Math.abs(joystick.getLeftY())) * 
-                            inputLessThanDeadband(joystick.getLeftY(), 0.03) * 
-                            MaxSpeed
-                    ) // Drive forward with negative Y (forward)
-                    .withVelocityY(
-                        -driveCurve(Math.abs(joystick.getLeftX())) * 
-                        inputLessThanDeadband(joystick.getLeftX(), 0.03) * 
+        joystick.leftBumper().whileTrue(
+            m_drivetrain.applyRequest(() ->
+            drive
+                .withVelocityX(
+                    -driveCurve(Math.abs(joystick.getLeftY())) * 
+                        inputLessThanDeadband(joystick.getLeftY(), 0.03) * 
                         MaxSpeed
-                    ) // Drive left with negative X (left)
-                    .withRotationalRate(
-                        -turnCurve(Math.abs(joystick.getRightX())) * 
-                        inputLessThanDeadband(joystick.getRightX(), 0.03) * 
-                        MaxAngularRate
-                    ) // Drive counterclockwise with negative X (left)
-            ));
+                ) // Drive forward with negative Y (forward)
+                .withVelocityY(
+                    -driveCurve(Math.abs(joystick.getLeftX())) * 
+                    inputLessThanDeadband(joystick.getLeftX(), 0.03) * 
+                    MaxSpeed
+                ) // Drive left with negative X (left)
+                .withRotationalRate(
+                    -turnCurve(Math.abs(joystick.getRightX())) * 
+                    inputLessThanDeadband(joystick.getRightX(), 0.03) * 
+                    MaxAngularRate
+                ) // Drive counterclockwise with negative X (left)
+        ));
+
+        // joystick.a().whileTrue(
+        //     new AlignToAngle()
+        // );
 
         m_elevator.setDefaultCommand(
             new RunCommand(() -> {
@@ -204,6 +208,18 @@ public class RobotContainer {
         // ).toggleOnFalse(
         //     new InstantCommand(() -> hand.setWristSetpoint(0.0))
         // );
+
+        coDriverController2.povDown().whileTrue(
+            new RunCommand(() -> { m_hand.score(); }
+        )).onFalse(
+            new InstantCommand(() -> { m_hand.stop(); }
+        ));
+
+        coDriverController2.povUp().whileTrue(
+            new RunCommand(() -> { m_hand.intake(); }
+        )).onFalse(
+            new InstantCommand(() -> { m_hand.stop(); }
+        ));
 
         coDriverController1.button(4).onTrue( // '0'
             new InstantCommand(() -> { 
