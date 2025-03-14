@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.103414365198339,
-        "y": 2.0570571955719554
+        "x": 3.1443744955027677,
+        "y": 2.107474126499077
       },
       "isLocked": false,
-      "linkedName": "D Score"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 1.1193835043819182
       },
       "prevControl": {
-        "x": 2.031488915475092,
-        "y": 1.8806849630996303
+        "x": 2.2213211341097785,
+        "y": 1.3830715953643915
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,14 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Intake Pos",
-      "waypointRelativePos": 0.20988979718543044,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

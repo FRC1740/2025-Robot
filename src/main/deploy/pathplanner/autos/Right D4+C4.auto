@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right to D4"
+            "pathName": "Right to D Offset"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D Offset To D"
           }
         },
         {
@@ -17,33 +29,59 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.3
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "D To Right Pickup"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "D To Right Pickup"
+            "pathName": "Right Pickup To C4 Offset"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Intake"
+            "name": "L4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Pickup To C4"
+            "pathName": "C Offset To C"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Score"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "C To Right Pickup"
           }
         }
       ]

@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Left to J Offset"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "L4"
@@ -13,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left to J4"
+            "pathName": "J Offset To J"
           }
         },
         {
@@ -23,21 +29,53 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "J To Left Pickup"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "J To Left Pickup"
+            "pathName": "Left Pickup To L Offset"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Intake"
+            "name": "L4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Pickup To L4"
+            "pathName": "L Offset To L"
           }
         },
         {
