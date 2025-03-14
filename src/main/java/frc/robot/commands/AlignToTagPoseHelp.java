@@ -147,6 +147,8 @@ public class AlignToTagPoseHelp extends Command {
             if (Math.abs(y_error) < 0.005) {
                 y_error = 0.0;
             }
+            x_error = 0.0;
+            y_error = 0.0;
 
             m_drive.setControl(
                     m_driveRequest.withVelocityX((DriveCommandConstants.kXP + timeRunning.get() * DriveCommandConstants.kXI) * x_error * MaxSpeed) // Drive forward with
