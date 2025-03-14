@@ -13,7 +13,31 @@
         {
           "type": "named",
           "data": {
+            "name": "L4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D Offset To D"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D To D Offset "
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Pos"
           }
         }
       ]
