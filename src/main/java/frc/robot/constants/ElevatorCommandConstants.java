@@ -21,7 +21,7 @@ public class ElevatorCommandConstants {
     public static ElevatorPose L2Algae = new ElevatorPose(-2.7, 0.28);
     public static ElevatorPose L3Algae = new ElevatorPose(-10, 0.27);
     public static ElevatorPose Stow = new ElevatorPose(0.0, 0.1);
-    public static ElevatorPose Intake = new ElevatorPose(-3.94, .09);
+    public static ElevatorPose Intake = new ElevatorPose(-4.4, .09);
 
     /**
      * A class for defining an elevator position

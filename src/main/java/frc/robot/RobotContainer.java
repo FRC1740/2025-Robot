@@ -24,6 +24,7 @@ import frc.robot.CoDriverControl.CoDriverInput;
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.AlignToTagPoseHelp;
 import frc.robot.commands.Intake;
+import frc.robot.commands.L4CoralTap;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
 import frc.robot.commands.Score;
 import frc.robot.constants.ElevatorCommandConstants;
@@ -71,7 +72,10 @@ public class RobotContainer {
 
     public RobotContainer() {
         NamedCommands.registerCommand("L3", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score));
-        NamedCommands.registerCommand("L4", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score));
+        NamedCommands.registerCommand("L4", new SequentialCommandGroup(
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score),
+            new L4CoralTap()
+        ));
         NamedCommands.registerCommand("Intake Pos", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Intake));
         NamedCommands.registerCommand("Intake", new Intake());
         NamedCommands.registerCommand("Score", new Score());
