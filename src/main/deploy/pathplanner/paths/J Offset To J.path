@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.35869972511574,
-        "y": 5.653634259259259
+        "x": 5.44793378245349,
+        "y": 5.96166714833208
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.047629292164948,
-        "y": 5.295601608741327
+        "x": 5.222277122158185,
+        "y": 5.648757821452509
       },
       "isLocked": false,
       "linkedName": "J Offset"
@@ -20,8 +20,8 @@
         "y": 5.2460680700231475
       },
       "prevControl": {
-        "x": 5.3446958440702605,
-        "y": 5.64017152739111
+        "x": 5.369024423700605,
+        "y": 5.8164322005286575
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 0.7,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,

@@ -11,15 +11,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "L4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "D Offset To D"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "D Offset To D"
+                }
+              }
+            ]
           }
         },
         {
@@ -67,15 +74,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "L4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "C Offset To C"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "C Offset To C"
+                }
+              }
+            ]
           }
         },
         {
@@ -123,15 +137,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "L4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "B Offset To B"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "B Offset To B"
+                }
+              }
+            ]
           }
         },
         {
