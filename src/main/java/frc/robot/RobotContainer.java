@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.CoDriverControl.CoDriverInput;
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.AlignToTagPoseHelp;
+import frc.robot.commands.AlignToTagSimpleLimelight;
 import frc.robot.commands.Intake;
 import frc.robot.commands.L4CoralTap;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
@@ -43,6 +44,9 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             // .withDeadband(MaxSpeed * 0.03).withRotationalDeadband(MaxAngularRate * 0.03) // Add a 3% deadband to motor out
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+
+    private final SwerveRequest.RobotCentricFacingAngle commandDrive = new SwerveRequest.RobotCentricFacingAngle()
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
     private final Telemetry m_logger = Telemetry.getInstance();
 
@@ -130,8 +134,11 @@ public class RobotContainer {
             )
         );
 
+        // joystick.rightBumper().whileTrue(
+        //         new AlignToTagPoseHelp(true, drive, MaxSpeed, MaxAngularRate, joystick));
+
         joystick.rightBumper().whileTrue(
-                new AlignToTagPoseHelp(true, drive, MaxSpeed, MaxAngularRate, joystick));
+            new AlignToTagSimpleLimelight(true, commandDrive, MaxSpeed, MaxAngularRate, joystick));
 
         joystick.leftBumper().whileTrue(
             m_drivetrain.applyRequest(() ->
