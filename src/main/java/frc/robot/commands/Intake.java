@@ -10,6 +10,7 @@ public class Intake extends Command {
     Elevator m_elevator = null;
     Hand m_hand = null;
     GenericEntry nte;
+    // boolean setElevatorHeight = false;
 
     public Intake() {
         m_elevator = Elevator.getInstance();
@@ -34,7 +35,10 @@ public class Intake extends Command {
             // System.out.println("notat pose");
         m_elevator.seekPosition();
         if (m_hand.atPose()) {
+            // if (!setElevatorHeight) {
             m_elevator.setElevatorToPosition(ElevatorCommandConstants.Intake.elevatorPosition);
+            //     setElevatorHeight = true;
+            // }
             
             // System.out.println("2at pose");
             if (m_elevator.atPose()) {

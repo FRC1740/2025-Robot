@@ -79,6 +79,7 @@ public class Telemetry {
     private final DoublePublisher elevatorHeight = elevatorTable.getDoubleTopic("ElevatorHeight").publish();
     private final DoublePublisher elevatorSetpoint = elevatorTable.getDoubleTopic("ElevatorSetpoint").publish();
     private final DoublePublisher elevatorCurrentDraw = elevatorTable.getDoubleTopic("ElevatorCurrentDraw").publish();
+    private final DoublePublisher elevatorMotorOutput = elevatorTable.getDoubleTopic("ElevatorMotorOutput").publish();
     private final BooleanPublisher elevatorAtPose = elevatorTable.getBooleanTopic("ElevatorAtPose").publish();
 
     /* Mechanisms to represent the swerve module states */
@@ -161,10 +162,11 @@ public class Telemetry {
         this.linearActuatorCurrentDraw.set(linearActuatorCurrentDraw);
     }
 
-    public void telemeterizeElevator(double elevatorHeight, double elevatorSetpoint, double elevatorCurrentDraw, boolean elevatorAtPose) {
+    public void telemeterizeElevator(double elevatorHeight, double elevatorSetpoint, double elevatorCurrentDraw, double elevatorMotorOutput, boolean elevatorAtPose) {
         this.elevatorHeight.set(elevatorHeight);
         this.elevatorSetpoint.set(elevatorSetpoint);
         this.elevatorCurrentDraw.set(elevatorCurrentDraw);
+        this.elevatorMotorOutput.set(elevatorMotorOutput);
         this.elevatorAtPose.set(elevatorAtPose);
     }
 }

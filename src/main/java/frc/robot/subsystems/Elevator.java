@@ -62,7 +62,7 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        m_telemetry.telemeterizeElevator(getElevatorPosition(), getElevatorSetpoint(), elevator.getOutputCurrent(), atPose());
+        m_telemetry.telemeterizeElevator(getElevatorPosition(), getElevatorSetpoint(), elevator.getOutputCurrent(), elevatorController.calculate(elevatorEncoder.getPosition()), atPose());
     }
 
     /**
