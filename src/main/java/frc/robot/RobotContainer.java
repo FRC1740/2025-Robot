@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.CoDriverControl.CoDriverInput;
+import frc.robot.commands.AlignToTagPathplanner;
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.AlignToTagPoseHelp;
 import frc.robot.commands.AlignToTagSimpleLimelight;
@@ -136,9 +137,8 @@ public class RobotContainer {
 
         // joystick.rightBumper().whileTrue(
         //         new AlignToTagPoseHelp(true, drive, MaxSpeed, MaxAngularRate, joystick));
-
         joystick.rightBumper().whileTrue(
-            new AlignToTagSimpleLimelight(true, commandDrive, MaxSpeed, MaxAngularRate, joystick));
+            new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
 
         joystick.leftBumper().whileTrue(
             m_drivetrain.applyRequest(() ->
