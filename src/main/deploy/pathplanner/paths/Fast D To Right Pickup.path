@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9258807146990735,
-        "y": 2.0810391348379618
+        "x": 1.4855417886030966,
+        "y": 2.439346546644007
       },
       "isLocked": false,
       "linkedName": "D Score"
     },
     {
       "anchor": {
-        "x": 1.0156080633071953,
-        "y": 1.1193835043819182
+        "x": 1.7713718894675916,
+        "y": 0.5737604890046293
       },
       "prevControl": {
-        "x": 2.3879329427083325,
-        "y": 1.3363675491898142
+        "x": 2.6620001965294313,
+        "y": 1.2031382032407354
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Pickup"
+      "linkedName": "Fast Right Pickup"
     }
   ],
   "rotationTargets": [],

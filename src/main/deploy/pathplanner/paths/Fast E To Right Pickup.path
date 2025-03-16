@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.0156080633071953,
-        "y": 1.1193835043819182
+        "x": 1.7713718894675916,
+        "y": 0.5737604890046293
       },
       "prevControl": {
-        "x": 1.8212767650462953,
-        "y": 1.2643927228009249
+        "x": 2.5770405912066905,
+        "y": 0.7187697074236357
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Pickup"
+      "linkedName": "Fast Right Pickup"
     }
   ],
   "rotationTargets": [],

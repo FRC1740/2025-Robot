@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0801607749405164,
-        "y": 2.165858374270637
+        "x": 1.7405221894906182,
+        "y": 2.3795734335016516
       },
       "isLocked": false,
       "linkedName": "C Score"
     },
     {
       "anchor": {
-        "x": 1.0156080633071953,
-        "y": 1.1193835043819182
+        "x": 1.7713718894675916,
+        "y": 0.5737604890046293
       },
       "prevControl": {
-        "x": 2.617462450991697,
-        "y": 1.5481304773985243
+        "x": 2.2312994946216076,
+        "y": 2.1388750203134475
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Pickup"
+      "linkedName": "Fast Right Pickup"
     }
   ],
   "rotationTargets": [],
