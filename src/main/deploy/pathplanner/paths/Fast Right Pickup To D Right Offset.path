@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.952701582679889,
-        "y": 1.302079609663284
+        "x": 1.545489728009258,
+        "y": 1.1743659577546293
       },
       "isLocked": false,
       "linkedName": "Right Pickup"
     },
     {
       "anchor": {
-        "x": 4.997690540920872,
-        "y": 2.793856525403437
+        "x": 3.6211132812499986,
+        "y": 2.222775969328703
       },
       "prevControl": {
-        "x": 5.390872981534341,
-        "y": 2.018630943069488
+        "x": 2.8997927517361095,
+        "y": 1.714759476273147
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "E Score"
+      "linkedName": "Pickup D Offset"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 9.0,
+    "maxAcceleration": 9.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 119.72495911455967
+    "velocity": 1.3,
+    "rotation": 58.44560918579142
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Right",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -125.70732832569489
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
