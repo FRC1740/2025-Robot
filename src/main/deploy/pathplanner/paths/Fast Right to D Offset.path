@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8423177083333324,
-        "y": 3.8380750868055546
+        "x": 7.138741423547048,
+        "y": 2.170016648408672
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.3399996146666657,
-        "y": 3.8767675122206873
+        "x": 4.891024667533283,
+        "y": 2.2495838814052815
       },
       "isLocked": false,
-      "linkedName": "B Offset"
+      "linkedName": "Right Fast"
     },
     {
       "anchor": {
-        "x": 3.16998108405193,
-        "y": 3.848144187527574
+        "x": 3.850955222800925,
+        "y": 2.245486472800925
       },
       "prevControl": {
-        "x": 2.393926225904244,
-        "y": 3.7746803070201618
+        "x": 4.226709617081967,
+        "y": 2.236165905645512
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "B Score"
+      "linkedName": "Fast D Offset"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 9.0,
+    "maxAcceleration": 9.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.3,
+    "rotation": 61.02830702005511
   },
   "reversed": false,
-  "folder": "Offsets",
+  "folder": "Right",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 61.02830702005511
   },
   "useDefaultConstraints": false
 }
