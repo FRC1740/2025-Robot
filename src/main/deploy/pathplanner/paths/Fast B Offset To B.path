@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7696249276620357,
-        "y": 0.5824370659722217
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 2.934742988401291,
-        "y": 2.2655955979446034
-      },
-      "isLocked": false,
-      "linkedName": "Fast Right Pickup"
-    },
-    {
-      "anchor": {
         "x": 2.5662395109953695,
         "y": 2.2026276765046293
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.674737954112875,
+        "y": 2.474077917671395
+      },
+      "isLocked": false,
+      "linkedName": "Fast B Offset"
+    },
+    {
+      "anchor": {
+        "x": 3.16998108405193,
+        "y": 3.848144187527574
+      },
       "prevControl": {
-        "x": 2.3110958603580554,
-        "y": 1.2281591940458996
+        "x": 3.0760214642752506,
+        "y": 3.5928668894509195
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Fast B Offset"
+      "linkedName": "B Score"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 9.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": true
   },
   "goalEndState": {
-    "velocity": 5.0,
+    "velocity": 0,
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Right",
+  "folder": "Offsets",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -125.70732832569489
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }
