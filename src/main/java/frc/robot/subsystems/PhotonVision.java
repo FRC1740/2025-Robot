@@ -95,11 +95,11 @@ public class PhotonVision extends SubsystemBase {
                         result.getTimestampSeconds());
 
                     // // publish results
-                    // if (lastCamName == VisionConstants.camName) {
-                    //     Cam1Publisher.set(new Pose2d[] { pose });
-                    // } else {
-                    //     Cam2Publisher.set(new Pose2d[] { pose });
-                    // }
+                    if (lastCamName == VisionConstants.camName) {
+                        Cam1Publisher.set(new Pose2d[] { pose });
+                    } else {
+                        Cam2Publisher.set(new Pose2d[] { pose });
+                    }
                 }
             }
         }

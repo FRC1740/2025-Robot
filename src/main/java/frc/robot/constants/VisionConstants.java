@@ -32,8 +32,8 @@ public final class VisionConstants {
         }
     }
 
-    public static final Transform3d RobotToCam1 = new Transform3d(cam12FrontBackOffset, -cam12Dist, 0.0, new Rotation3d());
-    public static final Transform3d RobotToCam2 = new Transform3d(cam12FrontBackOffset, cam12Dist, 0.0, new Rotation3d());
+    public static final Transform3d RobotToCam1 = new Transform3d(cam12FrontBackOffset, -cam12Dist, 0.0, new Rotation3d(0.0, 0.0, -.07));
+    public static final Transform3d RobotToCam2 = new Transform3d(cam12FrontBackOffset, cam12Dist, 0.0, new Rotation3d(0.0, 0.0, .07));
 
     public enum AprilTagIDs {
         RedSpeakerCenter(4), // Center tag on red speaker

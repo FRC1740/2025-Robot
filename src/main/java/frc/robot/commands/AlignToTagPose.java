@@ -107,7 +107,7 @@ public class AlignToTagPose extends Command {
                     (targetPose.getY() + rotatedGoal.getY()),
                     targetPose.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot
                                                                              // target
-            // PosePublisher.set(new Pose2d[] { rotatedGoal });
+            PosePublisher.set(new Pose2d[] { rotatedGoal });
 
             angleToTag = -normalizeAngle(
                     rotatedGoal.getRotation().getRadians() - m_drive.getState().Pose.getRotation().getRadians());
