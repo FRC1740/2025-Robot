@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1355026423296337,
-        "y": 1.314338835438124
+        "x": 2.696095864363123,
+        "y": 1.3970093186787689
       },
       "isLocked": false,
       "linkedName": "Fast Right Pickup"
     },
     {
       "anchor": {
-        "x": 3.6211132812499986,
-        "y": 2.222775969328703
+        "x": 3.2337536168981473,
+        "y": 1.8592332175925923
       },
       "prevControl": {
-        "x": 2.036759978493505,
-        "y": 2.1891863294426455
+        "x": 2.505501699451716,
+        "y": 1.1947368756656482
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,7 +38,7 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 5.0,

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3906307870370362,
-        "y": 2.4682241030092587
+        "x": 2.881740813078703,
+        "y": 1.664679904513888
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5485309088166597,
-        "y": 2.747210310049393
+        "x": 3.4785889459152473,
+        "y": 2.654159818066487
       },
       "isLocked": false,
       "linkedName": "Fast C Offset"
@@ -20,8 +20,8 @@
         "y": 2.9644068636617815
       },
       "prevControl": {
-        "x": 3.572025453103874,
-        "y": 2.744967960861532
+        "x": 3.4880887674602876,
+        "y": 2.60463897249933
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,7 +38,7 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,

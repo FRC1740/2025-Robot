@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8997927517361104,
-        "y": 4.17739330150463
+        "x": 2.4443015769675913,
+        "y": 3.1845366753472217
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.295251694960279,
-        "y": 4.157580905075077
+        "x": 2.520294415509258,
+        "y": 3.5402763310185184
       },
       "isLocked": false,
       "linkedName": "A Offset"
@@ -20,8 +20,8 @@
         "y": 4.1863008828288
       },
       "prevControl": {
-        "x": 2.5961785061125178,
-        "y": 4.222793262108633
+        "x": 2.913919608616474,
+        "y": 4.20282689764185
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,7 +38,7 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
