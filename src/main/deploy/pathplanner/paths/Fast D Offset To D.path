@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5685275821182687,
-        "y": 2.2804708333867194
+        "x": 4.0773488227925725,
+        "y": 2.7273748888689915
       },
       "isLocked": false,
       "linkedName": "Fast D Offset"
@@ -20,8 +20,8 @@
         "y": 2.7949697599500802
       },
       "prevControl": {
-        "x": 3.8205789956748686,
-        "y": 2.5956807406927
+        "x": 3.8701997270126016,
+        "y": 2.5686814882826265
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,7 +38,7 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,

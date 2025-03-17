@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.290540432495593,
-        "y": 1.496992250622704
+        "x": 2.802576550924234,
+        "y": 1.3257887386899487
       },
       "isLocked": false,
       "linkedName": "E Score"
@@ -20,8 +20,8 @@
         "y": 0.5824370659722217
       },
       "prevControl": {
-        "x": 3.413302573287086,
-        "y": 1.7361581733515878
+        "x": 3.042513591524794,
+        "y": 1.479673666065625
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,7 +38,7 @@
     "maxAngularVelocity": 600.0,
     "maxAngularAcceleration": 1500.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7405221894906182,
-        "y": 2.3795734335016516
+        "x": 2.2964345698612947,
+        "y": 1.8570345426826143
       },
       "isLocked": false,
       "linkedName": "C Score"
@@ -20,8 +20,8 @@
         "y": 0.5824370659722217
       },
       "prevControl": {
-        "x": 2.2295525328160517,
-        "y": 2.1475515972810397
+        "x": 2.559046819395655,
+        "y": 2.0764115042444518
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,7 +38,7 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
