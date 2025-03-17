@@ -14,7 +14,9 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.LimelightHelpers;
+import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.PhotonVision;
 
 public class AlignToTagSimpleLimelight extends Command {
     CommandSwerveDrivetrain m_drive;
@@ -71,9 +73,12 @@ public class AlignToTagSimpleLimelight extends Command {
         double[] botPoseTarget = LimelightHelpers.getBotPose_TargetSpace("");
         if (!foundTag) {
             // 5 is yaw
-            m_driveRequest.TargetDirection = new Rotation2d(m_drive.getState().Pose.getRotation().getRadians() + (botPoseTarget[5]));
+            // m_driveRequest.TargetDirection = new Rotation2d(m_drive.getState().Pose.getRotation().getRadians() + (botPoseTarget[5]));
+            m_driveRequest.TargetDirection = 
+                VisionConstants.aprilTagFieldLayout.getTagPose(PhotonVision.getInstance().lastResult.getTargets().get(0).fiducialId).get().getRotation().toRotation2d();
             foundTag = true;
         }else {
+            x_error = botPoseTarget[2];
             if (isLeftReef) {
                 x_error += 1.0;
             }else {

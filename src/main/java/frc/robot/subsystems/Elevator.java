@@ -23,7 +23,7 @@ public class Elevator extends SubsystemBase {
     RelativeEncoder elevatorEncoder = null;
     PIDController elevatorController = null;
     private final TrapezoidProfile m_profile =
-        new TrapezoidProfile(new TrapezoidProfile.Constraints(1000.0, 130.0));
+        new TrapezoidProfile(new TrapezoidProfile.Constraints(10000.0, 150.0));
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
     // ShuffleboardTab elevatorTab = null;

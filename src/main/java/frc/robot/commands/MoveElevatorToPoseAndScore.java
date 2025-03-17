@@ -41,7 +41,7 @@ public class MoveElevatorToPoseAndScore extends Command {
         // TODO: check if within bound and activate actuator
         m_elevator.seekPosition();
         
-        if (m_hand.atPose()) {
+        if (m_hand.getWristAngle() > .1) {
             m_elevator.setElevatorToPosition(targetPose.elevatorPosition);
             // System.out.println("at pose");
             if (m_elevator.atPose()) {

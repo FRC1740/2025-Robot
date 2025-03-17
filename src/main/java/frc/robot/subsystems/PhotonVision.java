@@ -33,7 +33,7 @@ public class PhotonVision extends SubsystemBase {
     PhotonPoseEstimator Cam2PoseEstimator;
     PhotonPoseEstimator Cam1PoseEstimator;
     PhotonTrackedTarget bestTarget;
-    PhotonPipelineResult lastResult;
+    public PhotonPipelineResult lastResult;
     String lastCamName;
     CommandSwerveDrivetrain m_drive;
     Pose2d pose = new Pose2d();

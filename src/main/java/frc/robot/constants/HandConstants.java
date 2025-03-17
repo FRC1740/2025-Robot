@@ -1,7 +1,7 @@
 package frc.robot.constants;
 
 public class HandConstants {
-    public static final int wristCurrentLimit = 10; // amps
+    public static final int wristCurrentLimit = 15; // amps
 
     public static final double kWristP = 4.0;
     public static final double kWristI = 0.0;
