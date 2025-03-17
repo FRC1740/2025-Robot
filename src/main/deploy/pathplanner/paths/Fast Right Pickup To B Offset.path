@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7713718894675916,
-        "y": 0.5737604890046293
+        "x": 1.7696249276620357,
+        "y": 0.5824370659722217
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7708444102956857,
-        "y": 2.158806480120412
+        "x": 2.7690974484901334,
+        "y": 2.1674830570880066
       },
       "isLocked": false,
       "linkedName": "Fast Right Pickup"
@@ -33,15 +33,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 9.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.3,
+    "velocity": 5.0,
     "rotation": 0.0
   },
   "reversed": false,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": -125.70732832569489
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

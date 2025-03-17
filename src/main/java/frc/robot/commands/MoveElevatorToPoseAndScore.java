@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ElevatorCommandConstants.ElevatorPose;
@@ -54,6 +55,9 @@ public class MoveElevatorToPoseAndScore extends Command {
     
     @Override
     public boolean isFinished() {
+        if (RobotBase.isSimulation()) {
+            return true;
+        }
         boolean ended = m_hand.atPose() && passedElevatorCutoff && m_elevator.atPose();
         if (!ended) {
             timeAtPose.restart();

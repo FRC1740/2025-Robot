@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.9473903078874537,
-        "y": 2.790452389875461
+        "x": 3.9764711629949794,
+        "y": 2.7949697599500802
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1443744955027677,
-        "y": 2.107474126499077
+        "x": 3.1734553506102934,
+        "y": 2.111991496573696
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "D Score"
     },
     {
       "anchor": {
@@ -62,7 +62,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 56.33456169424547
+    "rotation": 60.36239643955245
   },
   "useDefaultConstraints": false
 }

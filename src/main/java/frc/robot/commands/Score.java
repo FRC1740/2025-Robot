@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
@@ -31,6 +33,9 @@ public class Score extends Command {
     
     @Override
     public boolean isFinished() {
+        if (RobotBase.isSimulation()) {
+            return runTime.get() > .3;
+        }
         return !m_hand.getIfHaveCoral() && runTime.get() > .3;
     }
 
