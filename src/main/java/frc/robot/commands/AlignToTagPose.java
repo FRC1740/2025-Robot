@@ -35,7 +35,6 @@ public class AlignToTagPose extends Command {
     boolean XFinished;
     boolean YFinished;
     boolean ThetaFinished;
-    boolean isLeftReef; // A C E etc
     Pose2d targetPose = null;
     Pose2d rotatedGoal = null;
     Double MaxSpeed = null;
@@ -59,7 +58,7 @@ public class AlignToTagPose extends Command {
      * </br>
      * This command <b>DOES DRIVE</b>
      */
-    public AlignToTagPose(boolean leftReef, SwerveRequest.FieldCentric driveRequest, 
+    public AlignToTagPose(SwerveRequest.FieldCentric driveRequest, 
             Double DriveMaxSpeed, Double DriveMaxAngularRate) {
                 
         m_drive = CommandSwerveDrivetrain.getInstance();
@@ -67,8 +66,6 @@ public class AlignToTagPose extends Command {
         MaxSpeed = DriveMaxSpeed;
         MaxAngularRate = DriveMaxAngularRate;
         m_driveRequest = driveRequest;
-
-        this.isLeftReef = leftReef;
 
         addRequirements(m_drive);
         addRequirements(m_photonvision);
@@ -95,7 +92,8 @@ public class AlignToTagPose extends Command {
             distanceToTag = target.bestCameraToTarget; // getTranslationToAprilTag may be incorrect
 
             double leftToRightOffset = VisionConstants.reefLeftRightOffset;
-            if (!isLeftReef) {
+            System.out.println(m_photonvision.targetingLeftReef);
+            if (!m_photonvision.targetingLeftReef) {
                 leftToRightOffset *= -1;
             }
 

@@ -140,7 +140,7 @@ public class RobotContainer {
         // joystick.rightBumper().whileTrue(
         //     new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
         joystick.rightBumper().whileTrue(
-            new AlignToTagPose(true, drive, MaxSpeed, MaxAngularRate));
+            new AlignToTagPose(drive, MaxSpeed, MaxAngularRate));
 
         joystick.leftBumper().whileTrue(
             m_drivetrain.applyRequest(() ->
@@ -176,6 +176,12 @@ public class RobotContainer {
                 m_hand.seekPosition();
             }, m_hand)
         );
+        coDriverController2.axisLessThan(2, -.5).onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = true; System.out.println(photonvision.targetingLeftReef);}) 
+        );
+        coDriverController2.button(8).onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; System.out.println(photonvision.targetingLeftReef);}) 
+        );
 
         // joystick.a().onTrue(
         //     new MoveElevatorToPose(new ElevatorPose(1.0, .75 * Math.PI), elevator, hand)
@@ -202,7 +208,7 @@ public class RobotContainer {
         joystick.x().whileTrue(
             new SequentialCommandGroup(
                 new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score), // TODO! we don't want to drive w/ up but it's fine for now
-                new AlignToTagPose(true, drive, MaxSpeed, MaxAngularRate),
+                // new AlignToTagPose(true, drive, MaxSpeed, MaxAngularRate),
                 new InstantCommand(() -> m_hand.score())
             )
         );
