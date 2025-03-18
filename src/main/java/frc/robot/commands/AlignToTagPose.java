@@ -41,6 +41,7 @@ public class AlignToTagPose extends Command {
     Pose2d rotatedGoal = null;
     Double MaxSpeed = null;
     Double MaxAngularRate = null;
+    boolean hitFirstPose = false;
     SwerveRequest.FieldCentric m_driveRequest;
 
     NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
@@ -91,8 +92,6 @@ public class AlignToTagPose extends Command {
         }
 
         if (targetPose != null) {
-            distanceToTag = target.bestCameraToTarget; // getTranslationToAprilTag may be incorrect
-
             double leftToRightOffset = VisionConstants.reefLeftRightOffset;
             System.out.println(m_photonvision.targetingLeftReef);
             if (!m_photonvision.targetingLeftReef) {
@@ -107,7 +106,10 @@ public class AlignToTagPose extends Command {
                 L4Offset = VisionConstants.reefL4Offset;
             }
 
-            rotatedGoal = new Pose2d(DriveCommandConstants.xGoal + L4Offset, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+            rotatedGoal = new Pose2d(DriveCommandConstants.x2Goal + L4Offset, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+            if (hitFirstPose) {
+                rotatedGoal = new Pose2d(DriveCommandConstants.xGoal + L4Offset, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+            }
             rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
 
             rotatedGoal = new Pose2d(
@@ -125,10 +127,6 @@ public class AlignToTagPose extends Command {
             
             // flip because mechs on "back"
             theta_error = normalizeAngle(angleToTag);
-            // System.out.println("angle: " + angleToTag);
-            // System.out.println("x: " + x_error);
-            // System.out.println("y: " + y_error);
-            // x_error = 0;
 
             // control flip on red ds, so invert PID outputs
             if (m_drive.m_operatorPerspectiveFlipped) {
@@ -159,6 +157,10 @@ public class AlignToTagPose extends Command {
             XFinished = Math.abs(x_error) < DriveCommandConstants.kXToleranceMeters;
             YFinished = Math.abs(y_error) < DriveCommandConstants.kYToleranceMeters;
             ThetaFinished = Math.abs(theta_error) < DriveCommandConstants.kThetaToleranceRadians;
+            if (XFinished && YFinished && ThetaFinished) {
+                hitFirstPose = true;
+            }
+            
         }
     }
 
@@ -170,6 +172,7 @@ public class AlignToTagPose extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return XFinished && YFinished && ThetaFinished;
+        // return XFinished && YFinished && ThetaFinished;
+        return false;
     }
 }

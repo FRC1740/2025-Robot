@@ -5,7 +5,7 @@ public class DriveCommandConstants {
     public static final double kXI = 0.04; // don't do anything rn
     public static final double kXD = 0; // don't do anything rn
 
-    public static final double kYP = kXP * 5.0; // side to side
+    public static final double kYP = kXP; // side to side
     public static final double kYI = kXI;
     public static final double kYD = kXD;
 
@@ -13,9 +13,10 @@ public class DriveCommandConstants {
     public static final double kMaxAccel = 0;
 
     public static final double xGoal = .42; // .42 is aligned bumper
+    public static final double x2Goal = xGoal + .1; // .42 is aligned bumper
     public static final double yGoal = 0;
     public static final double kThetaP = 0.5;
-    public static final double kXToleranceMeters = 0.03;
-    public static final double kYToleranceMeters = 0.01;
+    public static final double kXToleranceMeters = 0.1;
+    public static final double kYToleranceMeters = 0.04;
     public static final double kThetaToleranceRadians = 0.1;
 }
