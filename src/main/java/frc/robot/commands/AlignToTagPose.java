@@ -131,9 +131,9 @@ public class AlignToTagPose extends Command {
             // x_error = 0;
 
             // control flip on red ds, so invert PID outputs
-            if (m_drive.m_hasAppliedOperatorPerspective) {
-                // x_error *= -1;
-                // y_error *= -1;
+            if (m_drive.m_operatorPerspectiveFlipped) {
+                x_error *= -1;
+                y_error *= -1;
             }
 
             if (Math.abs(x_error) < 0.005) {
