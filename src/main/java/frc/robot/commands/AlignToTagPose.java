@@ -18,6 +18,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.CoDriverControl;
+import frc.robot.CoDriverControl.CoDriverInput;
 import frc.robot.constants.DriveCommandConstants;
 import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -97,7 +99,15 @@ public class AlignToTagPose extends Command {
                 leftToRightOffset *= -1;
             }
 
-            rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+            leftToRightOffset += VisionConstants.reefAlignmentFudge; // foo fac to recenter
+
+            double L4Offset = 0.0;
+
+            if (CoDriverControl.getInstance().atL4()) {
+                L4Offset = VisionConstants.reefL4Offset;
+            }
+
+            rotatedGoal = new Pose2d(DriveCommandConstants.xGoal + L4Offset, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
             rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
 
             rotatedGoal = new Pose2d(

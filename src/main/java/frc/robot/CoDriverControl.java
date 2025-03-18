@@ -132,4 +132,8 @@ public class CoDriverControl {
             // }
         }
     }
+
+    public boolean atL4() {
+        return lastCoDriverInput == CoDriverInput.L4;
+    }
 }
