@@ -80,6 +80,7 @@ public class AlignToTagPose extends Command {
     @Override
     public void initialize() {
         timeAligning.restart();
+        hitFirstPose = false;
     }
 
     // Called every time the scheduler runs while the command is scheduled.

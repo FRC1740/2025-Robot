@@ -17,10 +17,10 @@ public final class VisionConstants {
 
     public static final Double reefL4Offset = 0.04;  // How far back to go to score L4
     public static final Double reefLeftRightOffset = 0.14;  // for scoring
-    public static final Double reefAlignmentFudge = -0.0;
+    public static final Double reefAlignmentFudge = -0.02;
 
     public static final Double cam12FrontBackOffset = 0.2; // 8in is .2m
-    public static final Double cam12Dist = 0.15; // 10.5in is .27m
+    public static final Double cam12Dist = 0.22; // 10.5in is .27m
 
     public static AprilTagFieldLayout aprilTagFieldLayout = null;
 

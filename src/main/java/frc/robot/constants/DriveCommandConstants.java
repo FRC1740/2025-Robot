@@ -13,7 +13,7 @@ public class DriveCommandConstants {
     public static final double kMaxAccel = 0;
 
     public static final double xGoal = .42; // .42 is aligned bumper
-    public static final double x2Goal = xGoal + .1; // .42 is aligned bumper
+    public static final double x2Goal = xGoal + .5; // .42 is aligned bumper
     public static final double yGoal = 0;
     public static final double kThetaP = 0.5;
     public static final double kXToleranceMeters = 0.1;
