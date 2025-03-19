@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CoDriverControl;
 import frc.robot.CoDriverControl.CoDriverInput;
@@ -43,6 +44,7 @@ public class AlignToTagPose extends Command {
     Double MaxAngularRate = null;
     boolean hitFirstPose = false;
     SwerveRequest.FieldCentric m_driveRequest;
+    Timer timeAligning = new Timer();
 
     NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
 
@@ -76,7 +78,9 @@ public class AlignToTagPose extends Command {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        timeAligning.restart();
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
@@ -134,17 +138,20 @@ public class AlignToTagPose extends Command {
                 y_error *= -1;
             }
 
-            if (Math.abs(x_error) < 0.005) {
+            if (Math.abs(x_error) < 0.0005) {
                 x_error = 0.0;
             }
-            if (Math.abs(y_error) < 0.005) {
+            if (Math.abs(y_error) < 0.0005) {
                 y_error = 0.0;
             }
 
+            double pidX = DriveCommandConstants.kXP + DriveCommandConstants.kXI * timeAligning.get();
+            double pidY = DriveCommandConstants.kYP + DriveCommandConstants.kYI * timeAligning.get();
+
             m_drive.setControl(
-                    m_driveRequest.withVelocityX(DriveCommandConstants.kXP * x_error * MaxSpeed) // Drive forward with
+                    m_driveRequest.withVelocityX(pidX * x_error * MaxSpeed) // Drive forward with
                                                                                                  // negative Y (forward)
-                            .withVelocityY(DriveCommandConstants.kYP * y_error * MaxSpeed) // Drive left with negative X
+                            .withVelocityY(pidY * y_error * MaxSpeed) // Drive left with negative X
                                                                                            // (left)
                             .withRotationalRate(-DriveCommandConstants.kThetaP * theta_error * MaxAngularRate) // Drive
                                                                                                                // counterclockwise

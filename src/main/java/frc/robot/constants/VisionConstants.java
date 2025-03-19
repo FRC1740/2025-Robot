@@ -16,8 +16,8 @@ public final class VisionConstants {
     public static final Double AprilTagMinimumArea = 0.0;
 
     public static final Double reefL4Offset = 0.04;  // How far back to go to score L4
-    public static final Double reefLeftRightOffset = 0.12;  // for scoring
-    public static final Double reefAlignmentFudge = -0.02;
+    public static final Double reefLeftRightOffset = 0.14;  // for scoring
+    public static final Double reefAlignmentFudge = -0.0;
 
     public static final Double cam12FrontBackOffset = 0.2; // 8in is .2m
     public static final Double cam12Dist = 0.15; // 10.5in is .27m
@@ -34,8 +34,9 @@ public final class VisionConstants {
         }
     }
 
-    public static final Transform3d RobotToCam1 = new Transform3d(cam12FrontBackOffset, -cam12Dist, 0.0, new Rotation3d(0.0, 0.0, -.07));
-    public static final Transform3d RobotToCam2 = new Transform3d(cam12FrontBackOffset, cam12Dist, 0.0, new Rotation3d(0.0, 0.0, .07));
+    public static final Transform3d RobotToCam1 = new Transform3d(cam12FrontBackOffset, -cam12Dist, 0.0, new Rotation3d(0.0, 0.0, -.0));
+    
+    public static final Transform3d RobotToCam2 = new Transform3d(cam12FrontBackOffset, cam12Dist, 0.0, new Rotation3d(0.0, 0.0, .0));
 
     public enum AprilTagIDs {
         RedSpeakerCenter(4), // Center tag on red speaker
