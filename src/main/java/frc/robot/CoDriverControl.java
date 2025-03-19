@@ -86,7 +86,7 @@ public class CoDriverControl {
                             elevatorControl = new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score);
                             break;
                         case L4:
-                            elevatorControl = new SequentialCommandGroup(
+                            elevatorControl = new ParallelCommandGroup(
                                 new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score),
                                 new L4CoralTap()
                             );

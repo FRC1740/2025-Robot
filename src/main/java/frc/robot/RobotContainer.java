@@ -177,10 +177,10 @@ public class RobotContainer {
             }, m_hand)
         );
         coDriverController2.axisLessThan(2, -.5).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = true; System.out.println(photonvision.targetingLeftReef);}) 
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; System.out.println(photonvision.targetingLeftReef);}) 
         );
         coDriverController2.button(8).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = false; System.out.println(photonvision.targetingLeftReef);}) 
+            new InstantCommand(() -> {photonvision.targetingLeftReef = true; System.out.println(photonvision.targetingLeftReef);}) 
         );
 
         // joystick.a().onTrue(
