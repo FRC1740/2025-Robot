@@ -205,13 +205,13 @@ public class RobotContainer {
         //     new InstantCommand(() -> hand.stop())
         // );
 
-        joystick.x().whileTrue(
-            new SequentialCommandGroup(
-                new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score), // TODO! we don't want to drive w/ up but it's fine for now
-                // new AlignToTagPose(true, drive, MaxSpeed, MaxAngularRate),
-                new InstantCommand(() -> m_hand.score())
-            )
-        );
+        // joystick.x().whileTrue(
+        //     new SequentialCommandGroup(
+        //         new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score), // TODO! we don't want to drive w/ up but it's fine for now
+        //         // new AlignToTagPose(true, drive, MaxSpeed, MaxAngularRate),
+        //         new InstantCommand(() -> m_hand.score())
+        //     )
+        // );
 
         // joystick.a().onTrue(
         //     new InstantCommand(() -> hand.score())
@@ -291,14 +291,14 @@ public class RobotContainer {
         //         elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
         // }));
 
-        coDriverController1.button(6).onTrue( // HOME
+        coDriverController1.button(10).onTrue( // HOME
             new InstantCommand(() -> {
                 m_climber.climb();
         })).onFalse(
             new InstantCommand(() -> {
                 m_climber.stop();
         }));
-        coDriverController1.button(5).onTrue( // S
+        coDriverController1.button(11).onTrue( // S
             new InstantCommand(() -> {
                 m_climber.unclimb();
         })).onFalse(

@@ -27,7 +27,7 @@ public class Elevator extends SubsystemBase {
         new TrapezoidProfile(new TrapezoidProfile.Constraints(10000.0, 150.0));
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
-    // ShuffleboardTab elevatorTab = null;
+
     public double targetPosition = 0.0;
     
     Telemetry m_telemetry = null;
@@ -83,6 +83,19 @@ public class Elevator extends SubsystemBase {
         m_setpoint = m_profile.calculate(kDt, m_setpoint, m_goal);
         elevatorController.setSetpoint(m_setpoint.position);
         double output = elevatorController.calculate(elevatorEncoder.getPosition());
+        // if ((Math.abs(elevatorEncoder.getPosition() - m_goal.position) > ElevatorConstants.kFFDeadband) && 
+        //     (Math.abs(elevatorEncoder.getPosition()) > ElevatorConstants.kFFGroundOffset)) {
+
+        //     output += (ElevatorConstants.kFF) * Math.signum(output);
+        // }
+
+        // if ((output > 0.0) && 
+        //     (Math.abs(elevatorEncoder.getPosition()) < ElevatorConstants.kGroundHalvingOffset)) {// going down and near bottom
+        //     output /= 5.0;
+        // }
+
+        
+
         elevator.set(output);
 
         // System.out.println(elevatorController.calculate(elevatorEncoder.getPosition()) * ElevatorConstants.outputFactor);

@@ -14,6 +14,7 @@ import frc.robot.constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
     SparkBase climber = null; // rotates to pos
+    SparkBase climberWheel = null; // rotates to pos
 
     private static Climber instance;
 
@@ -26,13 +27,23 @@ public class Climber extends SubsystemBase {
     
     public Climber() {
         climber = new SparkMax(CanIds.climberCanId, MotorType.kBrushless);
-        SparkMaxConfig wristConfig = new SparkMaxConfig();
+        SparkMaxConfig climberConfig = new SparkMaxConfig();
         
-        wristConfig.smartCurrentLimit(ClimberConstants.climberCurrentLimit);
+        climberConfig.smartCurrentLimit(ClimberConstants.climberCurrentLimit);
 
-        wristConfig.idleMode(IdleMode.kBrake);
+        climberConfig.idleMode(IdleMode.kBrake);
         
-        climber.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        climber.configure(climberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+
+        climberWheel = new SparkMax(CanIds.climberWheelCanId, MotorType.kBrushless);
+        SparkMaxConfig climberWheelConfig = new SparkMaxConfig();
+        
+        climberWheelConfig.smartCurrentLimit(ClimberConstants.climberWheelCurrentLimit);
+
+        climberWheelConfig.idleMode(IdleMode.kBrake);
+        
+        climber.configure(climberWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     /**
@@ -40,6 +51,7 @@ public class Climber extends SubsystemBase {
      */
     public void unclimb() {
         climber.set(1.0);
+        climberWheel.set(.75);
     }
     /**
      * Stops climbing
@@ -52,5 +64,6 @@ public class Climber extends SubsystemBase {
      */
     public void climb() {
         climber.set(-.75);
+        climberWheel.set(0.0);
     }
 }
