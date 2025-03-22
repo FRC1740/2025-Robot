@@ -325,14 +325,14 @@ public class RobotContainer {
         //         elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
         // }));
 
-        coDriverController1.button(10).onTrue( // HOME
+        coDriverController2.axisGreaterThan(2, .5).onTrue( // Ramen
             new InstantCommand(() -> {
                 m_climber.climb();
         })).onFalse(
             new InstantCommand(() -> {
                 m_climber.stop();
         }));
-        coDriverController1.button(11).onTrue( // S
+        coDriverController2.button(4).onTrue( // Crane
             new InstantCommand(() -> {
                 m_climber.unclimb();
         })).onFalse(
