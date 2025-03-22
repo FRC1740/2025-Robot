@@ -37,6 +37,7 @@ public class CoDriverControl {
     }
     
     public CoDriverInput lastCoDriverInput = null;
+    public CoDriverInput selectedPosition = null;
     public Command elevatorControl = new InstantCommand();
     Elevator m_elevator = null; 
     Hand m_hand = null;
@@ -126,10 +127,20 @@ public class CoDriverControl {
                     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow)
                 );
                 elevatorControl.schedule(); // stop algaeing
+            }else if (input == CoDriverInput.A || input == CoDriverInput.B || 
+                input == CoDriverInput.C || input == CoDriverInput.D || 
+                input == CoDriverInput.E || input == CoDriverInput.F || 
+                input == CoDriverInput.G || input == CoDriverInput.H || 
+                input == CoDriverInput.I || input == CoDriverInput.J || 
+                input == CoDriverInput.K || input == CoDriverInput.L) {
+
+                selectedPosition = input;
+
+
             }
             // if (isPress) {
-                lastCoDriverInput = input;
-            // }
+
+            lastCoDriverInput = input;
         }
     }
 

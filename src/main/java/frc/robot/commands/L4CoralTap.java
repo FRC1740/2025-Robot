@@ -3,6 +3,8 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.ElevatorConstants;
+import frc.robot.constants.HandConstants;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
 
@@ -22,12 +24,13 @@ public class L4CoralTap extends Command {
     @Override
     public void initialize() {
         tapTimer.reset();
+        tapTimer.stop();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (!tapTimer.isRunning() && m_hand.atPose()) {
+        if (!tapTimer.isRunning() && m_hand.getWristAngle() > .2) {
             tapTimer.restart();
             m_hand.intake();
         }
