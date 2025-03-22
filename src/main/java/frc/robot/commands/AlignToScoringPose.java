@@ -73,7 +73,7 @@ public class AlignToScoringPose extends Command {
         MaxAngularRate = DriveMaxAngularRate;
         m_driveRequest = driveRequest;
         this.selectedPosition = selectedPosition;
-        System.out.println(selectedPosition);
+        // System.out.println(selectedPosition);
 
         addRequirements(m_drive);
         addRequirements(m_photonvision);
@@ -96,6 +96,7 @@ public class AlignToScoringPose extends Command {
             switch (selectedPosition) {
                 case A:
                 case B:
+                System.out.println("AB");
                     if (!m_drive.m_operatorPerspectiveFlipped) { // blue
                         tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(18);
                     }else {
@@ -105,6 +106,7 @@ public class AlignToScoringPose extends Command {
                     break;
                 case C:
                 case D:
+                System.out.println("C");
                     if (!m_drive.m_operatorPerspectiveFlipped) { // blue
                         tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(17);
                     }else {
@@ -156,7 +158,6 @@ public class AlignToScoringPose extends Command {
             // TODO! check if reef tag
             if (tagPose.isPresent()) {
                 targetPose = tagPose.get().toPose2d();
-                System.out.println(targetPose);
             }
         }
 
