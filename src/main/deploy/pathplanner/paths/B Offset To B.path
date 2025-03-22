@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.615479129557837,
-        "y": 3.862721343252305
+        "x": 2.5118507667824064,
+        "y": 3.841918402777777
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.088808815133747,
-        "y": 3.8760740585079057
+        "x": 2.9851804523583163,
+        "y": 3.855271118033378
       },
       "isLocked": false,
       "linkedName": "B Offset"
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.7,
+    "maxVelocity": 0.5,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,

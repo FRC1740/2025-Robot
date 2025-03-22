@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AlgaeEject;
 import frc.robot.commands.Intake;
+import frc.robot.commands.IntakeTeleop;
 import frc.robot.commands.L4CoralTap;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
 import frc.robot.commands.Score;
@@ -116,7 +117,7 @@ public class CoDriverControl {
                 elevatorControl.schedule();
             }else if(input == CoDriverInput.L0){
                 elevatorControl.cancel();
-                elevatorControl = new Intake();
+                elevatorControl = new IntakeTeleop();
                 elevatorControl.schedule();
             }else if (input == CoDriverInput.L2Algae && isPress) {
                 elevatorControl.cancel();
