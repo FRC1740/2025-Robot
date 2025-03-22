@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.CoDriverControl.CoDriverInput;
+import frc.robot.commands.AlignToScoringPose;
 import frc.robot.commands.AlignToTagPathplanner;
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.AlignToTagPoseHelp;
@@ -60,6 +61,7 @@ public class RobotContainer {
     public final Hand m_hand = Hand.getInstance();
     public final Climber m_climber = Climber.getInstance();
     public CoDriverControl m_coDriverControl = CoDriverControl.getInstance();
+    CoDriverInput selectedPose = CoDriverInput.A;
 
     public final PhotonVision photonvision = PhotonVision.getInstance();
 
@@ -139,8 +141,10 @@ public class RobotContainer {
         //         new AlignToTagPoseHelp(true, drive, MaxSpeed, MaxAngularRate, joystick));
         // joystick.rightBumper().whileTrue(
         //     new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
-        joystick.rightBumper().whileTrue(
-            new AlignToTagPose(drive, MaxSpeed, MaxAngularRate));
+        // joystick.rightBumper().whileTrue(
+        //     new AlignToTagPose(drive, MaxSpeed, MaxAngularRate));
+            joystick.rightBumper().whileTrue(
+                new AlignToScoringPose(drive, MaxSpeed, MaxAngularRate, selectedPose));
 
         joystick.leftBumper().whileTrue(
             m_drivetrain.applyRequest(() ->
@@ -177,10 +181,40 @@ public class RobotContainer {
             }, m_hand)
         );
         coDriverController2.axisLessThan(2, -.5).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = false; m_coDriverControl.sendInput(CoDriverInput.A, true);}) 
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; selectedPose = CoDriverInput.A;}) 
         );
         coDriverController2.button(8).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = true; m_coDriverControl.sendInput(CoDriverInput.B, true);}) 
+            new InstantCommand(() -> {photonvision.targetingLeftReef = true; selectedPose = CoDriverInput.B;}) 
+        );
+        coDriverController2.button(7).onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; selectedPose = CoDriverInput.C;}) 
+        );
+        // coDriverController2.button(7).onTrue( // TODO! D
+        //     new InstantCommand(() -> {photonvision.targetingLeftReef = true; m_coDriverControl.sendInput(CoDriverInput.C, true);}) 
+        // );
+        coDriverController2.button(3).onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; selectedPose = CoDriverInput.E;}) 
+        );
+        coDriverController2.button(2).onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = true; selectedPose = CoDriverInput.F;}) 
+        );
+        coDriverController2.povLeft().onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; selectedPose = CoDriverInput.G;}) 
+        );
+        coDriverController2.povRight().onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = true; selectedPose = CoDriverInput.H;}) 
+        );
+        coDriverController1.povUp().onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; selectedPose = CoDriverInput.I;}) 
+        );
+        coDriverController1.povLeft().onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = true; selectedPose = CoDriverInput.J;}) 
+        );
+        coDriverController1.povRight().onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; selectedPose = CoDriverInput.K;}) 
+        );
+        coDriverController2.button(5).onTrue(
+            new InstantCommand(() -> {photonvision.targetingLeftReef = true; selectedPose = CoDriverInput.L;}) 
         );
 
         // joystick.a().onTrue(

@@ -45,6 +45,7 @@ public class AlignToScoringPose extends Command {
     boolean hitFirstPose = false;
     SwerveRequest.FieldCentric m_driveRequest;
     Timer timeAligning = new Timer();
+    CoDriverInput selectedPosition = null;
 
     NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
 
@@ -64,13 +65,15 @@ public class AlignToScoringPose extends Command {
      * This command <b>DOES DRIVE</b>
      */
     public AlignToScoringPose(SwerveRequest.FieldCentric driveRequest, 
-            Double DriveMaxSpeed, Double DriveMaxAngularRate) {
+            Double DriveMaxSpeed, Double DriveMaxAngularRate, CoDriverInput selectedPosition) {
                 
         m_drive = CommandSwerveDrivetrain.getInstance();
         m_photonvision = PhotonVision.getInstance();
         MaxSpeed = DriveMaxSpeed;
         MaxAngularRate = DriveMaxAngularRate;
         m_driveRequest = driveRequest;
+        this.selectedPosition = selectedPosition;
+        System.out.println(selectedPosition);
 
         addRequirements(m_drive);
         addRequirements(m_photonvision);
@@ -86,42 +89,64 @@ public class AlignToScoringPose extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // System.err.println("ex");
         PhotonTrackedTarget target = m_photonvision.getBestTarget();
-        if (target != null) {
+        if (targetPose == null) {
             int ID;
             Optional<Pose3d> tagPose = null;
-            CoDriverInput selected = CoDriverControl.getInstance().selectedPosition;
-            switch (selected) {
+            switch (selectedPosition) {
                 case A:
                 case B:
-                    tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(18);
-                    m_photonvision.targetingLeftReef = (selected == CoDriverInput.A);
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(18);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(7);
+                    }
+                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.A);
                     break;
                 case C:
                 case D:
-                    tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(17);
-                    m_photonvision.targetingLeftReef = (selected == CoDriverInput.C);
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(17);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(8);
+                    }
+                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.C);
                     break;
                 case E:
                 case F:
-                    tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(22);
-                    m_photonvision.targetingLeftReef = (selected == CoDriverInput.E);
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(22);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(9);
+                    }
+                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.E);
                     break;
                 case G:
                 case H:
-                    tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(21);
-                    m_photonvision.targetingLeftReef = (selected == CoDriverInput.G);
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(21);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(10);
+                    }
+                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.G);
                     break;
                 case I:
                 case J:
-                    tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(20);
-                    m_photonvision.targetingLeftReef = (selected == CoDriverInput.I);
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(20);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(11);
+                    }
+                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.I);
                     break;
                 case K:
                 case L:
-                    tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(19);
-                    m_photonvision.targetingLeftReef = (selected == CoDriverInput.K);
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(19);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(6);
+                    }
+                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.K);
                     break;
                 default:
                 break;
@@ -131,12 +156,13 @@ public class AlignToScoringPose extends Command {
             // TODO! check if reef tag
             if (tagPose.isPresent()) {
                 targetPose = tagPose.get().toPose2d();
+                System.out.println(targetPose);
             }
         }
 
         if (targetPose != null) {
             double leftToRightOffset = VisionConstants.reefLeftRightOffset;
-            System.out.println(m_photonvision.targetingLeftReef);
+            // System.out.println(m_photonvision.targetingLeftReef);
             if (!m_photonvision.targetingLeftReef) {
                 leftToRightOffset *= -1;
             }
