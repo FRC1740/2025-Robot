@@ -83,14 +83,18 @@ public class Elevator extends SubsystemBase {
         m_setpoint = m_profile.calculate(kDt, m_setpoint, m_goal);
         elevatorController.setSetpoint(m_setpoint.position);
         double output = elevatorController.calculate(elevatorEncoder.getPosition());
-        // if ((Math.abs(elevatorEncoder.getPosition() - m_goal.position) > ElevatorConstants.kFFDeadband) && 
-        //     (Math.abs(elevatorEncoder.getPosition()) > ElevatorConstants.kFFGroundOffset)) {
+        if ((Math.abs(elevatorEncoder.getPosition() - m_goal.position) > ElevatorConstants.kFFDeadband) && 
+            (Math.abs(elevatorEncoder.getPosition()) > ElevatorConstants.kFFGroundOffset)) {
 
-        //     output += (ElevatorConstants.kFF) * Math.signum(output);
-        // }
+            output += (ElevatorConstants.kFF) * Math.signum(output);
+        }
 
-        // if ((output > 0.0) && 
-        //     (Math.abs(elevatorEncoder.getPosition()) < ElevatorConstants.kGroundHalvingOffset)) {// going down and near bottom
+        if ((output > 0.0) && 
+            (Math.abs(elevatorEncoder.getPosition()) < ElevatorConstants.kGroundHalvingOffset)) {// going down and near bottom
+            output /= 5.0;
+        }
+        // if ((output < 0.0) && 
+        //     (Math.abs(elevatorEncoder.getPosition()) > ElevatorConstants.k4HalvingOffset)) {// going down and near bottom
         //     output /= 5.0;
         // }
 

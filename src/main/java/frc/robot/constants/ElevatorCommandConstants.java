@@ -17,10 +17,10 @@ public class ElevatorCommandConstants {
     public static ElevatorPose L1Score = new ElevatorPose(-7.7, 0.39);
     public static ElevatorPose L2Score = new ElevatorPose(-4.19, 0.2);
     public static ElevatorPose L3Score = new ElevatorPose(-12.2, 0.2);
-    public static ElevatorPose L4Score = new ElevatorPose(-29.5, 0.38);
+    public static ElevatorPose L4Score = new ElevatorPose(-28.7, 0.38);
     public static ElevatorPose L2Algae = new ElevatorPose(-2.7, 0.28);
     public static ElevatorPose L3Algae = new ElevatorPose(-10, 0.27);
-    public static ElevatorPose Stow = new ElevatorPose(0.0, 0.1);
+    public static ElevatorPose Stow = new ElevatorPose(0.2, 0.1);
     public static ElevatorPose Intake = new ElevatorPose(-5.5, .09);
 
     /**
