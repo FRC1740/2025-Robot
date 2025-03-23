@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.IntegerPublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
@@ -63,6 +64,7 @@ public class Telemetry {
     private final NetworkTable driveTable = inst.getTable("Pose");
     private final DoubleArrayPublisher fieldPub = driveTable.getDoubleArrayTopic("robotPose").publish();
     private final StringPublisher fieldTypePub = driveTable.getStringTopic(".type").publish();
+    private final IntegerPublisher selectedPose = driveTable.getIntegerTopic("SelectedPose").publish();
 
     /* Robot pose for wrist */
     private final NetworkTable wristTable = inst.getTable("Wrist");
@@ -168,5 +170,8 @@ public class Telemetry {
         this.elevatorCurrentDraw.set(elevatorCurrentDraw);
         this.elevatorMotorOutput.set(elevatorMotorOutput);
         this.elevatorAtPose.set(elevatorAtPose);
+    }
+    public void telemeterizeButtonBox(int selectedPose) {
+        this.selectedPose.set(selectedPose);
     }
 }

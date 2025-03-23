@@ -67,7 +67,7 @@ public class CoDriverControl {
                 input == CoDriverInput.K || input == CoDriverInput.L) {
 
                 selectedPosition = input;
-                System.out.println(selectedPosition);
+                System.out.println("selectedPosition");
 
 
 
@@ -152,5 +152,8 @@ public class CoDriverControl {
 
     public boolean atL4() {
         return lastCoDriverInput == CoDriverInput.L4;
+    }
+    public CoDriverInput getPose() {
+        return selectedPosition;
     }
 }

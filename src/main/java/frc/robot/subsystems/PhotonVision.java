@@ -21,6 +21,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CoDriverControl.CoDriverInput;
 import frc.robot.constants.VisionConstants;
 
 /**
@@ -38,6 +39,7 @@ public class PhotonVision extends SubsystemBase {
     CommandSwerveDrivetrain m_drive;
     Pose2d pose = new Pose2d();
     public boolean targetingLeftReef = false;
+    public CoDriverInput selectedPosition = CoDriverInput.A;
 
     NetworkTable VisionTable = NetworkTableInstance.getDefault().getTable("Vision");
     StructArrayPublisher<Pose2d> Cam1Publisher = VisionTable

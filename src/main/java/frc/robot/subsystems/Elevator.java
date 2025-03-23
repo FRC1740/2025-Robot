@@ -93,10 +93,6 @@ public class Elevator extends SubsystemBase {
             (Math.abs(elevatorEncoder.getPosition()) < ElevatorConstants.kGroundHalvingOffset)) {// going down and near bottom
             output /= 5.0;
         }
-        // if ((output < 0.0) && 
-        //     (Math.abs(elevatorEncoder.getPosition()) > ElevatorConstants.k4HalvingOffset)) {// going down and near bottom
-        //     output /= 5.0;
-        // }
 
         
 
