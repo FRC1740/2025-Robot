@@ -10,7 +10,7 @@ public class HandConstants {
     public static final double minimumWristAngle = 0.05;
     public static final double maximumWristAngle = 0.6;
 
-    public static final int linearActuatorCurrentLimit = 20;  // amps
+    public static final int linearActuatorCurrentLimit = 25;  // amps
 
     public static final double safePassingAngle = 0.1;
 }
