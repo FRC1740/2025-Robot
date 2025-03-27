@@ -67,7 +67,7 @@ public class CoDriverControl {
                 input == CoDriverInput.K || input == CoDriverInput.L) {
 
                 selectedPosition = input;
-                System.out.println("selectedPosition");
+                
 
 
 

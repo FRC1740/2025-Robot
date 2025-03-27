@@ -72,7 +72,7 @@ public class AlignToScoringPose extends Command {
         MaxSpeed = DriveMaxSpeed;
         MaxAngularRate = DriveMaxAngularRate;
         m_driveRequest = driveRequest;
-        this.selectedPosition = m_photonvision.selectedPosition;
+        this.selectedPosition = selectedPosition;
         // System.out.println(selectedPosition);
 
         addRequirements(m_drive);
