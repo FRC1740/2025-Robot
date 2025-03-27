@@ -84,16 +84,17 @@ public class AlignToScoringPose extends Command {
     public void initialize() {
         timeAligning.restart();
         hitFirstPose = false;
+        targetPose = null;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         PhotonTrackedTarget target = m_photonvision.getBestTarget();
-        if (targetPose == null) {
+        if (true) {
             int ID;
             Optional<Pose3d> tagPose = null;
-            switch (selectedPosition) {
+            switch (m_photonvision.selectedPosition) {
                 case A:
                 case B:
                 System.out.println("AB");
@@ -102,7 +103,7 @@ public class AlignToScoringPose extends Command {
                     }else {
                         tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(7);
                     }
-                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.A);
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.A);
                     break;
                 case C:
                 case D:
@@ -112,7 +113,7 @@ public class AlignToScoringPose extends Command {
                     }else {
                         tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(8);
                     }
-                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.C);
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.C);
                     break;
                 case E:
                 case F:
@@ -121,7 +122,7 @@ public class AlignToScoringPose extends Command {
                     }else {
                         tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(9);
                     }
-                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.E);
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.E);
                     break;
                 case G:
                 case H:
@@ -130,7 +131,7 @@ public class AlignToScoringPose extends Command {
                     }else {
                         tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(10);
                     }
-                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.G);
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.G);
                     break;
                 case I:
                 case J:
@@ -139,7 +140,7 @@ public class AlignToScoringPose extends Command {
                     }else {
                         tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(11);
                     }
-                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.I);
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.I);
                     break;
                 case K:
                 case L:
@@ -148,7 +149,7 @@ public class AlignToScoringPose extends Command {
                     }else {
                         tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(6);
                     }
-                    m_photonvision.targetingLeftReef = (selectedPosition == CoDriverInput.K);
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.K);
                     break;
                 default:
                 break;
@@ -164,7 +165,7 @@ public class AlignToScoringPose extends Command {
         if (targetPose != null) {
             double leftToRightOffset = VisionConstants.reefLeftRightOffset;
             // System.out.println(m_photonvision.targetingLeftReef);
-            if (!m_photonvision.targetingLeftReef) {
+            if (m_photonvision.targetingLeftReef) {
                 leftToRightOffset *= -1;
             }
 
