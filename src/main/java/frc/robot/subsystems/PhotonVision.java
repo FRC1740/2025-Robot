@@ -39,7 +39,7 @@ public class PhotonVision extends SubsystemBase {
     CommandSwerveDrivetrain m_drive;
     Pose2d pose = new Pose2d();
     public boolean targetingLeftReef = false;
-    public CoDriverInput selectedPosition = CoDriverInput.A;
+    public CoDriverInput selectedPosition = CoDriverInput.J;
 
     NetworkTable VisionTable = NetworkTableInstance.getDefault().getTable("Vision");
     StructArrayPublisher<Pose2d> Cam1Publisher = VisionTable

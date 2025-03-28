@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.CoDriverControl.CoDriverInput;
 import frc.robot.RobotContainer;
 import frc.robot.constants.DriveCommandConstants;
 import frc.robot.constants.VisionConstants;
@@ -105,10 +106,70 @@ public class AlignToTagPathplanner extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // System.err.println("ex");
-        PhotonTrackedTarget target = m_photonvision.getBestTarget();
-        if (target != null) {
-            Optional<Pose3d> tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(target.fiducialId);
+        if (true) {
+            Optional<Pose3d> tagPose = null;
+            switch (m_photonvision.selectedPosition) {
+                case A:
+                case B:
+                System.out.println("AB");
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(18);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(7);
+                    }
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.A);
+                    break;
+                case C:
+                case D:
+                System.out.println("C");
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(17);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(8);
+                    }
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.C);
+                    break;
+                case E:
+                case F:
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(22);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(9);
+                    }
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.E);
+                    break;
+                case G:
+                case H:
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(21);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(10);
+                    }
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.G);
+                    break;
+                case I:
+                case J:
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(20);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(11);
+                    }
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.I);
+                    break;
+                case K:
+                case L:
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(19);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(6);
+                    }
+                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.K);
+                    break;
+                default:
+                break;
+
+            }
+
             // TODO! check if reef tag
             if (tagPose.isPresent()) {
                 targetPose = tagPose.get().toPose2d();
@@ -117,7 +178,6 @@ public class AlignToTagPathplanner extends Command {
 
         if (targetPose != null) {
             if (pathDrive == null) {
-                distanceToTag = target.bestCameraToTarget; // getTranslationToAprilTag may be incorrect
 
                 double leftToRightOffset = VisionConstants.reefLeftRightOffset;
                 if (!isLeftReef) {
@@ -147,7 +207,7 @@ public class AlignToTagPathplanner extends Command {
                         waypoints,
                         constraints,
                         null, // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
-                        new GoalEndState(0.0, targetPose.getRotation()) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
+                        new GoalEndState(0.0, rotatedGoal.getRotation()) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
                 );
 
                 // Prevent the path from being flipped if the coordinates are already correct
@@ -175,11 +235,10 @@ public class AlignToTagPathplanner extends Command {
                             m_drive // Reference to this subsystem to set requirements
                     );
                     pathDrive.initialize();
+                    pathDrive.schedule();
                 } catch (Exception ex) {
                     DriverStation.reportError("Failed to load PathPlanner config and configure On The Fly Path", ex.getStackTrace());
                 }
-            }else {
-                pathDrive.execute();
             }
         }
     }
@@ -188,6 +247,7 @@ public class AlignToTagPathplanner extends Command {
     @Override
     public void end(boolean interrupted) {
         pathDrive.cancel();
+        pathDrive.end(true);
     }
 
     // Returns true when the command should end.
