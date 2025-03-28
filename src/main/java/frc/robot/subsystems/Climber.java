@@ -63,7 +63,7 @@ public class Climber extends SubsystemBase {
      * Runs climber in
      */
     public void climb() {
-        climber.set(-.75);
+        climber.set(-1.0);
         climberWheel.set(0.0);
     }
 }
