@@ -13,6 +13,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -20,11 +21,13 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.pathfinding.Pathfinding;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
@@ -62,6 +65,7 @@ public class AlignToTagPathplanner extends Command {
     CommandXboxController m_joystick = null;
     double strafe = 0.0;
     Timer timeRunning = new Timer();
+    Pathfinding pathfinder = null;
     Command pathDrive = null;
 
     NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
@@ -106,6 +110,7 @@ public class AlignToTagPathplanner extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
         if (true) {
             Optional<Pose3d> tagPose = null;
             switch (m_photonvision.selectedPosition) {
@@ -177,7 +182,7 @@ public class AlignToTagPathplanner extends Command {
         }
 
         if (targetPose != null) {
-            if (pathDrive == null) {
+            if (pathfinder == null) {
 
                 double leftToRightOffset = VisionConstants.reefLeftRightOffset;
                 if (!isLeftReef) {
@@ -194,60 +199,55 @@ public class AlignToTagPathplanner extends Command {
                                                                                 // target
                 PosePublisher.set(new Pose2d[] { rotatedGoal });
 
-                List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-                    m_drive.getState().Pose,
-                    rotatedGoal
-                );
+                pathfinder = new Pathfinding();
 
-                PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
-                // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); // You can also use unlimited constraints, only limited by motor torque and nominal battery voltage
+                Pathfinding.ensureInitialized();
+                Pathfinding.setGoalPosition(rotatedGoal.getTranslation());
+                Pathfinding.setStartPosition(m_drive.getState().Pose.getTranslation());
+            }
 
-                // Create the path using the waypoints created above
-                PathPlannerPath path = new PathPlannerPath(
-                        waypoints,
-                        constraints,
-                        null, // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
-                        new GoalEndState(0.0, rotatedGoal.getRotation()) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
-                );
+            try {
+                if (Pathfinding.isNewPathAvailable()) {
 
-                // Prevent the path from being flipped if the coordinates are already correct
-                path.preventFlipping = true;
-                m_drive.configureAutoBuilder();
-                try {
+                    if (pathDrive != null) { pathDrive.end(false);}
+
                     pathDrive = new FollowPathCommand(
-                            path,
-                            () ->  m_drive.getState().Pose, // Robot pose supplier
-                            () ->  m_drive.getState().Speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                            (speeds, feedforwards) -> m_drive.setControl(
-                                m_drive.m_pathApplyRobotSpeeds.withSpeeds(speeds)
-                                    .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
-                                    .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
-                            ),
-                            new PPHolonomicDriveController(
-                                // PID constants for translation
-                                new PIDConstants(10, 0, 0),
-                                // PID constants for rotation
-                                new PIDConstants(7, 0, 0)
-                            ),
-                            RobotConfig.fromGUISettings(),
-                            // Assume the path needs to be flipped for Red vs Blue, this is normally the case
-                            () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
-                            m_drive // Reference to this subsystem to set requirements
+                        Pathfinding.getCurrentPath(constraints, new GoalEndState(0.0, rotatedGoal.getRotation())),
+
+                        () ->  m_drive.getState().Pose, // Robot pose supplier
+                        () ->  m_drive.getState().Speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                        (speeds, feedforwards) -> m_drive.setControl(
+                            m_drive.m_pathApplyRobotSpeeds.withSpeeds(speeds)
+                                .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
+                                .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
+                        ),
+                        new PPHolonomicDriveController(
+                            // PID constants for translation
+                            new PIDConstants(10, 0, 0),
+                            // PID constants for rotation
+                            new PIDConstants(7, 0, 0)
+                        ),
+                        RobotConfig.fromGUISettings(),
+                        // Assume the path needs to be flipped for Red vs Blue, this is normally the case
+                        () -> false,
+                        m_drive // Reference to this subsystem to set requirements
                     );
                     pathDrive.initialize();
                     pathDrive.schedule();
-                } catch (Exception ex) {
-                    DriverStation.reportError("Failed to load PathPlanner config and configure On The Fly Path", ex.getStackTrace());
                 }
-            }
+            } catch (Exception ex) {
+                DriverStation.reportError("Failed to load PathPlanner config and configure On The Fly Path", ex.getStackTrace());}
+
         }
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        pathDrive.cancel();
-        pathDrive.end(true);
+        if (pathDrive != null) {
+            pathDrive.cancel();
+            pathDrive.end(true);
+        }
     }
 
     // Returns true when the command should end.
