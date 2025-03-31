@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.json.simple.parser.ParseException;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -63,10 +64,12 @@ public class AlignToTagPathplanner extends Command {
     Double MaxAngularRate = null;
     SwerveRequest.FieldCentric m_driveRequest;
     CommandXboxController m_joystick = null;
-    double strafe = 0.0;
     Timer timeRunning = new Timer();
     Pathfinding pathfinder = null;
     Command pathDrive = null;
+    RobotConfig config = null;
+    boolean finishedFirstPath = false;
+    boolean finished = false;
 
     NetworkTable DriveTrainTable = NetworkTableInstance.getDefault().getTable("DriveTrain");
 
@@ -94,8 +97,15 @@ public class AlignToTagPathplanner extends Command {
         MaxSpeed = DriveMaxSpeed;
         MaxAngularRate = DriveMaxAngularRate;
         m_driveRequest = driveRequest;
+        finishedFirstPath = false;
 
         this.isLeftReef = leftReef;
+            
+        try {    
+            config = RobotConfig.fromGUISettings();
+        }catch (Exception ex) {
+
+        }
 
         addRequirements(m_drive);
         addRequirements(m_photonvision);
@@ -104,14 +114,17 @@ public class AlignToTagPathplanner extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        finished = false;
+        finishedFirstPath = false;
+        targetPose = null;
         timeRunning.start();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
-        if (true) {
+        PathConstraints constraints = new PathConstraints(8.0, 3.0, 4 * Math.PI, 6 * Math.PI); // The constraints for this path.
+        if (targetPose == null) {
             Optional<Pose3d> tagPose = null;
             switch (m_photonvision.selectedPosition) {
                 case A:
@@ -174,22 +187,25 @@ public class AlignToTagPathplanner extends Command {
                 break;
 
             }
+            Random rand = new Random();
+
+            tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(rand.nextInt(22-6) + 5);
 
             // TODO! check if reef tag
             if (tagPose.isPresent()) {
                 targetPose = tagPose.get().toPose2d();
             }
-        }
-
-        if (targetPose != null) {
+        }else {
             if (pathfinder == null) {
 
                 double leftToRightOffset = VisionConstants.reefLeftRightOffset;
                 if (!isLeftReef) {
                     leftToRightOffset *= -1;
                 }
-
-                rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset + strafe, new Rotation2d());
+                rotatedGoal = new Pose2d(DriveCommandConstants.x2Goal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                if (finishedFirstPath) {
+                    rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                }
                 rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
 
                 rotatedGoal = new Pose2d(
@@ -206,13 +222,29 @@ public class AlignToTagPathplanner extends Command {
                 Pathfinding.setStartPosition(m_drive.getState().Pose.getTranslation());
             }
 
-            try {
-                if (Pathfinding.isNewPathAvailable()) {
 
-                    if (pathDrive != null) { pathDrive.end(false);}
+            if (pathDrive != null) { 
+                if(pathDrive.isFinished()) {
+                    pathfinder = null;
+                    if (finishedFirstPath) { // finished fr
+                        finished = true;
+                    }
+                    finishedFirstPath = true;
+                    pathDrive = null;
+                }  
+            }
 
+            if (Pathfinding.isNewPathAvailable() && !finished && pathfinder != null) {
+
+                if (pathDrive != null) { 
+
+                    pathDrive.end(false);
+                }
+
+                PathPlannerPath path = Pathfinding.getCurrentPath(constraints, new GoalEndState(0.0, rotatedGoal.getRotation()));
+                if (path != null) {
                     pathDrive = new FollowPathCommand(
-                        Pathfinding.getCurrentPath(constraints, new GoalEndState(0.0, rotatedGoal.getRotation())),
+                        path,
 
                         () ->  m_drive.getState().Pose, // Robot pose supplier
                         () ->  m_drive.getState().Speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -227,17 +259,23 @@ public class AlignToTagPathplanner extends Command {
                             // PID constants for rotation
                             new PIDConstants(7, 0, 0)
                         ),
-                        RobotConfig.fromGUISettings(),
+                        config,
                         // Assume the path needs to be flipped for Red vs Blue, this is normally the case
                         () -> false,
                         m_drive // Reference to this subsystem to set requirements
                     );
-                    pathDrive.initialize();
-                    pathDrive.schedule();
-                }
-            } catch (Exception ex) {
-                DriverStation.reportError("Failed to load PathPlanner config and configure On The Fly Path", ex.getStackTrace());}
 
+                    pathDrive.initialize();
+                }else {
+                    // need to reset because failed config
+                    pathfinder = null;
+                    pathDrive = null;
+                }
+                
+            }
+            if (pathDrive != null && !finished) {
+                pathDrive.execute();
+            }
         }
     }
 
@@ -246,7 +284,8 @@ public class AlignToTagPathplanner extends Command {
     public void end(boolean interrupted) {
         if (pathDrive != null) {
             pathDrive.cancel();
-            pathDrive.end(true);
+            pathDrive = null;
+            pathfinder = null;
         }
     }
 
@@ -254,6 +293,6 @@ public class AlignToTagPathplanner extends Command {
     @Override
     public boolean isFinished() {
         // return XFinished && YFinished && ThetaFinished;
-        return false; // strafe
+        return finished; // strafe
     }
 }

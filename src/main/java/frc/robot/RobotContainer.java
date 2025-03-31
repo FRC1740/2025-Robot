@@ -147,8 +147,8 @@ public class RobotContainer {
         
         joystick.rightBumper().whileTrue(
             new AlignToScoringPose(drive, MaxSpeed, MaxAngularRate, photonvision.selectedPosition));
-        // joystick.button(1).whileTrue(
-        //         new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
+        joystick.button(1).whileTrue(
+                new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
 
         joystick.leftBumper().whileTrue(
             m_drivetrain.applyRequest(() ->
