@@ -190,6 +190,7 @@ public class AlignToTagPathplanner extends Command {
             Random rand = new Random();
 
             tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(rand.nextInt(22-6) + 5);
+            isLeftReef = (int)m_drive.getState().Timestamp % 2 == 0;
 
             // TODO! check if reef tag
             if (tagPose.isPresent()) {
