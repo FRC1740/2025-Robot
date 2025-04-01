@@ -149,6 +149,10 @@ public class RobotContainer {
             new AlignToScoringPose(drive, MaxSpeed, MaxAngularRate, photonvision.selectedPosition));
         joystick.button(1).whileTrue(
                 new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
+        joystick.button(2).onTrue( new InstantCommand(() -> {
+            photonvision.selectedPosition = CoDriverInput.E;}));
+        joystick.button(3).onTrue( new InstantCommand(() -> {
+            photonvision.selectedPosition = CoDriverInput.LeftSource;}));
 
         joystick.leftBumper().whileTrue(
             m_drivetrain.applyRequest(() ->

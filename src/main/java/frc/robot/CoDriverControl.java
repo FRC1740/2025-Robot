@@ -23,6 +23,8 @@ public class CoDriverControl {
         L4,
         L2Algae,
         L3Algae,
+        LeftSource,
+        RightSource,
         A,
         B,
         C,

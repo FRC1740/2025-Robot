@@ -124,6 +124,7 @@ public class AlignToTagPathplanner extends Command {
     @Override
     public void execute() {
         PathConstraints constraints = new PathConstraints(8.0, 3.0, 4 * Math.PI, 6 * Math.PI); // The constraints for this path.
+
         if (targetPose == null) {
             Optional<Pose3d> tagPose = null;
             switch (m_photonvision.selectedPosition) {
@@ -183,14 +184,29 @@ public class AlignToTagPathplanner extends Command {
                     }
                     m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.K);
                     break;
+                case LeftSource:
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(13);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(1);
+                    }
+                    break;
+                case RightSource:
+                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(12);
+                    }else {
+                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(2);
+                    }
+                    break;
+                    
                 default:
                 break;
 
             }
             Random rand = new Random();
 
-            tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(rand.nextInt(22-6) + 5);
-            isLeftReef = (int)m_drive.getState().Timestamp % 2 == 0;
+            // tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(rand.nextInt(22-6) + 5);
+            // isLeftReef = (int)m_drive.getState().Timestamp % 2 == 0;
 
             // TODO! check if reef tag
             if (tagPose.isPresent()) {
