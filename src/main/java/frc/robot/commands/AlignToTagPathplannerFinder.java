@@ -45,7 +45,7 @@ import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
 
-public class AlignToTagPathplanner extends Command {
+public class AlignToTagPathplannerFinder extends Command {
     CommandSwerveDrivetrain m_drive;
     private PhotonVision m_photonvision;
 
@@ -88,7 +88,7 @@ public class AlignToTagPathplanner extends Command {
      * </br>
      * This command <b>DOES DRIVE</b>
      */
-    public AlignToTagPathplanner(boolean leftReef, SwerveRequest.FieldCentric driveRequest, 
+    public AlignToTagPathplannerFinder(boolean leftReef, SwerveRequest.FieldCentric driveRequest, 
             Double DriveMaxSpeed, Double DriveMaxAngularRate, CommandXboxController joystick) {
                 
         m_joystick = joystick;
@@ -205,7 +205,8 @@ public class AlignToTagPathplanner extends Command {
             }
             Random rand = new Random();
 
-            isLeftReef = !m_photonvision.targetingLeftReef;
+            // tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(rand.nextInt(22-6) + 5);
+            // isLeftReef = (int)m_drive.getState().Timestamp % 2 == 0;
 
             // TODO! check if reef tag
             if (tagPose.isPresent()) {
@@ -218,8 +219,6 @@ public class AlignToTagPathplanner extends Command {
                 if (!isLeftReef) {
                     leftToRightOffset *= -1;
                 }
-                leftToRightOffset += VisionConstants.reefAlignmentFudge;
-
                 rotatedGoal = new Pose2d(DriveCommandConstants.x2Goal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
                 if (finishedFirstPath) {
                     rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
