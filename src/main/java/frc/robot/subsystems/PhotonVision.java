@@ -37,6 +37,7 @@ public class PhotonVision extends SubsystemBase {
     public PhotonPipelineResult lastResult;
     String lastCamName;
     CommandSwerveDrivetrain m_drive;
+    QuestNavSubsystem m_quest;
     Pose2d pose = new Pose2d();
     public boolean targetingLeftReef = false;
     public CoDriverInput selectedPosition = CoDriverInput.J;
@@ -58,6 +59,7 @@ public class PhotonVision extends SubsystemBase {
 
     public PhotonVision() {
         m_drive = CommandSwerveDrivetrain.getInstance();
+        m_quest = QuestNavSubsystem.getInstance();
         cam = new PhotonCamera(VisionConstants.camName);
         cam2 = new PhotonCamera(VisionConstants.cam2Name);
         cam.setDriverMode(false);
@@ -96,6 +98,10 @@ public class PhotonVision extends SubsystemBase {
                             pose.getRotation()),
                             // m_drive.getState().Pose.getRotation()), // ignore vision rot
                         result.getTimestampSeconds());
+
+                    if (result.getBestTarget().poseAmbiguity < VisionConstants.questVisionUpdateThreshold) {
+                        m_quest.setPose(pose);
+                    }
 
                     // // publish results
                     if (lastCamName == VisionConstants.camName) {

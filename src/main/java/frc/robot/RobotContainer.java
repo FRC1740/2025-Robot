@@ -37,6 +37,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.QuestNavSubsystem;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -60,6 +61,7 @@ public class RobotContainer {
     public final Elevator m_elevator = Elevator.getInstance();
     public final Hand m_hand = Hand.getInstance();
     public final Climber m_climber = Climber.getInstance();
+    public final QuestNavSubsystem m_quest = QuestNavSubsystem.getInstance();
     public CoDriverControl m_coDriverControl = CoDriverControl.getInstance();
     CoDriverInput selectedPose = CoDriverInput.A;
 
