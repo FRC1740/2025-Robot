@@ -43,6 +43,7 @@ import frc.robot.RobotContainer;
 import frc.robot.constants.DriveCommandConstants;
 import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Pathfind;
 import frc.robot.subsystems.PhotonVision;
 
 public class AlignToTagPathplanner extends Command {
@@ -67,6 +68,7 @@ public class AlignToTagPathplanner extends Command {
     Timer timeRunning = new Timer();
     Pathfinding pathfinder = null;
     Command pathDrive = null;
+    Pathfind m_pathfind;
     RobotConfig config = null;
     boolean finishedFirstPath = false;
     boolean finished = false;
@@ -89,10 +91,11 @@ public class AlignToTagPathplanner extends Command {
      * This command <b>DOES DRIVE</b>
      */
     public AlignToTagPathplanner(boolean leftReef, SwerveRequest.FieldCentric driveRequest, 
-            Double DriveMaxSpeed, Double DriveMaxAngularRate, CommandXboxController joystick) {
+            Double DriveMaxSpeed, Double DriveMaxAngularRate, CommandXboxController joystick, Pathfind pathfind) {
                 
         m_joystick = joystick;
         m_drive = CommandSwerveDrivetrain.getInstance();
+        m_pathfind = pathfind;
         m_photonvision = PhotonVision.getInstance();
         MaxSpeed = DriveMaxSpeed;
         MaxAngularRate = DriveMaxAngularRate;
@@ -118,192 +121,15 @@ public class AlignToTagPathplanner extends Command {
         finishedFirstPath = false;
         targetPose = null;
         timeRunning.start();
+        m_pathfind.start();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        PathConstraints constraints = new PathConstraints(8.0, 3.0, 4 * Math.PI, 6 * Math.PI); // The constraints for this path.
-
-        if (targetPose == null) {
-            Optional<Pose3d> tagPose = null;
-            switch (m_photonvision.selectedPosition) {
-                case A:
-                case B:
-                System.out.println("AB");
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(18);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(7);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.A);
-                    break;
-                case C:
-                case D:
-                System.out.println("C");
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(17);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(8);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.C);
-                    break;
-                case E:
-                case F:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(22);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(9);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.E);
-                    break;
-                case G:
-                case H:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(21);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(10);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.G);
-                    break;
-                case I:
-                case J:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(20);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(11);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.I);
-                    break;
-                case K:
-                case L:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(19);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(6);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.K);
-                    break;
-                case LeftSource:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(13);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(1);
-                    }
-                    break;
-                case RightSource:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(12);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(2);
-                    }
-                    break;
-                    
-                default:
-                break;
-
-            }
-            Random rand = new Random();
-
-            isLeftReef = !m_photonvision.targetingLeftReef;
-
-            // TODO! check if reef tag
-            if (tagPose.isPresent()) {
-                targetPose = tagPose.get().toPose2d();
-            }
-        }else {
-            if (pathfinder == null) {
-
-                double leftToRightOffset = VisionConstants.reefLeftRightOffset;
-                if (!isLeftReef) {
-                    leftToRightOffset *= -1;
-                }
-                leftToRightOffset += VisionConstants.reefAlignmentFudge;
-
-                rotatedGoal = new Pose2d(DriveCommandConstants.x2Goal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
-                if (finishedFirstPath) {
-                    rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
-                }
-                rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
-
-                rotatedGoal = new Pose2d(
-                        (targetPose.getX() + rotatedGoal.getX()), // apply target offsets
-                        (targetPose.getY() + rotatedGoal.getY()),
-                        targetPose.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot
-                                                                                // target
-                PosePublisher.set(new Pose2d[] { rotatedGoal });
-
-                pathfinder = new Pathfinding();
-
-                Pathfinding.ensureInitialized();
-                Pathfinding.setGoalPosition(rotatedGoal.getTranslation());
-                Pathfinding.setStartPosition(m_drive.getState().Pose.getTranslation());
-            }
-
-
-            if (pathDrive != null) { 
-                if(pathDrive.isFinished()) {
-                    pathfinder = null;
-                    if (finishedFirstPath) { // finished fr
-                        finished = true;
-                    }
-                    finishedFirstPath = true;
-                    pathDrive = null;
-                }  
-            }
-
-            if (Pathfinding.isNewPathAvailable() && !finished && pathfinder != null) {
-
-                if (pathDrive != null) { 
-
-                    pathDrive.end(false);
-                }
-
-                PathPlannerPath path = Pathfinding.getCurrentPath(constraints, new GoalEndState(0.0, rotatedGoal.getRotation()));
-                if (path != null) {
-                    pathDrive = new FollowPathCommand(
-                        path,
-
-                        () ->  m_drive.getState().Pose, // Robot pose supplier
-                        () ->  m_drive.getState().Speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                        (speeds, feedforwards) -> m_drive.setControl(
-                            m_drive.m_pathApplyRobotSpeeds.withSpeeds(speeds)
-                                .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
-                                .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
-                        ),
-                        new PPHolonomicDriveController(
-                            // PID constants for translation
-                            new PIDConstants(10, 0, 0),
-                            // PID constants for rotation
-                            new PIDConstants(7, 0, 0)
-                        ),
-                        config,
-                        // Assume the path needs to be flipped for Red vs Blue, this is normally the case
-                        () -> false,
-                        m_drive // Reference to this subsystem to set requirements
-                    );
-
-                    pathDrive.initialize();
-                }else {
-                    // need to reset because failed config
-                    pathfinder = null;
-                    pathDrive = null;
-                }
-                
-            }
-            if (pathDrive != null && !finished) {
-                pathDrive.execute();
-            }
-        }
-    }
-
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-        if (pathDrive != null) {
-            pathDrive.cancel();
-            pathDrive = null;
-            pathfinder = null;
+        Command path = m_pathfind.getPath();
+        if (path != null) {
+            path.execute();
         }
     }
 
@@ -312,5 +138,11 @@ public class AlignToTagPathplanner extends Command {
     public boolean isFinished() {
         // return XFinished && YFinished && ThetaFinished;
         return finished; // strafe
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        m_pathfind.end();
     }
 }

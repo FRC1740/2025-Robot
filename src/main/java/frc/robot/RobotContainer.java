@@ -36,6 +36,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
+import frc.robot.subsystems.Pathfind;
 import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
@@ -60,6 +61,7 @@ public class RobotContainer {
     public final Elevator m_elevator = Elevator.getInstance();
     public final Hand m_hand = Hand.getInstance();
     public final Climber m_climber = Climber.getInstance();
+    public final Pathfind m_pathfind = Pathfind.getInstance();
     public CoDriverControl m_coDriverControl = CoDriverControl.getInstance();
     CoDriverInput selectedPose = CoDriverInput.A;
 
@@ -146,7 +148,7 @@ public class RobotContainer {
 
         
         joystick.rightBumper().whileTrue(
-                new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
+                new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick, m_pathfind));
 
         joystick.leftBumper().whileTrue(
             m_drivetrain.applyRequest(() ->
@@ -183,22 +185,22 @@ public class RobotContainer {
             }, m_hand)
         );
         coDriverController2.axisLessThan(2, -.5).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = true; photonvision.selectedPosition = CoDriverInput.A;}) 
+            new InstantCommand(() -> {m_pathfind.setScoringPosition(CoDriverInput.A);}) 
         );
         coDriverController2.button(8).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = false; photonvision.selectedPosition = CoDriverInput.B;}) 
+            new InstantCommand(() -> {m_pathfind.setScoringPosition(CoDriverInput.B);}) 
         );
         coDriverController2.button(7).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = true; photonvision.selectedPosition = CoDriverInput.C;}) 
+            new InstantCommand(() -> {m_pathfind.setScoringPosition(CoDriverInput.C);}) 
         );
         // coDriverController2.button(7).onTrue( // TODO! D
         //     new InstantCommand(() -> {photonvision.targetingLeftReef = false; m_coDriverControl.sendInput(CoDriverInput.C, true);}) 
         // );
         coDriverController2.button(3).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = true; photonvision.selectedPosition = CoDriverInput.E;}) 
+            new InstantCommand(() -> {m_pathfind.setScoringPosition(CoDriverInput.E);}) 
         );
         coDriverController2.button(2).onTrue(
-            new InstantCommand(() -> {photonvision.targetingLeftReef = false; photonvision.selectedPosition = CoDriverInput.F;}) 
+            new InstantCommand(() -> {m_pathfind.setScoringPosition(CoDriverInput.F);}) 
         );
         coDriverController2.povLeft().onTrue(
             new InstantCommand(() -> {photonvision.targetingLeftReef = true; photonvision.selectedPosition = CoDriverInput.G;}) 
