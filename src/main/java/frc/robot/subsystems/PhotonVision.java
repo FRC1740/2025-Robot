@@ -99,6 +99,7 @@ public class PhotonVision extends SubsystemBase {
                             // m_drive.getState().Pose.getRotation()), // ignore vision rot
                         result.getTimestampSeconds());
 
+                    // TODO! if disabled, should constantly set pose
                     if (result.getBestTarget().poseAmbiguity < VisionConstants.questVisionUpdateThreshold) {
                         m_quest.setPose(pose);
                     }

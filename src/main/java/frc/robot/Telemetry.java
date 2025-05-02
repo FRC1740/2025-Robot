@@ -84,6 +84,11 @@ public class Telemetry {
     private final DoublePublisher elevatorMotorOutput = elevatorTable.getDoubleTopic("ElevatorMotorOutput").publish();
     private final BooleanPublisher elevatorAtPose = elevatorTable.getBooleanTopic("ElevatorAtPose").publish();
 
+    /* Robot pose for elevator */
+    private final NetworkTable climberTable = inst.getTable("Climber");
+    private final DoublePublisher climberPosition = climberTable.getDoubleTopic("ClimberPosition").publish();
+    private final DoublePublisher climberCurrentDraw = climberTable.getDoubleTopic("ClimberCurrentDraw").publish();
+
     /* Mechanisms to represent the swerve module states */
     private final Mechanism2d[] m_moduleMechanisms = new Mechanism2d[] {
         new Mechanism2d(1, 1),
@@ -173,5 +178,9 @@ public class Telemetry {
     }
     public void telemeterizeButtonBox(int selectedPose) {
         this.selectedPose.set(selectedPose);
+    }
+    public void telemeterizeElevator(double climberPosition, double climberCurrentDraw) {
+        this.climberPosition.set(climberPosition);
+        this.climberCurrentDraw.set(climberCurrentDraw);
     }
 }
