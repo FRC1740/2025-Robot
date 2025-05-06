@@ -3,7 +3,7 @@ package frc.robot.constants;
 public class HandConstants {
     public static final int wristCurrentLimit = 15; // amps
 
-    public static final double kWristP = 7.0;
+    public static final double kWristP = 15.0;
     public static final double kWristI = 0.0;
     public static final double kWristD = 0.0;
 
