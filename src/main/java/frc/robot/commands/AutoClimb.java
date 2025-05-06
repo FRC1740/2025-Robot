@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ClimberConstants;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hand;
 
@@ -14,9 +15,11 @@ public class AutoClimb extends Command {
     boolean extended;
     boolean hooked;
     Timer hookedTimer;
+    CommandSwerveDrivetrain m_drive;
 
     public AutoClimb() {
         m_climber = Climber.getInstance();
+        m_drive = CommandSwerveDrivetrain.getInstance();
     }
 
     // Called when the command is initially scheduled.
@@ -47,7 +50,7 @@ public class AutoClimb extends Command {
                 hookedTimer.reset();
             }
 
-            if (hookedTimer.get() > 1.0) {
+            if (hookedTimer.get() > .5) {
                 hooked = true;
             }
 
