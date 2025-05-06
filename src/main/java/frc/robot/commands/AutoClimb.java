@@ -13,6 +13,7 @@ public class AutoClimb extends Command {
     Climber m_climber;
     boolean extended;
     boolean hooked;
+    Timer hookedTimer;
 
     public AutoClimb() {
         m_climber = Climber.getInstance();
@@ -23,6 +24,8 @@ public class AutoClimb extends Command {
     public void initialize() {
         extended = false;
         hooked = false;
+        hookedTimer = new Timer();
+        hookedTimer.reset();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -30,17 +33,26 @@ public class AutoClimb extends Command {
     public void execute() {
         if (!extended) {
             m_climber.unclimb();
-            if (m_climber.getPosition() > ClimberConstants.extendedPosition) {
+            if (m_climber.getPosition() < ClimberConstants.extendedPosition * 5 || m_climber.getPosition() > 1.0 - ClimberConstants.extendedPosition) {
                 extended = true;
                 m_climber.stop(); // wheel stays spinning
             }
         }else {
             // TODO! this probably needs rolling average or a timer
             if (m_climber.getWheelCurrentDraw() > ClimberConstants.latchedCurrentDraw) {
+                hookedTimer.start();
+                // System.out.println("started timer");
+            }else {
+                hookedTimer.stop();
+                hookedTimer.reset();
+            }
+
+            if (hookedTimer.get() > 1.0) {
                 hooked = true;
             }
 
             if (hooked) {
+                System.out.println("climbing");
                 if (m_climber.getPosition() > ClimberConstants.climbedPosition) {
                     m_climber.climb();
                 }else {

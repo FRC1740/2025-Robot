@@ -41,8 +41,6 @@ public class Climber extends SubsystemBase {
         
         climber.configure(climberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        encoder = climber.getAbsoluteEncoder();
-
         climberWheel = new SparkMax(CanIds.climberWheelCanId, MotorType.kBrushless);
         SparkMaxConfig climberWheelConfig = new SparkMaxConfig();
         
@@ -51,6 +49,8 @@ public class Climber extends SubsystemBase {
         climberWheelConfig.idleMode(IdleMode.kBrake);
         
         climber.configure(climberWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        encoder = climberWheel.getAbsoluteEncoder(); // rotation encoder was easier to mount on wheel
     }
 
     @Override

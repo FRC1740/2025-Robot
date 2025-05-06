@@ -26,6 +26,7 @@ import frc.robot.commands.AlignToTagPathplanner;
 import frc.robot.commands.AlignToTagPose;
 import frc.robot.commands.AlignToTagPoseHelp;
 import frc.robot.commands.AlignToTagSimpleLimelight;
+import frc.robot.commands.AutoClimb;
 import frc.robot.commands.Intake;
 import frc.robot.commands.L4CoralTap;
 import frc.robot.commands.MoveElevatorToPoseAndScore;
@@ -329,16 +330,15 @@ public class RobotContainer {
         //         elevator.setElevatorToPosition(elevator.targetPosition + 1.0);
         // }));
 
-        coDriverController2.axisGreaterThan(2, .5).onTrue( // Ramen
-            new InstantCommand(() -> {
-                m_climber.climb();
-        })).onFalse(
+        coDriverController2.axisGreaterThan(2, .5).whileTrue( // Ramen
+            new AutoClimb()
+        ).onFalse(
             new InstantCommand(() -> {
                 m_climber.stop();
         }));
         coDriverController2.button(4).onTrue( // Crane
             new InstantCommand(() -> {
-                m_climber.unclimb();
+                m_climber.climb();
         })).onFalse(
             new InstantCommand(() -> {
                 m_climber.stop();
