@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.CoDriverControl;
 import frc.robot.CoDriverControl.CoDriverInput;
 import frc.robot.RobotContainer;
 import frc.robot.constants.DriveCommandConstants;
@@ -220,10 +221,17 @@ public class AlignToTagPathplanner extends Command {
                 }
                 leftToRightOffset += VisionConstants.reefAlignmentFudge;
 
-                rotatedGoal = new Pose2d(DriveCommandConstants.x2Goal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
-                if (finishedFirstPath) {
-                    rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                double L4Offset = 0.0;
+
+                if (CoDriverControl.getInstance().atL4()) {
+                    L4Offset = VisionConstants.reefL4Offset;
                 }
+
+                rotatedGoal = new Pose2d(DriveCommandConstants.x2Goal + L4Offset, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                if (finishedFirstPath) {
+                    rotatedGoal = new Pose2d(DriveCommandConstants.xGoal + L4Offset, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                }
+                
                 rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
 
                 rotatedGoal = new Pose2d(
