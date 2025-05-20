@@ -31,6 +31,8 @@ public class PhotonVision extends SubsystemBase {
     /** Creates a new PhotonVision. */
     PhotonCamera cam;
     PhotonCamera cam2;
+    PhotonCamera cam3;
+    PhotonPoseEstimator Cam3PoseEstimator;
     PhotonPoseEstimator Cam2PoseEstimator;
     PhotonPoseEstimator Cam1PoseEstimator;
     PhotonTrackedTarget bestTarget;
@@ -47,6 +49,8 @@ public class PhotonVision extends SubsystemBase {
             .getStructArrayTopic("Cam1", Pose2d.struct).publish();
     StructArrayPublisher<Pose2d> Cam2Publisher = VisionTable
             .getStructArrayTopic("Cam2", Pose2d.struct).publish();
+    StructArrayPublisher<Pose2d> Cam3Publisher = VisionTable
+            .getStructArrayTopic("Cam3", Pose2d.struct).publish();
 
     private static PhotonVision instance;
 
@@ -62,8 +66,10 @@ public class PhotonVision extends SubsystemBase {
         m_quest = QuestNavSubsystem.getInstance();
         cam = new PhotonCamera(VisionConstants.camName);
         cam2 = new PhotonCamera(VisionConstants.cam2Name);
+        cam3 = new PhotonCamera(VisionConstants.cam3Name);
         cam.setDriverMode(false);
         cam2.setDriverMode(false);
+        cam3.setDriverMode(false);
 
         Cam1PoseEstimator = new PhotonPoseEstimator(
             VisionConstants.aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
@@ -72,6 +78,9 @@ public class PhotonVision extends SubsystemBase {
         Cam2PoseEstimator = new PhotonPoseEstimator(
             VisionConstants.aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
             VisionConstants.RobotToCam2);
+        Cam3PoseEstimator = new PhotonPoseEstimator(
+            VisionConstants.aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            VisionConstants.RobotToCam3);
     }
 
     @Override
@@ -107,8 +116,10 @@ public class PhotonVision extends SubsystemBase {
                     // // publish results
                     if (lastCamName == VisionConstants.camName) {
                         Cam1Publisher.set(new Pose2d[] { pose });
-                    } else {
+                    } else if (lastCamName == VisionConstants.cam2Name){
                         Cam2Publisher.set(new Pose2d[] { pose });
+                    } else {
+                        Cam3Publisher.set(new Pose2d[] { pose });
                     }
                 }
             }
@@ -138,6 +149,16 @@ public class PhotonVision extends SubsystemBase {
             }
         }
 
+        resultList = cam3.getAllUnreadResults();
+        if (!resultList.isEmpty()) {
+            result = resultList.get(resultList.size() - 1);
+            if (result.hasTargets()) {
+                bestTarget = result.getBestTarget();
+                lastCamName = VisionConstants.cam3Name;
+                return result;
+            }
+        }
+
         return null;
     }
 
@@ -146,8 +167,10 @@ public class PhotonVision extends SubsystemBase {
             if (lastResult.hasTargets()) {
                 if (lastCamName == "Cam1") {
                     return Cam1PoseEstimator.update(lastResult);
-                } else {
+                } else if (lastCamName == "Cam2") {
                     return Cam2PoseEstimator.update(lastResult);
+                }else {
+                    return Cam3PoseEstimator.update(lastResult);
                 }
             }
         }

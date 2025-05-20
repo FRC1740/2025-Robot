@@ -14,6 +14,7 @@ public final class VisionConstants {
     // http://photonvision.local:5800/#/dashboard
     public static final String camName = "Cam1"; // grey
     public static final String cam2Name = "Cam2"; // white
+    public static final String cam3Name = "Cam3"; // back
     public static final Double AprilTagMinimumArea = 0.0;
 
     public static final Double reefL4Offset = 0.04;  // How far back to go to score L4
@@ -38,6 +39,9 @@ public final class VisionConstants {
     public static final Transform3d RobotToCam1 = new Transform3d(cam12FrontBackOffset, -cam12Dist, 0.0, new Rotation3d(0.0, 0.0, -.0));
     
     public static final Transform3d RobotToCam2 = new Transform3d(cam12FrontBackOffset, cam12Dist, 0.0, new Rotation3d(0.0, 0.0, .0));
+
+    // TODO
+    public static final Transform3d RobotToCam3 = new Transform3d(-0.3, -.08, 0.0, new Rotation3d(0.0, 0.0, Math.PI));
 
     public static final Transform2d QuestToRobot = new Transform2d( /*TODO: Put x, y, rotational offsets here!*/ );
 
