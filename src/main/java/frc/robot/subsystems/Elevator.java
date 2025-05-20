@@ -23,6 +23,7 @@ public class Elevator extends SubsystemBase {
     SparkBase elevator = null;
     RelativeEncoder elevatorEncoder = null;
     PIDController elevatorController = null;
+    double inital_position = 0.0;
     private final TrapezoidProfile m_profile =
         new TrapezoidProfile(new TrapezoidProfile.Constraints(10000.0, 150.0));
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
@@ -61,6 +62,8 @@ public class Elevator extends SubsystemBase {
         elevator.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         elevatorEncoder = elevator.getEncoder();
+
+        inital_position = getElevatorPosition();
     }
 
     @Override
@@ -82,15 +85,15 @@ public class Elevator extends SubsystemBase {
         //     output);
         m_setpoint = m_profile.calculate(kDt, m_setpoint, m_goal);
         elevatorController.setSetpoint(m_setpoint.position);
-        double output = elevatorController.calculate(elevatorEncoder.getPosition());
-        if ((Math.abs(elevatorEncoder.getPosition() - m_goal.position) > ElevatorConstants.kFFDeadband) && 
-            (Math.abs(elevatorEncoder.getPosition()) > ElevatorConstants.kFFGroundOffset)) {
+        double output = elevatorController.calculate(getElevatorPosition());
+        if ((Math.abs(getElevatorPosition() - m_goal.position) > ElevatorConstants.kFFDeadband) && 
+            (Math.abs(getElevatorPosition()) > ElevatorConstants.kFFGroundOffset)) {
 
             output += (ElevatorConstants.kFF) * Math.signum(output);
         }
 
         if ((output > 0.0) && 
-            (Math.abs(elevatorEncoder.getPosition()) < ElevatorConstants.kGroundHalvingOffset)) {// going down and near bottom
+            (Math.abs(getElevatorPosition()) < ElevatorConstants.kGroundHalvingOffset)) {// going down and near bottom
             output /= 5.0;
         }
 
@@ -119,7 +122,7 @@ public class Elevator extends SubsystemBase {
      * @return the elevator position
      */
     public double getElevatorPosition() {
-        return elevatorEncoder.getPosition();
+        return elevatorEncoder.getPosition() - inital_position;
     }
     /**
      * Gets the current elevator position
