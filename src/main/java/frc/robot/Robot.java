@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathfindingCommand;
+
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -23,6 +25,7 @@ public class Robot extends TimedRobot {
         if (validCanIds) {
             DataLogManager.start();
             DriverStation.startDataLog(DataLogManager.getLog());
+            PathfindingCommand.warmupCommand().schedule(); // loads foo to init everything, lowers delay on first run
             m_robotContainer = RobotContainer.getInstance();
         }else {
             m_robotContainer = null;

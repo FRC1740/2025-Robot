@@ -47,7 +47,7 @@ import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
 
-public class AlignToTagPathplanner extends Command {
+public class AlignToPosePathplanner extends Command {
     CommandSwerveDrivetrain m_drive;
     private PhotonVision m_photonvision;
 
@@ -88,9 +88,9 @@ public class AlignToTagPathplanner extends Command {
      * Limelight.
      * <br>
      * </br>
-     * This command <b>DOES DRIVE</b>
+     * This command <b>DOES DRIVE</b .66> 1.47
      */
-    public AlignToTagPathplanner(boolean leftReef, SwerveRequest.FieldCentric driveRequest, 
+    public AlignToPosePathplanner(Pose2d pose, boolean leftReef, SwerveRequest.FieldCentric driveRequest, 
             Double DriveMaxSpeed, Double DriveMaxAngularRate, CommandXboxController joystick) {
                 
         m_joystick = joystick;
@@ -100,6 +100,7 @@ public class AlignToTagPathplanner extends Command {
         MaxAngularRate = DriveMaxAngularRate;
         m_driveRequest = driveRequest;
         finishedFirstPath = false;
+        targetPose = pose;
 
         this.isLeftReef = leftReef;
             
@@ -127,93 +128,6 @@ public class AlignToTagPathplanner extends Command {
     public void execute() {
         PathConstraints constraints = new PathConstraints(8.0, 3.0, 4 * Math.PI, 6 * Math.PI); // The constraints for this path.
 
-        if (targetPose == null) {
-            Optional<Pose3d> tagPose = null;
-            switch (m_photonvision.selectedPosition) {
-                case A:
-                case B:
-                System.out.println("AB");
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(18);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(7);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.A);
-                    break;
-                case C:
-                case D:
-                System.out.println("C");
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(17);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(8);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.C);
-                    break;
-                case E:
-                case F:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(22);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(9);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.E);
-                    break;
-                case G:
-                case H:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(21);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(10);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.G);
-                    break;
-                case I:
-                case J:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(20);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(11);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.I);
-                    break;
-                case K:
-                case L:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(19);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(6);
-                    }
-                    m_photonvision.targetingLeftReef = (m_photonvision.selectedPosition == CoDriverInput.K);
-                    break;
-                case LeftSource:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(13);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(1);
-                    }
-                    break;
-                case RightSource:
-                    if (!m_drive.m_operatorPerspectiveFlipped) { // blue
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(12);
-                    }else {
-                        tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(2);
-                    }
-                    break;
-                    
-                default:
-                break;
-
-            }
-            Random rand = new Random();
-
-            isLeftReef = !m_photonvision.targetingLeftReef;
-
-            // TODO! check if reef tag
-            if (tagPose.isPresent()) {
-                targetPose = tagPose.get().toPose2d();
-            }
-        }else {
             if (pathfinder == null) {
 
                 double leftToRightOffset = VisionConstants.reefLeftRightOffset;
@@ -315,7 +229,6 @@ public class AlignToTagPathplanner extends Command {
             if (pathDrive != null && !finished) {
                 pathDrive.execute();
             }
-        }
     }
 
     // Called once the command ends or is interrupted.

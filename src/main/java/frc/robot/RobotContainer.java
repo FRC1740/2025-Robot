@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.CoDriverControl.CoDriverInput;
+import frc.robot.commands.AlignToPosePathplanner;
 import frc.robot.commands.AlignToTagPathplanner;
 import frc.robot.commands.AlignToTagSimpleLimelight;
 import frc.robot.commands.AutoClimb;
@@ -258,6 +260,10 @@ public class RobotContainer {
         //     new InstantCommand(() -> hand.setWristSetpoint(.4))
         // ).toggleOnFalse(
         //     new InstantCommand(() -> hand.setWristSetpoint(0.0))
+        // );
+
+        // joystick.a().whileTrue(
+        //     new AlignToPosePathplanner(Pose2d(0.66, ), false, drive, null, null, joystick)
         // );
 
         coDriverController2.povDown().whileTrue(
