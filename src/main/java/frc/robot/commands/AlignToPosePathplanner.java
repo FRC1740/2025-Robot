@@ -119,7 +119,6 @@ public class AlignToPosePathplanner extends Command {
     public void initialize() {
         finished = false;
         finishedFirstPath = false;
-        targetPose = null;
         timeRunning.start();
     }
 
@@ -136,15 +135,9 @@ public class AlignToPosePathplanner extends Command {
                 }
                 leftToRightOffset += VisionConstants.reefAlignmentFudge;
 
-                double L4Offset = 0.0;
-
-                if (CoDriverControl.getInstance().atL4()) {
-                    L4Offset = VisionConstants.reefL4Offset;
-                }
-
-                rotatedGoal = new Pose2d(DriveCommandConstants.x2Goal + L4Offset, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
                 if (finishedFirstPath) {
-                    rotatedGoal = new Pose2d(DriveCommandConstants.xGoal + L4Offset, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                    rotatedGoal = new Pose2d(0.0, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
                 }
                 
                 rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags

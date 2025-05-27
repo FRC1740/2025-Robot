@@ -12,6 +12,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -262,9 +263,9 @@ public class RobotContainer {
         //     new InstantCommand(() -> hand.setWristSetpoint(0.0))
         // );
 
-        // joystick.a().whileTrue(
-        //     new AlignToPosePathplanner(Pose2d(0.66, ), false, drive, null, null, joystick)
-        // );
+        joystick.a().whileTrue(
+            new AlignToPosePathplanner(new Pose2d(0.74, 1.38, new Rotation2d(Math.PI - 2.22)), false, drive, MaxSpeed, MaxAngularRate, joystick)
+        );
 
         coDriverController2.povDown().whileTrue(
             new RunCommand(() -> { m_hand.score(); }
