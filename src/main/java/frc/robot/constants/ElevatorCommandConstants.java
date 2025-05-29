@@ -1,4 +1,5 @@
 package frc.robot.constants;
+
 /** 
  * Holds data for specifically controling the elevator and hand superstructure via commands
 */
@@ -10,6 +11,7 @@ public class ElevatorCommandConstants {
     public static ElevatorPose L2Score = new ElevatorPose(-6.7, 0.31);
     public static ElevatorPose L3Score = new ElevatorPose(-13.9, 0.28);
     public static ElevatorPose L4Score = new ElevatorPose(-28.5, 0.34);
+    public static ElevatorPose L4AutoScore = new ElevatorPose(-28.7, 0.38); // legacy for auto
     public static ElevatorPose L2Algae = new ElevatorPose(-2.7, 0.28);
     public static ElevatorPose L3Algae = new ElevatorPose(-10, 0.27);
     public static ElevatorPose Stow = new ElevatorPose(0.2, 0.1);

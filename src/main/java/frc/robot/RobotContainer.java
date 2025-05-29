@@ -84,7 +84,7 @@ public class RobotContainer {
     public RobotContainer() {
         NamedCommands.registerCommand("L3", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L3Score));
         NamedCommands.registerCommand("L4", new SequentialCommandGroup(
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4Score),
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4AutoScore),
             new L4CoralTap()
         ));
         NamedCommands.registerCommand("Intake Pos", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Intake));
