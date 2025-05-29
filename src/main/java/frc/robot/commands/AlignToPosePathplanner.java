@@ -119,6 +119,7 @@ public class AlignToPosePathplanner extends Command {
     public void initialize() {
         finished = false;
         finishedFirstPath = false;
+        pathfinder = null;
         timeRunning.start();
     }
 

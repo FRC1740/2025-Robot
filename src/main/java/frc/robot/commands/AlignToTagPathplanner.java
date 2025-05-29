@@ -119,6 +119,7 @@ public class AlignToTagPathplanner extends Command {
         finished = false;
         finishedFirstPath = false;
         targetPose = null;
+        pathfinder = null;
         timeRunning.start();
     }
 
@@ -311,6 +312,11 @@ public class AlignToTagPathplanner extends Command {
                     pathDrive = null;
                 }
                 
+                if (!finishedFirstPath) { // add some spikes to avoid corner clips on the reef
+                    // Pathfinding.setDynamicObstacles
+                }else { // can't corner clip on the drive in, and navgrid would mess with speed
+
+                }
             }
             if (pathDrive != null && !finished) {
                 pathDrive.execute();
