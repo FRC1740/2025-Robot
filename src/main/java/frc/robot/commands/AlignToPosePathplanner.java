@@ -104,7 +104,7 @@ public class AlignToPosePathplanner extends Command {
         finishedFirstPath = false;
         pathfinder = null;
         targetPoseFlipped = targetPose;
-        
+
         if (m_drive.m_operatorPerspectiveFlipped) { // red field
             System.out.println("flipped");
             // add half the field to flip
@@ -120,7 +120,7 @@ public class AlignToPosePathplanner extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        PathConstraints constraints = new PathConstraints(8.0, 3.0, 4 * Math.PI, 6 * Math.PI); // The constraints for this path.
+        PathConstraints constraints = new PathConstraints(5.0, 3.0, 4 * Math.PI, 6 * Math.PI); // The constraints for this path.
 
             if (pathfinder == null) {
 

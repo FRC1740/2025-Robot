@@ -149,7 +149,7 @@ public class RobotContainer {
         //     new AlignToTagPose(drive, MaxSpeed, MaxAngularRate));
 
         
-        joystick.rightBumper().whileTrue(
+        joystick.x().whileTrue(
                 new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
 
         joystick.leftBumper().whileTrue(
