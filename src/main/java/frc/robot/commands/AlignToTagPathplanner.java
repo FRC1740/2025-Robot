@@ -206,7 +206,8 @@ public class AlignToTagPathplanner extends Command {
                 break;
 
             }
-            Random rand = new Random();
+            // Random rand = new Random();
+            // tagPose = VisionConstants.aprilTagFieldLayout.getTagPose(rand.nextInt(6, 11+1)); // 17-22 blue + 1-2 + 6-11 red
 
             isLeftReef = !m_photonvision.targetingLeftReef;
 
@@ -310,12 +311,6 @@ public class AlignToTagPathplanner extends Command {
                     // need to reset because failed config
                     pathfinder = null;
                     pathDrive = null;
-                }
-                
-                if (!finishedFirstPath) { // add some spikes to avoid corner clips on the reef
-                    // Pathfinding.setDynamicObstacles
-                }else { // can't corner clip on the drive in, and navgrid would mess with speed
-
                 }
             }
             if (pathDrive != null && !finished) {

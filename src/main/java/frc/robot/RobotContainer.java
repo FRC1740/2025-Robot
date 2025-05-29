@@ -13,6 +13,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -264,7 +265,10 @@ public class RobotContainer {
         // );
 
         joystick.a().whileTrue(
-            new AlignToPosePathplanner(new Pose2d(0.74, 1.38, new Rotation2d(Math.PI - 2.22)), false, drive, MaxSpeed, MaxAngularRate, joystick)
+            new AlignToPosePathplanner(new Pose2d(1.40, .74, new Rotation2d(Math.PI - 2.22)), false, drive, MaxSpeed, MaxAngularRate, joystick)
+        );
+        joystick.b().whileTrue(
+            new AlignToPosePathplanner(new Pose2d(1.40, 8.05 - .74, new Rotation2d(Math.PI + 2.22)), false, drive, MaxSpeed, MaxAngularRate, joystick)
         );
 
         coDriverController2.povDown().whileTrue(

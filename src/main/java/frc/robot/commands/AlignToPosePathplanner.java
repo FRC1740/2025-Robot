@@ -4,46 +4,28 @@
 
 package frc.robot.commands;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-
-import org.json.simple.parser.ParseException;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.CoDriverControl;
-import frc.robot.CoDriverControl.CoDriverInput;
-import frc.robot.RobotContainer;
 import frc.robot.constants.DriveCommandConstants;
-import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
 
@@ -61,6 +43,7 @@ public class AlignToPosePathplanner extends Command {
     boolean ThetaFinished;
     boolean isLeftReef; // A C E etc
     Pose2d targetPose = null;
+    Pose2d targetPoseFlipped = null;
     Pose2d rotatedGoal = null;
     Double MaxSpeed = null;
     Double MaxAngularRate = null;
@@ -120,6 +103,17 @@ public class AlignToPosePathplanner extends Command {
         finished = false;
         finishedFirstPath = false;
         pathfinder = null;
+        targetPoseFlipped = targetPose;
+        
+        if (m_drive.m_operatorPerspectiveFlipped) { // red field
+            System.out.println("flipped");
+            // add half the field to flip
+            targetPoseFlipped = new Pose2d(
+                17.55 - targetPose.getX(),// field size - x to flip over the middle if on red 
+                targetPose.getY(), 
+                targetPose.getRotation().times(-1).plus(new Rotation2d(Math.PI)) // flip rot (trust me bro (tbh don't really know why this works but it does))
+            );
+        }
         timeRunning.start();
     }
 
@@ -130,23 +124,17 @@ public class AlignToPosePathplanner extends Command {
 
             if (pathfinder == null) {
 
-                double leftToRightOffset = VisionConstants.reefLeftRightOffset;
-                if (!isLeftReef) {
-                    leftToRightOffset *= -1;
-                }
-                leftToRightOffset += VisionConstants.reefAlignmentFudge;
-
-                rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                rotatedGoal = new Pose2d(DriveCommandConstants.xGoal, DriveCommandConstants.yGoal, new Rotation2d());
                 if (finishedFirstPath) {
-                    rotatedGoal = new Pose2d(0.0, DriveCommandConstants.yGoal + leftToRightOffset, new Rotation2d());
+                    rotatedGoal = new Pose2d(0.0, DriveCommandConstants.yGoal, new Rotation2d());
                 }
                 
-                rotatedGoal = rotatedGoal.rotateBy(targetPose.getRotation()); // Rotate the goal to account for rotated tags
+                rotatedGoal = rotatedGoal.rotateBy(targetPoseFlipped.getRotation()); // Rotate the goal to account for rotated tags
 
                 rotatedGoal = new Pose2d(
-                        (targetPose.getX() + rotatedGoal.getX()), // apply target offsets
-                        (targetPose.getY() + rotatedGoal.getY()),
-                        targetPose.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot
+                        (targetPoseFlipped.getX() + rotatedGoal.getX()), // apply target offsets
+                        (targetPoseFlipped.getY() + rotatedGoal.getY()),
+                        targetPoseFlipped.getRotation().plus(new Rotation2d(Math.PI))); // normal of the tag is flipped from robot
                                                                                 // target
                 PosePublisher.set(new Pose2d[] { rotatedGoal });
 
