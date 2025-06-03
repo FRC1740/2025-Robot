@@ -224,7 +224,7 @@ public class AlignToTagPathplanner extends Command {
                 }
                 leftToRightOffset += VisionConstants.reefAlignmentFudge;
 
-                double L4Offset = 0.0;
+                double L4Offset = VisionConstants.reefL4Offset;
 
                 if (CoDriverControl.getInstance().atL4()) {
                     L4Offset = VisionConstants.reefL4Offset;
@@ -296,7 +296,7 @@ public class AlignToTagPathplanner extends Command {
                         ),
                         new PPHolonomicDriveController(
                             // PID constants for translation
-                            new PIDConstants(10, 0, 0),
+                            new PIDConstants(7, 0, 0),
                             // PID constants for rotation
                             new PIDConstants(7, 0, 0)
                         ),
