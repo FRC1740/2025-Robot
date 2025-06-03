@@ -126,7 +126,7 @@ public class AlignToTagPathplanner extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        PathConstraints constraints = new PathConstraints(5.0, 3.0, 4 * Math.PI, 6 * Math.PI); // The constraints for this path.
+        PathConstraints constraints = new PathConstraints(5.0, 4.5, 4 * Math.PI, 6 * Math.PI); // The constraints for this path.
 
         if (targetPose == null) {
             Optional<Pose3d> tagPose = null;
