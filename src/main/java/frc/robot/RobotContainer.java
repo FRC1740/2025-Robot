@@ -149,7 +149,7 @@ public class RobotContainer {
         //     new AlignToTagPose(drive, MaxSpeed, MaxAngularRate));
 
         
-        joystick.x().whileTrue(
+        joystick.rightBumper().whileTrue(
                 new AlignToTagPathplanner(true, drive, MaxSpeed, MaxAngularRate, joystick));
 
         joystick.leftBumper().whileTrue(
@@ -229,13 +229,6 @@ public class RobotContainer {
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->
         //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         // ));
-        joystick.b().toggleOnTrue(
-            new Intake()
-        ).toggleOnFalse(
-            new InstantCommand(() -> {
-                m_hand.stop();
-            })
-        );
         // .toggleOnFalse(
         //     new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Stow, elevator, hand)
         // );
@@ -264,10 +257,10 @@ public class RobotContainer {
         //     new InstantCommand(() -> hand.setWristSetpoint(0.0))
         // );
 
-        joystick.a().whileTrue(
+        joystick.b().whileTrue(
             new AlignToPosePathplanner(new Pose2d(1.40, .74, new Rotation2d(Math.PI - 2.22)), false, drive, MaxSpeed, MaxAngularRate, joystick)
         );
-        joystick.b().whileTrue(
+        joystick.x().whileTrue(
             new AlignToPosePathplanner(new Pose2d(1.40, 8.05 - .74, new Rotation2d(Math.PI + 2.22)), false, drive, MaxSpeed, MaxAngularRate, joystick)
         );
 

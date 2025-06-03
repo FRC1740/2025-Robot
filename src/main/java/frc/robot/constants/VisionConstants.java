@@ -18,7 +18,7 @@ public final class VisionConstants {
     public static final Double AprilTagMinimumArea = 0.0;
 
     public static final Double reefL4Offset = 0.17;  // How far back to go to score L4
-    public static final Double reefLeftRightOffset = 0.15;  // for scoring
+    public static final Double reefLeftRightOffset = 0.33/2.0;  // for scoring
     public static final Double reefAlignmentFudge = -0.02;
 
     public static final Double cam12FrontBackOffset = 0.2; // 8in is .2m
