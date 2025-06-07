@@ -67,10 +67,12 @@ public class MoveElevatorToPoseAndScore extends Command {
         // return false;
     }
 
-    // @Override
-    // public void end(boolean interrupted) {
-    //     // TODO Auto-generated method stub
-    //     super.end(interrupted);
-    // }
+    @Override
+    public void end(boolean interrupted) {
+        m_hand.setWristSetpoint(m_hand.getWristAngle());
+        m_hand.seekPosition();
+        // TODO Auto-generated method stub
+        super.end(interrupted);
+    }
 
 }
