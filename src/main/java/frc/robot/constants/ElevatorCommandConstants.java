@@ -8,7 +8,7 @@ public class ElevatorCommandConstants {
     public static double topDistance = -29.6; // foo encoder things
 
     public static ElevatorPose L1Score = new ElevatorPose(-7.7, 0.39);
-    public static ElevatorPose L2Score = new ElevatorPose(-7.1, 0.285);
+    public static ElevatorPose L2Score = new ElevatorPose(-6.75, 0.285);
     public static ElevatorPose L3Score = new ElevatorPose(-14.2, 0.28);
     public static ElevatorPose L4Score = new ElevatorPose(-29.5, 0.36);
     public static ElevatorPose L4AutoScore = new ElevatorPose(-28.7, 0.38); // legacy for auto

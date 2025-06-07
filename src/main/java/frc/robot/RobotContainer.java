@@ -195,9 +195,9 @@ public class RobotContainer {
         coDriverController2.button(7).onTrue(
             new InstantCommand(() -> {photonvision.targetingLeftReef = true; photonvision.selectedPosition = CoDriverInput.C;}) 
         );
-        // coDriverController2.button(7).onTrue( // TODO! D
-        //     new InstantCommand(() -> {photonvision.targetingLeftReef = false; m_coDriverControl.sendInput(CoDriverInput.C, true);}) 
-        // );
+        coDriverController2.button(6).onTrue( // TODO! D
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; m_coDriverControl.sendInput(CoDriverInput.C, true);}) 
+        );
         coDriverController2.button(3).onTrue(
             new InstantCommand(() -> {photonvision.targetingLeftReef = true; photonvision.selectedPosition = CoDriverInput.E;}) 
         );

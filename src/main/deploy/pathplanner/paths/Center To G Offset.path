@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.779950448495369,
-        "y": 4.197017505787036
+        "x": 7.184857132523148,
+        "y": 4.142454065393518
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.847013888888887,
-        "y": 4.710158420138888
+        "x": 6.774786964699074,
+        "y": 4.106291956018518
       },
       "isLocked": false,
-      "linkedName": "G Score"
+      "linkedName": "Center Start"
     },
     {
       "anchor": {
-        "x": 1.4808521412037026,
-        "y": 7.233062427662037
+        "x": 6.443446542245369,
+        "y": 4.185429325810185
       },
       "prevControl": {
-        "x": 2.8074949363425907,
-        "y": 6.873770616319445
+        "x": 6.742875795717592,
+        "y": 4.174772858796296
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Pickup"
+      "linkedName": "G Offset"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.41371299342105256,
-      "rotationDegrees": -179.36328949876602
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 126.64422676418918
+    "rotation": 179.42142858628884
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.70402622259704
+    "rotation": -179.82724942935135
   },
   "useDefaultConstraints": true
 }
