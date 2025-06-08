@@ -52,6 +52,12 @@
                     {
                       "type": "named",
                       "data": {
+                        "name": "Intake Pos"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
                         "name": "Intake"
                       }
                     }
@@ -110,6 +116,12 @@
                       "type": "wait",
                       "data": {
                         "waitTime": 0.3
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake Pos"
                       }
                     },
                     {

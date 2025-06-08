@@ -87,7 +87,8 @@ public class RobotContainer {
             new MoveElevatorToPoseAndScore(ElevatorCommandConstants.L4AutoScore),
             new L4CoralTap()
         ));
-        NamedCommands.registerCommand("Intake Pos", new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Intake));
+        NamedCommands.registerCommand("Intake Pos", 
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Intake).withTimeout(.5));
         NamedCommands.registerCommand("Intake", new Intake());
         NamedCommands.registerCommand("Score", new Score());
         joystick.setRumble(RumbleType.kBothRumble, 0.0);
@@ -196,7 +197,7 @@ public class RobotContainer {
             new InstantCommand(() -> {photonvision.targetingLeftReef = true; photonvision.selectedPosition = CoDriverInput.C;}) 
         );
         coDriverController2.button(6).onTrue( // TODO! D
-            new InstantCommand(() -> {photonvision.targetingLeftReef = false; m_coDriverControl.sendInput(CoDriverInput.C, true);}) 
+            new InstantCommand(() -> {photonvision.targetingLeftReef = false; photonvision.selectedPosition = CoDriverInput.D;}) 
         );
         coDriverController2.button(3).onTrue(
             new InstantCommand(() -> {photonvision.targetingLeftReef = true; photonvision.selectedPosition = CoDriverInput.E;}) 
