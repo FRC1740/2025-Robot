@@ -88,7 +88,7 @@ public class RobotContainer {
             new L4CoralTap()
         ));
         NamedCommands.registerCommand("Intake Pos", 
-            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Intake).withTimeout(.5));
+            new MoveElevatorToPoseAndScore(ElevatorCommandConstants.Intake).withTimeout(1));
         NamedCommands.registerCommand("Intake", new Intake());
         NamedCommands.registerCommand("Score", new Score());
         joystick.setRumble(RumbleType.kBothRumble, 0.0);
